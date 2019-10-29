@@ -87,36 +87,56 @@ public:
     		y = (*ptr).second;
 
     		//forward move: <=0 because empty or other's soldier
-    		if (grid[x][y-1] <= 0) {
+    		if ((grid[x][y-1] <= 0) && (y-1 >= 0)) {
     			temp = vector<int> {x, y, x, y-1};
     			ans.push_back(temp);
     		}
 
     		//right diagonal move
-    		if (grid[x+1][y-1] <= 0) {
+    		if ((grid[x+1][y-1] <= 0) && (x+1 <= 7) && (y-1 >= 0)) {
     			temp = vector<int> {x, y, x+1, y-1};
     			ans.push_back(temp);
     		} 
 
     		//left diagonal move
-    		if (grid[x-1][y-1] <= 0) {
+    		if ((grid[x-1][y-1] <= 0) && (x-1 >= 0) && (y-1 >= 0)) {
     			temp = vector<int> {x, y, x-1, y-1};
     			ans.push_back(temp);
     		}
 
     		//right adjacent move
-    		if (grid[x+1][y] < 0) {
+    		if ((grid[x+1][y] < 0) && (x+1 <= 7)) {
     			temp = vector<int> {x, y, x+1, y};
     			ans.push_back(temp);
     		}
 
     		//left adjacent move
-    		if (grid[x-1][y] < 0) {
+    		if ((grid[x-1][y] < 0) && (x-1 >= 0)) {
     			temp = vector<int> {x, y, x-1, y};
     			ans.push_back(temp);
     		}
 
-    		if 
+    		//retreat moves, considering that it can kill soldiers while retreating
+            if (((grid[x][y-1] < 0) && (y-1 >= 0)) || ((grid[x+1][y-1] < 0) && (x+1 <= 7) && (y-1 >=0)) || 
+                ((grid[x-1][y-1] < 0) && (x-1 >= 0) && (y-1 >= 0)) || ((grid[x+1][y] < 0) && (x+1 <=7)) || 
+                ((grid[x-1][y] < 0) && (x-1 >= 0))) {
+
+                if ((grid[x][y+2] <= 0) && (y+2 <=7)) {
+                    temp = vector<int> {x, y, x, y+2};
+                    ans.push_back(temp);
+                }
+
+                if ((grid[x+2][y+2] <= 0) && (y+2 <=7) && (x+2 <=7)) {
+                    temp = vector<int> {x, y, x+2, y+2};
+                    ans.push_back(temp);
+                }
+
+                if ((grid[x-2][y+2] <= 0) && (y+2 <=7) && (x-2 >= 0)) {
+                    temp = vector<int> {x, y, x-2, y+2};
+                    ans.push_back(temp);
+                }
+            }
+            
 
     	}
     	return ans;
@@ -129,6 +149,7 @@ int main() {
 	vector<int> temp;
 	temp = vector<int> {2,3,4,5};
 	temp = vector<int> {1,2,3,4};
+    cout << temp[100] << endl;
 	for (int i = 0; i < temp.size(); i++) {
 		cout << temp[i] << endl;
 	}
