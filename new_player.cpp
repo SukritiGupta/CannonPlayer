@@ -118,6 +118,7 @@ vector<vector<int> > find_soldier_moves(board current) {
 		}
 
 		//retreat moves, considering that it can kill soldiers while retreating
+        // ??????????????????? can a soldier kill other soldiers while retreating
         if (((current.grid[x][y-1] < 0) && (y-1 >= 0)) || ((current.grid[x+1][y-1] < 0) && (x+1 <= 7) && (y-1 >=0)) || 
             ((current.grid[x-1][y-1] < 0) && (x-1 >= 0) && (y-1 >= 0)) || ((current.grid[x+1][y] < 0) && (x+1 <=7)) || 
             ((current.grid[x-1][y] < 0) && (x-1 >= 0))) {
@@ -138,7 +139,146 @@ vector<vector<int> > find_soldier_moves(board current) {
             }
         }
 	}
+
+    //??????????????????????? a cannon can't kill soldier while moving
+    vector<can>::iterator ptr2;
+    int dir;
+    for (ptr2 = current.allmycan.begin(); ptr2 != current.allmycan.end(); ptr2++) {
+        x = (*ptr2).centre.first;
+        y = (*ptr2).centre.second;
+        dir = (*ptr2).dir;
+
+        if (dir == 0) {
+            if ((current.grid[x][y-2] == 0) && (y-2 >= 0)) {
+                temp = vector<int> {x, y+1, x, y-2};
+                ans.push_back(temp);
+            }
+            if ((current.grid[x][y+2] == 0) && (y+2 <= 7)) {
+                temp = vector<int> {x, y-1, x, y+2};
+                ans.push_back(temp);
+            }
+        }
+        else if (dir == 1) {
+            if ((current.grid[x+2][y-2] == 0) && (y-2 >= 0) && (x+2 <= 7)) {
+                temp = vector<int> {x-1, y+1, x+2, y-2};
+                ans.push_back(temp);
+            }
+            if ((current.grid[x-2][y+2] == 0) && (y+2 <= 7) && (x-2 >= 0)) {
+                temp = vector<int> {x+1, y-1, x-2, y+2};
+                ans.push_back(temp);
+            }
+        }
+        else if (dir == 2) {
+            if ((current.grid[x-2][y] == 0) && (x-2 >= 0)) {
+                temp = vector<int> {x+1, y, x-2, y};
+                ans.push_back(temp);
+            }
+            if ((current.grid[x+2][y] == 0) && (x+2 <= 7)) {
+                temp = vector<int> {x-1, y, x+2, y};
+                ans.push_back(temp);
+            }
+        }
+        else { //if dir == 3
+            if ((current.grid[x+2][y+2] == 0) && (y+2 <= 7) && (x+2 <= 7)) {
+                temp = vector<int> {x-1, y-1, x+2, y+2};
+                ans.push_back(temp);
+            }
+            if ((current.grid[x-2][y-2] == 0) && (y-2 >= 0) && (x-2 >= 0)) {
+                temp = vector<int> {x+1, y+1, x-2, y-2};
+                ans.push_back(temp);
+            }
+        }
+    }
 	return ans;
+}
+
+vector<vector<int> > find_cannon_moves(board current) {
+    //ans vector to be returned
+    vector<vector<int> > ans;
+    vector<int> temp;
+
+    //????????????????????????????can empty blast
+    vector<can>::iterator ptr;
+    int x, y, dir;
+    for (ptr = current.allmycan.begin(); ptr != current.allmycan.end(); ptr++) {
+        x = (*ptr).centre.first;
+        y = (*ptr).centre.second;
+        dir = (*ptr).dir;
+
+        if (dir == 0) {
+            if ((current.grid[x][y-3] <= 0) && (y-3 >= 0)) {
+                temp = vector<int> {x, y, x, y-3};
+                ans.push_back(temp);
+            }
+            if ((current.grid[x][y-4] <= 0) && (y-4 >= 0)) {
+                temp = vector<int> {x, y, x, y-4};
+                ans.push_back(temp);
+            }
+            if ((current.grid[x][y+3] <= 0) && (y+3 <= 7)) {
+                temp = vector<int> {x, y, x, y+3};
+                ans.push_back(temp);
+            }
+            if ((current.grid[x][y+4] <= 0) && (y+4 <= 7)) {
+                temp = vector<int> {x, y, x, y+4};
+                ans.push_back(temp);
+            }
+        }
+        else if (dir == 1) {
+            if ((current.grid[x+3][y-3] <= 0) && (y-3 >= 0) && (x+3 <= 7)) {
+                temp = vector<int> {x, y, x+3, y-3};
+                ans.push_back(temp);
+            }
+            if ((current.grid[x+4][y-4] <= 0) && (y-4 >= 0) && (x+4 <= 7)) {
+                temp = vector<int> {x, y, x+4, y-4};
+                ans.push_back(temp);
+            }
+            if ((current.grid[x-3][y+3] <= 0) && (y+3 <= 7) && (x-3 >= 0)) {
+                temp = vector<int> {x, y, x-3, y+3};
+                ans.push_back(temp);
+            }
+            if ((current.grid[x-4][y+4] <= 0) && (y+4 <= 7) && (x-4 >= 0)) {
+                temp = vector<int> {x, y, x-4, y+4};
+                ans.push_back(temp);
+            }
+        }
+        else if (dir == 2) {
+            if ((current.grid[x-3][y] <= 0) && (x-3 >= 0)) {
+                temp = vector<int> {x, y, x-3, y};
+                ans.push_back(temp);
+            }
+            if ((current.grid[x-4][y] <= 0) && (x-4 >= 0)) {
+                temp = vector<int> {x, y, x-4, y};
+                ans.push_back(temp);
+            }
+            if ((current.grid[x+3][y] <= 0) && (x+3 <= 7)) {
+                temp = vector<int> {x, y, x+3, y};
+                ans.push_back(temp);
+            }
+            if ((current.grid[x+4][y] <= 0) && (x+4 <= 7)) {
+                temp = vector<int> {x, y, x+4, y};
+                ans.push_back(temp);
+            }
+        }
+        else { //if dir == 3
+            if ((current.grid[x+3][y+3] <= 0) && (y+3 <= 7) && (x+3 <= 7)) {
+                temp = vector<int> {x, y, x+3, y+3};
+                ans.push_back(temp);
+            }
+            if ((current.grid[x+4][y+4] <= 0) && (y+4 <= 7) && (x+4 <= 7)) {
+                temp = vector<int> {x, y, x+4, y+4};
+                ans.push_back(temp);
+            }
+            if ((current.grid[x-3][y-3] <= 0) && (y-3 >= 0) && (x-3 >= 0)) {
+                temp = vector<int> {x, y, x-3, y-3};
+                ans.push_back(temp);
+            }
+            if ((current.grid[x-4][y-4] == 0) && (y-4 >= 0) && (x-4 >= 0)) {
+                temp = vector<int> {x, y, x-4, y-4};
+                ans.push_back(temp);
+            }
+        }
+    }
+    return ans;
 }
 
 board add_change_cannon()
@@ -151,9 +291,161 @@ board add_soldier(board, x,y)
 
 }
 
-board delete_change_cannon(board, x, y )
-{
+board delete_change_cannon(board newboard, int b1, int b2) {
 
+    map<pair<int, int>, vector<tup>>::iterator dicval = newboard.mycannon.find(pair<int,int>(b1,b2));
+    if (dicval!=newboard.mycannon.end())
+    {
+        vector<tup> neighbours, neighbours1, neighbours2;
+        neighbours = dicval->second;
+        vector<tup>::iterator iter,temp;
+        int s1x,s1y,s2x,s2y;
+
+        for (iter = neighbours.begin(); iter < neighbours.end(); iter++)
+        {
+            s1x=(*iter).a[0];
+            s1y=(*iter).a[1];
+            s2x=(*iter).a[2];
+            s2y=(*iter).a[3];
+
+            neighbours1=newboard.mycannon.at(pair<int,int>(s1x,s1y));
+            
+
+            if(neighbours1.size()>1)
+            {
+                struct tup x(b1,b2,s2x,s2y);
+
+                temp=find_if(neighbours1.begin(), neighbours1.end(), x );
+
+                if (temp!=neighbours1.end())
+                {
+                    neighbours1.erase(temp);
+                }
+                else
+                {
+                    x.a[0]=s2x;
+                    x.a[1]=s2y;
+                    x.a[2]=b1;
+                    x.a[3]=b2;
+                    neighbours1.erase( find_if(neighbours1.begin(), neighbours1.end(), x ) );   
+                }
+                newboard.mycannon[pair<int,int>(s1x,s1y)]=neighbours1;
+            }
+            else
+            {
+                newboard.mycannon.erase(pair<int,int>(s1x,s1y));
+            }
+
+            //repeat for s2
+            // cerr<<s2x<<s2y<<"    "<<"b1 :"<<b1<<"b2 :"<<b2<<endl;
+            neighbours2=newboard.mycannon.at(pair<int,int>(s2x,s2y));
+            
+
+            if(neighbours2.size()>1)
+            {
+                // int arr[4]={b1,b2,s1x,s1y};
+                struct tup x(b1,b2,s1x,s1y);
+
+                temp=find_if(neighbours2.begin(), neighbours2.end(), x );
+
+                if (temp!=neighbours2.end())
+                {
+                    neighbours2.erase(temp);
+                }
+                else
+                {
+                    x.a[0]=s1x;
+                    x.a[1]=s1y;
+                    x.a[2]=b1;
+                    x.a[3]=b2;
+                    neighbours2.erase( find_if(neighbours2.begin(), neighbours2.end(), x ) );   
+                }
+                newboard.mycannon[pair<int,int>(s2x,s2y)]=neighbours2;
+            }
+            else
+            {
+                newboard.mycannon.erase(pair<int,int>(s2x,s2y));
+            }
+
+            if (b1==s1x && b1==s2x) //dir=0
+            {
+                if ((b2<s1y && s1y<s2y)|| (b2>s1y && s1y>s2y))
+                {
+                    can a{pair<int,int>(s1x,s1y),0};
+                    newboard.allmycan.erase(    find_if(newboard.allmycan.begin(), newboard.allmycan.end(), a)   );
+                }
+                else if ((b2<s2y && s2y<s1y)|| (b2>s2y && s2y>s1y))
+                {
+                    can a{pair<int,int>(s2x,s2y),0};
+                    newboard.allmycan.erase(    find_if(newboard.allmycan.begin(), newboard.allmycan.end(), a)   );
+                }
+                else if ((s1y<b2 && b2<s2y)||(s1y>b2 && b2>s2y))
+                {
+                    can a{pair<int,int>(b1,b2),0};
+                    newboard.allmycan.erase(    find_if(newboard.allmycan.begin(), newboard.allmycan.end(), a)   );
+                }
+            }
+
+            else if (b2==s1y && b2==s2y) //dir=2
+            {
+                if ((b1<s1x && s1x<s2x)|| (b1>s1x && s1x>s2x))
+                {
+                    can a{pair<int,int>(s1x,s1y),2};
+                    newboard.allmycan.erase(    find_if(newboard.allmycan.begin(), newboard.allmycan.end(), a)   );
+                }
+                else if ((b1<s2x && s2x<s1x)|| (b1>s2x && s2x>s1x))
+                {
+                    can a{pair<int,int>(s2x,s2y),2};
+                    newboard.allmycan.erase(    find_if(newboard.allmycan.begin(), newboard.allmycan.end(), a)   );
+                }
+                else if ((s1x<b1 && b1<s2x)||(s1x>b1 && b1>s2x))
+                {
+                    can a{pair<int,int>(b1,b2),2};
+                    newboard.allmycan.erase(    find_if(newboard.allmycan.begin(), newboard.allmycan.end(), a)   );
+                }
+            }
+
+            else if ( b2-s2y == b1-s2x) //dir=1
+            {
+                if ((b1<s1x && s1x<s2x)|| (b1>s1x && s1x>s2x))
+                {
+                    can a{pair<int,int>(s1x,s1y),3};
+                    newboard.allmycan.erase(    find_if(newboard.allmycan.begin(), newboard.allmycan.end(), a)   );
+                }
+                else if ((b1<s2x && s2x<s1x)|| (b1>s2x && s2x>s1x))
+                {
+                    can a{pair<int,int>(s2x,s2y),3};
+                    newboard.allmycan.erase(    find_if(newboard.allmycan.begin(), newboard.allmycan.end(), a)   );
+                }
+                else if ((s1x<b1 && b1<s2x)||(s1x>b1 && b1>s2x))
+                {
+                    can a{pair<int,int>(b1,b2),3};
+                    newboard.allmycan.erase(    find_if(newboard.allmycan.begin(), newboard.allmycan.end(), a)   );
+                }
+            }
+            else //dir=3
+            {
+                if ((b1<s1x && s1x<s2x)|| (b1>s1x && s1x>s2x))
+                {
+                    can a{pair<int,int>(s1x,s1y),1};
+                    newboard.allmycan.erase(    find_if(newboard.allmycan.begin(), newboard.allmycan.end(), a)   );
+                }
+                else if ((b1<s2x && s2x<s1x)|| (b1>s2x && s2x>s1x))
+                {
+                    can a{pair<int,int>(s2x,s2y),1};
+                    newboard.allmycan.erase(    find_if(newboard.allmycan.begin(), newboard.allmycan.end(), a)   );
+                }
+                else if ((s1x<b1 && b1<s2x)||(s1x>b1 && b1>s2x))
+                {
+                    can a{pair<int,int>(b1,b2),1};
+                    newboard.allmycan.erase(    find_if(newboard.allmycan.begin(), newboard.allmycan.end(), a)   );
+                }
+            }
+        }
+        newboard.mycannon.erase(pair<int,int>(b1,b2));
+        // newboard.otherCannon.erase(dicval);
+    }
+    return newboard;
 }
 
 board delete_soldier(board, x, y)
