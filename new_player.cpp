@@ -161,15 +161,71 @@ board delete_soldier(board, x, y)
     change_cannon()
 }
 
-board apply_moves(board,move)
+board apply_moves(board, bool solmove, int a1, int a2, int a3, int a4)
 {
 
 }
 
 
-minimax(board,pno,isthisme,ply)
+double minimax(board b, int pno, int isthisme, int ply, string *movefinal="")
 {
+    if (ply!=ply_MAX)
+    {
+        pno = pno*(-1);
+        vector<pair<int,int> > temp1 = b.mySoldier;
+        b.mySoldier = b.otherSoldier;
+        b.otherSoldier = temp1;
 
+        map<pair<int, int>, vector< tup >> temp2 = b.mycannon;
+        b.mycannon = b.otherCannon;
+        b.otherCannon = temp2;
+
+        vector<can> temp3 = b.allmycan;
+        b.allmycan = b.allothercan;
+        b.allothercan = temp3;
+
+        int temp4 = b.nummysol;
+        b.nummysol = b.numothsol;
+        b.numothsol = temp4;
+
+        int temp5 = b.nummyth;
+        b.nummyth=b.numothth;
+        b.numothth=temp5;
+    }
+
+    vector<vector<int>> posmove;
+    posmove=find_soldier_moves(b);
+    int temp=posmove.size();
+    double bestchild=isthisme*10000.0*(-1);
+    board tcmove;
+
+
+    for (int  mno= 0; mno < temp; ++mno)
+    {
+        tcmove=apply_moves(b,1,posmove[mno][0],posmove[mno][1],posmove[mno][2],posmove[mno][3]);
+        if (ply==0)
+        {
+            val=tcmove.eval(isthisme,pno);
+            if (val>bestchild)
+            {
+                bestchild=val;
+            }
+        }
+        else
+        {
+            val=minimax(tcmove,pno*(-1),isthisme*(-1),ply-1);
+            if (val>bestchild)
+            {
+                bestchild=val;
+                if (ply==ply_MAX)
+                {
+                    *movefinal="S " + to_string(posmove[mno][0]) + " " + to_string(posmove[mno][1]) + " M " + to_string(posmove[mno][2])+ " " +to_string(posmove[mno][3]);
+                }
+            }
+        }        
+    }
+
+    //???? no valid moves at depth handle
 }
 
 
