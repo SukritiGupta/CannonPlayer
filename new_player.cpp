@@ -67,82 +67,115 @@ public:
     //initialiser
     board() {
     }
-
-    //written assuming that we will be having the above attributes to a board
-    //returns a vector of int where 1 - original x, 2 - original y, 3 - new x, 4 - new y 
-    vector<vector<int> > find_soldier_moves() {
-
-    	//ans vector to be returned
-    	vector<vector<int> > ans;
-    	vector<int> temp;
-
-    	//iterator for traversing the soldier vector
-    	vector<pair<int, int> >::iterator ptr;
-    	int x, y;
-
-    	//looping over the soldiers
-    	for (ptr = mySoldier.begin(); ptr!=mySoldier.end(); ptr++) {
-    		//x coordinate and y coordinate
-    		x = (*ptr).first;
-    		y = (*ptr).second;
-
-    		//forward move: <=0 because empty or other's soldier
-    		if ((grid[x][y-1] <= 0) && (y-1 >= 0)) {
-    			temp = vector<int> {x, y, x, y-1};
-    			ans.push_back(temp);
-    		}
-
-    		//right diagonal move
-    		if ((grid[x+1][y-1] <= 0) && (x+1 <= 7) && (y-1 >= 0)) {
-    			temp = vector<int> {x, y, x+1, y-1};
-    			ans.push_back(temp);
-    		} 
-
-    		//left diagonal move
-    		if ((grid[x-1][y-1] <= 0) && (x-1 >= 0) && (y-1 >= 0)) {
-    			temp = vector<int> {x, y, x-1, y-1};
-    			ans.push_back(temp);
-    		}
-
-    		//right adjacent move
-    		if ((grid[x+1][y] < 0) && (x+1 <= 7)) {
-    			temp = vector<int> {x, y, x+1, y};
-    			ans.push_back(temp);
-    		}
-
-    		//left adjacent move
-    		if ((grid[x-1][y] < 0) && (x-1 >= 0)) {
-    			temp = vector<int> {x, y, x-1, y};
-    			ans.push_back(temp);
-    		}
-
-    		//retreat moves, considering that it can kill soldiers while retreating
-            if (((grid[x][y-1] < 0) && (y-1 >= 0)) || ((grid[x+1][y-1] < 0) && (x+1 <= 7) && (y-1 >=0)) || 
-                ((grid[x-1][y-1] < 0) && (x-1 >= 0) && (y-1 >= 0)) || ((grid[x+1][y] < 0) && (x+1 <=7)) || 
-                ((grid[x-1][y] < 0) && (x-1 >= 0))) {
-
-                if ((grid[x][y+2] <= 0) && (y+2 <=7)) {
-                    temp = vector<int> {x, y, x, y+2};
-                    ans.push_back(temp);
-                }
-
-                if ((grid[x+2][y+2] <= 0) && (y+2 <=7) && (x+2 <=7)) {
-                    temp = vector<int> {x, y, x+2, y+2};
-                    ans.push_back(temp);
-                }
-
-                if ((grid[x-2][y+2] <= 0) && (y+2 <=7) && (x-2 >= 0)) {
-                    temp = vector<int> {x, y, x-2, y+2};
-                    ans.push_back(temp);
-                }
-            }
-            
-
-    	}
-    	return ans;
-
-    }
 };
+
+//written assuming that we will be having the above attributes to a board
+//returns a vector of int where 1 - original x, 2 - original y, 3 - new x, 4 - new y 
+vector<vector<int> > find_soldier_moves(board current) {
+
+	//ans vector to be returned
+	vector<vector<int> > ans;
+	vector<int> temp;
+
+	//iterator for traversing the soldier vector
+	vector<pair<int, int> >::iterator ptr;
+	int x, y;
+
+	//looping over the soldiers
+	for (ptr = current.mySoldier.begin(); ptr!=current.mySoldier.end(); ptr++) {
+		//x coordinate and y coordinate
+		x = (*ptr).first;
+		y = (*ptr).second;
+
+		//forward move: <=0 because empty or other's soldier
+		if ((current.grid[x][y-1] <= 0) && (y-1 >= 0)) {
+			temp = vector<int> {x, y, x, y-1};
+			ans.push_back(temp);
+		}
+
+		//right diagonal move
+		if ((current.grid[x+1][y-1] <= 0) && (x+1 <= 7) && (y-1 >= 0)) {
+			temp = vector<int> {x, y, x+1, y-1};
+			ans.push_back(temp);
+		} 
+
+		//left diagonal move
+		if ((current.grid[x-1][y-1] <= 0) && (x-1 >= 0) && (y-1 >= 0)) {
+			temp = vector<int> {x, y, x-1, y-1};
+			ans.push_back(temp);
+		}
+
+		//right adjacent move
+		if ((current.grid[x+1][y] < 0) && (x+1 <= 7)) {
+			temp = vector<int> {x, y, x+1, y};
+			ans.push_back(temp);
+		}
+
+		//left adjacent move
+		if ((current.grid[x-1][y] < 0) && (x-1 >= 0)) {
+			temp = vector<int> {x, y, x-1, y};
+			ans.push_back(temp);
+		}
+
+		//retreat moves, considering that it can kill soldiers while retreating
+        if (((current.grid[x][y-1] < 0) && (y-1 >= 0)) || ((current.grid[x+1][y-1] < 0) && (x+1 <= 7) && (y-1 >=0)) || 
+            ((current.grid[x-1][y-1] < 0) && (x-1 >= 0) && (y-1 >= 0)) || ((current.grid[x+1][y] < 0) && (x+1 <=7)) || 
+            ((current.grid[x-1][y] < 0) && (x-1 >= 0))) {
+
+            if ((current.grid[x][y+2] <= 0) && (y+2 <=7)) {
+                temp = vector<int> {x, y, x, y+2};
+                ans.push_back(temp);
+            }
+
+            if ((current.grid[x+2][y+2] <= 0) && (y+2 <=7) && (x+2 <=7)) {
+                temp = vector<int> {x, y, x+2, y+2};
+                ans.push_back(temp);
+            }
+
+            if ((current.grid[x-2][y+2] <= 0) && (y+2 <=7) && (x-2 >= 0)) {
+                temp = vector<int> {x, y, x-2, y+2};
+                ans.push_back(temp);
+            }
+        }
+	}
+	return ans;
+}
+
+board add_change_cannon()
+{
+
+}
+
+board add_soldier(board, x,y)
+{
+
+}
+
+board delete_change_cannon(board, x, y )
+{
+
+}
+
+board delete_soldier(board, x, y)
+{
+    change_cannon()
+}
+
+board apply_moves(board,move)
+{
+
+}
+
+
+minimax(board,pno,isthisme,ply)
+{
+
+}
+
+
+
+
+
 
 int main() {
 	cout << "Hi" << endl;
