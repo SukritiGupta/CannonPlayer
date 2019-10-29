@@ -118,6 +118,7 @@ vector<vector<int> > find_soldier_moves(board current) {
 		}
 
 		//retreat moves, considering that it can kill soldiers while retreating
+        // ??????????????????? can a soldier kill other soldiers while retreating
         if (((current.grid[x][y-1] < 0) && (y-1 >= 0)) || ((current.grid[x+1][y-1] < 0) && (x+1 <= 7) && (y-1 >=0)) || 
             ((current.grid[x-1][y-1] < 0) && (x-1 >= 0) && (y-1 >= 0)) || ((current.grid[x+1][y] < 0) && (x+1 <=7)) || 
             ((current.grid[x-1][y] < 0) && (x-1 >= 0))) {
@@ -138,39 +139,178 @@ vector<vector<int> > find_soldier_moves(board current) {
             }
         }
 	}
+
+    //??????????????????????? a cannon can't kill soldier while moving
+    vector<can>::iterator ptr2;
+    int dir;
+    for (ptr2 = current.allmycan.begin(); ptr2 != current.allmycan.end(); ptr2++) {
+        x = (*ptr2).centre.first;
+        y = (*ptr2).centre.second;
+        dir = (*ptr2).dir;
+
+        if (dir == 0) {
+            if ((current.grid[x][y-2] == 0) && (y-2 >= 0)) {
+                temp = vector<int> {x, y+1, x, y-2};
+                ans.push_back(temp);
+            }
+            if ((current.grid[x][y+2] == 0) && (y+2 <= 7)) {
+                temp = vector<int> {x, y-1, x, y+2};
+                ans.push_back(temp);
+            }
+        }
+        else if (dir == 1) {
+            if ((current.grid[x+2][y-2] == 0) && (y-2 >= 0) && (x+2 <= 7)) {
+                temp = vector<int> {x-1, y+1, x+2, y-2};
+                ans.push_back(temp);
+            }
+            if ((current.grid[x-2][y+2] == 0) && (y+2 <= 7) && (x-2 >= 0)) {
+                temp = vector<int> {x+1, y-1, x-2, y+2};
+                ans.push_back(temp);
+            }
+        }
+        else if (dir == 2) {
+            if ((current.grid[x-2][y] == 0) && (x-2 >= 0)) {
+                temp = vector<int> {x+1, y, x-2, y};
+                ans.push_back(temp);
+            }
+            if ((current.grid[x+2][y] == 0) && (x+2 <= 7)) {
+                temp = vector<int> {x-1, y, x+2, y};
+                ans.push_back(temp);
+            }
+        }
+        else { //if dir == 3
+            if ((current.grid[x+2][y+2] == 0) && (y+2 <= 7) && (x+2 <= 7)) {
+                temp = vector<int> {x-1, y-1, x+2, y+2};
+                ans.push_back(temp);
+            }
+            if ((current.grid[x-2][y-2] == 0) && (y-2 >= 0) && (x-2 >= 0)) {
+                temp = vector<int> {x+1, y+1, x-2, y-2};
+                ans.push_back(temp);
+            }
+        }
+    }
 	return ans;
 }
 
-board add_change_cannon()
-{
+vector<vector<int> > find_cannon_moves(board current) {
+    //ans vector to be returned
+    vector<vector<int> > ans;
+    vector<int> temp;
 
+    //????????????????????????????can empty blast
+    vector<can>::iterator ptr;
+    int x, y, dir;
+    for (ptr = current.allmycan.begin(); ptr != current.allmycan.end(); ptr++) {
+        x = (*ptr).centre.first;
+        y = (*ptr).centre.second;
+        dir = (*ptr).dir;
+
+        if (dir == 0) {
+            if ((current.grid[x][y-3] <= 0) && (y-3 >= 0)) {
+                temp = vector<int> {x, y, x, y-3};
+                ans.push_back(temp);
+            }
+            if ((current.grid[x][y-4] <= 0) && (y-4 >= 0)) {
+                temp = vector<int> {x, y, x, y-4};
+                ans.push_back(temp);
+            }
+            if ((current.grid[x][y+3] <= 0) && (y+3 <= 7)) {
+                temp = vector<int> {x, y, x, y+3};
+                ans.push_back(temp);
+            }
+            if ((current.grid[x][y+4] <= 0) && (y+4 <= 7)) {
+                temp = vector<int> {x, y, x, y+4};
+                ans.push_back(temp);
+            }
+        }
+        else if (dir == 1) {
+            if ((current.grid[x+3][y-3] <= 0) && (y-3 >= 0) && (x+3 <= 7)) {
+                temp = vector<int> {x, y, x+3, y-3};
+                ans.push_back(temp);
+            }
+            if ((current.grid[x+4][y-4] <= 0) && (y-4 >= 0) && (x+4 <= 7)) {
+                temp = vector<int> {x, y, x+4, y-4};
+                ans.push_back(temp);
+            }
+            if ((current.grid[x-3][y+3] <= 0) && (y+3 <= 7) && (x-3 >= 0)) {
+                temp = vector<int> {x, y, x-3, y+3};
+                ans.push_back(temp);
+            }
+            if ((current.grid[x-4][y+4] <= 0) && (y+4 <= 7) && (x-4 >= 0)) {
+                temp = vector<int> {x, y, x-4, y+4};
+                ans.push_back(temp);
+            }
+        }
+        else if (dir == 2) {
+            if ((current.grid[x-3][y] <= 0) && (x-3 >= 0)) {
+                temp = vector<int> {x, y, x-3, y};
+                ans.push_back(temp);
+            }
+            if ((current.grid[x-4][y] <= 0) && (x-4 >= 0)) {
+                temp = vector<int> {x, y, x-4, y};
+                ans.push_back(temp);
+            }
+            if ((current.grid[x+3][y] <= 0) && (x+3 <= 7)) {
+                temp = vector<int> {x, y, x+3, y};
+                ans.push_back(temp);
+            }
+            if ((current.grid[x+4][y] <= 0) && (x+4 <= 7)) {
+                temp = vector<int> {x, y, x+4, y};
+                ans.push_back(temp);
+            }
+        }
+        else { //if dir == 3
+            if ((current.grid[x+3][y+3] <= 0) && (y+3 <= 7) && (x+3 <= 7)) {
+                temp = vector<int> {x, y, x+3, y+3};
+                ans.push_back(temp);
+            }
+            if ((current.grid[x+4][y+4] <= 0) && (y+4 <= 7) && (x+4 <= 7)) {
+                temp = vector<int> {x, y, x+4, y+4};
+                ans.push_back(temp);
+            }
+            if ((current.grid[x-3][y-3] <= 0) && (y-3 >= 0) && (x-3 >= 0)) {
+                temp = vector<int> {x, y, x-3, y-3};
+                ans.push_back(temp);
+            }
+            if ((current.grid[x-4][y-4] == 0) && (y-4 >= 0) && (x-4 >= 0)) {
+                temp = vector<int> {x, y, x-4, y-4};
+                ans.push_back(temp);
+            }
+        }
+    }
+    return ans;
 }
 
-board add_soldier(board, x,y)
-{
+// board add_change_cannon()
+// {
 
-}
+// }
 
-board delete_change_cannon(board, x, y )
-{
+// board add_soldier(board, x,y)
+// {
 
-}
+// }
 
-board delete_soldier(board, x, y)
-{
-    change_cannon()
-}
+// board delete_change_cannon(board, x, y )
+// {
 
-board apply_moves(board,move)
-{
+// }
 
-}
+// board delete_soldier(board, x, y)
+// {
+//     change_cannon()
+// }
+
+// board apply_moves(board,move)
+// {
+
+// }
 
 
-minimax(board,pno,isthisme,ply)
-{
+// minimax(board,pno,isthisme,ply)
+// {
 
-}
+// }
 
 
 
