@@ -293,29 +293,26 @@ board add_soldier(board, x,y)
 
 board delete_change_cannon(board newboard, int b1, int b2) {
 
+    //??????????????? need to check the sequence of events
+
     map<pair<int, int>, vector<tup>>::iterator dicval = newboard.mycannon.find(pair<int,int>(b1,b2));
-    if (dicval!=newboard.mycannon.end())
-    {
+    if (dicval!=newboard.mycannon.end()) {
         vector<tup> neighbours, neighbours1, neighbours2;
         neighbours = dicval->second;
         vector<tup>::iterator iter,temp;
         int s1x,s1y,s2x,s2y;
 
-        for (iter = neighbours.begin(); iter < neighbours.end(); iter++)
-        {
+        for (iter = neighbours.begin(); iter < neighbours.end(); iter++) {
             s1x=(*iter).a[0];
             s1y=(*iter).a[1];
             s2x=(*iter).a[2];
             s2y=(*iter).a[3];
 
-            neighbours1=newboard.mycannon.at(pair<int,int>(s1x,s1y));
-            
+            neighbours1 = newboard.mycannon.at(pair<int,int>(s1x,s1y));
 
-            if(neighbours1.size()>1)
-            {
+            if (neighbours1.size() > 1) {
                 struct tup x(b1,b2,s2x,s2y);
-
-                temp=find_if(neighbours1.begin(), neighbours1.end(), x );
+                temp = find_if(neighbours1.begin(), neighbours1.end(), x );
 
                 if (temp!=neighbours1.end())
                 {
@@ -371,7 +368,7 @@ board delete_change_cannon(board newboard, int b1, int b2) {
             {
                 if ((b2<s1y && s1y<s2y)|| (b2>s1y && s1y>s2y))
                 {
-                    can a{pair<int,int>(s1x,s1y),0};
+                    can a {pair<int,int> {s1x,s1y},0};
                     newboard.allmycan.erase(    find_if(newboard.allmycan.begin(), newboard.allmycan.end(), a)   );
                 }
                 else if ((b2<s2y && s2y<s1y)|| (b2>s2y && s2y>s1y))
@@ -443,14 +440,60 @@ board delete_change_cannon(board newboard, int b1, int b2) {
             }
         }
         newboard.mycannon.erase(pair<int,int>(b1,b2));
-        // newboard.otherCannon.erase(dicval);
     }
     return newboard;
 }
 
-board delete_soldier(board, x, y)
-{
-    change_cannon()
+board delete_soldier(board newboard, int b1, int b2, bool me) {
+    if (!me) {
+        temp1 = newboard.mySoldier;
+        newboard.mySoldier = newboard.otherSoldier;
+        newboard.otherSoldier = temp1;
+
+        temp2 = newboard.mycannon;
+        newboard.mycannon = newboard.otherCannon;
+        newboard.otherCannon = temp2;
+
+        temp3 = newboard.allmycan;
+        newboard.allmycan = newboard.allothercan;
+        newboard.allothercan = temp3;
+
+        temp4 = newboard.nummysol;
+        newboard.nummysol = newboard.numothsol;
+        newboard.numothsol = temp4;
+
+        temp5 = newboard.nummyth;
+        newboard.nummyth=newboard.numothth;
+        newboard.numothth=temp5;
+    }
+
+    newboard.mySoldier.erase(find(newboard.mySoldier.begin(), newboard.mySoldier.end(), pair<int,int>(b1,b2)));
+    nummysol-=1;
+    delete_change_cannon(newboard, b1, b2);
+
+    if (!me) {
+        temp1 = newboard.mySoldier;
+        newboard.mySoldier = newboard.otherSoldier;
+        newboard.otherSoldier = temp1;
+
+        temp2 = newboard.mycannon;
+        newboard.mycannon = newboard.otherCannon;
+        newboard.otherCannon = temp2;
+
+        temp3 = newboard.allmycan;
+        newboard.allmycan = newboard.allothercan;
+        newboard.allothercan = temp3;
+
+        temp4 = newboard.nummysol;
+        newboard.nummysol = newboard.numothsol;
+        newboard.numothsol = temp4;
+
+        temp5 = newboard.nummyth;
+        newboard.nummyth=newboard.numothth;
+        newboard.numothth=temp5;
+    }
+
+    return newboard;
 }
 
 board apply_moves(board, bool solmove, int a1, int a2, int a3, int a4)
