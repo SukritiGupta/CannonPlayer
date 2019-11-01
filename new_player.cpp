@@ -2,6 +2,14 @@
 #include <vector>
 #include <map>
 
+
+
+
+
+
+#include<algorithm>
+
+int ply_MAX;
 using namespace std;
 
 //Struct for cannons
@@ -288,16 +296,12 @@ vector<vector<int> > find_cannon_moves(board current) {
 
 tup add_change_cannon_single(board *newboard, int b1, int b2, int x1, int y1, int x2, int y2, int dir, int ccx, int ccy)
 {
+    map<pair<int, int>, vector<tup>>::iterator   exist;
     can a{pair<int,int>(ccx,ccy),dir};
     (*newboard).allmycan.push_back(a);
 
-    struct tup x;
+    struct tup x{b1,b2,x2,y2};
     exist=(*newboard).mycannon.find(pair<int,int>(x1,y1));
-    x.a[0]=b1;
-    x.a[1]=b2;
-    x.a[2]=x2;
-    x.a[3]=y2;
-
     vector<tup> yy{x};
     
     if (exist != (*newboard).mycannon.end())
@@ -322,7 +326,7 @@ tup add_change_cannon_single(board *newboard, int b1, int b2, int x1, int y1, in
     }
 
     (*newboard).mycannon[{x2,y2}] = y;
-    
+
     x.a[0]=x2;
     x.a[1]=y2;
     x.a[2]=x1;
@@ -336,7 +340,6 @@ board add_soldier(board newboard, int b1, int b2, int pno)
     newboard.mySoldier.push_back(pair<int,int>(b1,b2));
 
     //Updating cannons
-    map<pair<int, int>, vector<tup>>::iterator   exist;
     vector<tup> finalpush,y;
 
     if (b2+2<=7 && newboard.grid[b1][b2+1]==pno && newboard.grid[b1][b2+2]==pno)
@@ -643,7 +646,7 @@ board apply_moves(board current, bool solmove, int a1, int a2, int a3, int a4)
 }
 
 
-double minimax(board b, int pno, int isthisme, int ply, string *movefinal="")
+double minimax(board b, int pno, int isthisme, int ply, string *movefinal)
 {
     if (ply!=ply_MAX)
     {
@@ -674,14 +677,16 @@ double minimax(board b, int pno, int isthisme, int ply, string *movefinal="")
     int temp=posmove.size();
     double bestchild=isthisme*10000.0*(-1);
     board tcmove;
-
+    double val;
+    string s;
 
     for (int  mno= 0; mno < temp; ++mno)
     {
         tcmove=apply_moves(b,1,posmove[mno][0],posmove[mno][1],posmove[mno][2],posmove[mno][3]);
         if (ply==0)
         {
-            val=tcmove.eval(isthisme,pno);
+            // val=tcmove.eval(isthisme,pno);
+            val=tcmove.eval();
             if (val>bestchild)
             {
                 bestchild=val;
@@ -689,7 +694,7 @@ double minimax(board b, int pno, int isthisme, int ply, string *movefinal="")
         }
         else
         {
-            val=minimax(tcmove,pno*(-1),isthisme*(-1),ply-1);
+            val=minimax(tcmove,pno*(-1),isthisme*(-1),ply-1,&s);
             if (val>bestchild)
             {
                 bestchild=val;
@@ -710,6 +715,7 @@ double minimax(board b, int pno, int isthisme, int ply, string *movefinal="")
 
 
 int main() {
+    ply_MAX=1;
 	cout << "Hi" << endl;
 	vector<int> temp;
 	temp = vector<int> {2,3,4,5};
