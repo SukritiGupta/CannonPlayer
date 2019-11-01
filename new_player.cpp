@@ -288,696 +288,695 @@ vector<vector<int> > find_cannon_moves(board current) {
 
 void add_change_cannon_single(board *newboard, int b1, int b2, int x1, int y1, int x2, int y2, int dir, int ccx, int ccy)
 {
-    return newboard;
-    // can a{pair<int,int>(ccx,ccy),dir};
-    // (*newboard).allmycan.push_back(a);
+    can a{pair<int,int>(ccx,ccy),dir};
+    (*newboard).allmycan.push_back(a);
 
-    // struct tup x(b1, b2+1, b1, b2+2);
-    // finalpush.push_back(x);
+    struct tup x(b1, b2+1, b1, b2+2);
+    finalpush.push_back(x);
 
-    // exist=newboard.mycannon.find(pair<int,int>(b1,b2+1));
-    // x.a[1]=b2;
+    exist=newboard.mycannon.find(pair<int,int>(b1,b2+1));
+    x.a[1]=b2;
     
-    // if (exist != newboard.mycannon.end())
-    // {
-    //     y = newboard.mycannon.at(pair<int,int>(b1,b2+1));
-    //     y.push_back(x);
-    //     newboard.mycannon[{b1,b2+1}] = y; //check correctness
-    // }
-    // else
-    // {
-    //     vector<tup> yy{x};
-    //     newboard.mycannon[{b1,b2+1}] = yy;
-    // }
+    if (exist != newboard.mycannon.end())
+    {
+        y = newboard.mycannon.at(pair<int,int>(b1,b2+1));
+        y.push_back(x);
+        newboard.mycannon[{b1,b2+1}] = y; //check correctness
+    }
+    else
+    {
+        vector<tup> yy{x};
+        newboard.mycannon[{b1,b2+1}] = yy;
+    }
 
-    // exist=newboard.mycannon.find(pair<int,int>(b1,b2+2));
+    exist=newboard.mycannon.find(pair<int,int>(b1,b2+2));
 
-    // x.a[1]=b2+1;
-    // x.a[3]=b2;
-    // if (exist != newboard.mycannon.end())
-    // {
-    //     y = newboard.mycannon.at(pair<int,int>(b1,b2+2));
-    //     y.push_back(x);
-    //     newboard.mycannon[{b1,b2+2}] = y; //check correctness
-    // }
-    // else
-    // {
-    //     vector<tup> yy{x};
-    //     newboard.mycannon[{b1,b2+2}] = yy;
-    // }
-    //newboard.mycannon.(); //b1,b2
-    //insert s1,s2 - check if they already existed -> append;
+    x.a[1]=b2+1;
+    x.a[3]=b2;
+    if (exist != newboard.mycannon.end())
+    {
+        y = newboard.mycannon.at(pair<int,int>(b1,b2+2));
+        y.push_back(x);
+        newboard.mycannon[{b1,b2+2}] = y; //check correctness
+    }
+    else
+    {
+        vector<tup> yy{x};
+        newboard.mycannon[{b1,b2+2}] = yy;
+    }
+    newboard.mycannon.(); //b1,b2
+    insert s1,s2 - check if they already existed -> append;
 
 }
 
 board add_soldier(board newboard, int b1, int b2, int pno)
-{   return newboard;
-    // newboard.grid[b1][b2]=pno;
-    // newboard.mySoldier.push_back(pair<int,int>(b1,b2));
+{
+    newboard.grid[b1][b2]=pno;
+    newboard.mySoldier.push_back(pair<int,int>(b1,b2));
 
-    // //Updating cannons
-    // map<pair<int, int>, vector<tup>>::iterator   exist;
-    // vector<tup> finalpush,y;
+    //Updating cannons
+    map<pair<int, int>, vector<tup>>::iterator   exist;
+    vector<tup> finalpush,y;
     
-    // // cerr<<"Starting new cannon now that I have moved "<<b1<<"  "<<b2<<endl;
-    // if (b2+2<=7 && newboard.grid[b1][b2+1]==pno && newboard.grid[b1][b2+2]==pno) //pno ko multiply by -1 karna hai kya*****
-    // {
-    //     can a{pair<int,int>(b1,b2+1),0};
-    //     newboard.allmycan.push_back(a);
+    // cerr<<"Starting new cannon now that I have moved "<<b1<<"  "<<b2<<endl;
+    if (b2+2<=7 && newboard.grid[b1][b2+1]==pno && newboard.grid[b1][b2+2]==pno) //pno ko multiply by -1 karna hai kya*****
+    {
+        can a{pair<int,int>(b1,b2+1),0};
+        newboard.allmycan.push_back(a);
 
-    //     struct tup x(b1, b2+1, b1, b2+2);
-    //     finalpush.push_back(x);
+        struct tup x(b1, b2+1, b1, b2+2);
+        finalpush.push_back(x);
 
-    //     exist=newboard.mycannon.find(pair<int,int>(b1,b2+1));
-    //     x.a[1]=b2;
+        exist=newboard.mycannon.find(pair<int,int>(b1,b2+1));
+        x.a[1]=b2;
         
-    //     if (exist != newboard.mycannon.end())
-    //     {
-    //         y = newboard.mycannon.at(pair<int,int>(b1,b2+1));
-    //         y.push_back(x);
-    //         newboard.mycannon[{b1,b2+1}] = y; //check correctness
-    //     }
-    //     else
-    //     {
-    //         vector<tup> yy{x};
-    //         newboard.mycannon[{b1,b2+1}] = yy;
-    //     }
+        if (exist != newboard.mycannon.end())
+        {
+            y = newboard.mycannon.at(pair<int,int>(b1,b2+1));
+            y.push_back(x);
+            newboard.mycannon[{b1,b2+1}] = y; //check correctness
+        }
+        else
+        {
+            vector<tup> yy{x};
+            newboard.mycannon[{b1,b2+1}] = yy;
+        }
 
-    //     exist=newboard.mycannon.find(pair<int,int>(b1,b2+2));
+        exist=newboard.mycannon.find(pair<int,int>(b1,b2+2));
 
-    //     x.a[1]=b2+1;
-    //     x.a[3]=b2;
-    //     if (exist != newboard.mycannon.end())
-    //     {
-    //         y = newboard.mycannon.at(pair<int,int>(b1,b2+2));
-    //         y.push_back(x);
-    //         newboard.mycannon[{b1,b2+2}] = y; //check correctness
-    //     }
-    //     else
-    //     {
-    //         vector<tup> yy{x};
-    //         newboard.mycannon[{b1,b2+2}] = yy;
-    //     }
-    //     //newboard.mycannon.(); //b1,b2
-    //     //insert s1,s2 - check if they already existed -> append;
-    // }
+        x.a[1]=b2+1;
+        x.a[3]=b2;
+        if (exist != newboard.mycannon.end())
+        {
+            y = newboard.mycannon.at(pair<int,int>(b1,b2+2));
+            y.push_back(x);
+            newboard.mycannon[{b1,b2+2}] = y; //check correctness
+        }
+        else
+        {
+            vector<tup> yy{x};
+            newboard.mycannon[{b1,b2+2}] = yy;
+        }
+        //newboard.mycannon.(); //b1,b2
+        //insert s1,s2 - check if they already existed -> append;
+    }
 
-    // if (b2+1<=7 && b2-1>=0 && newboard.grid[b1][b2+1]==pno && newboard.grid[b1][b2-1]==pno) //pno*****
-    // {
-    //     can a{pair<int,int>(b1,b2),0};
-    //     newboard.allmycan.push_back(a);
+    if (b2+1<=7 && b2-1>=0 && newboard.grid[b1][b2+1]==pno && newboard.grid[b1][b2-1]==pno) //pno*****
+    {
+        can a{pair<int,int>(b1,b2),0};
+        newboard.allmycan.push_back(a);
 
-    //     struct tup x(b1, b2+1, b1, b2-1);
-    //     finalpush.push_back(x);
+        struct tup x(b1, b2+1, b1, b2-1);
+        finalpush.push_back(x);
 
-    //     exist=newboard.mycannon.find(pair<int,int>(b1,b2+1));
+        exist=newboard.mycannon.find(pair<int,int>(b1,b2+1));
 
-    //     // struct tup x {{b1, b2, b1, b2-1}};
-    //     x.a[1]=b2;
-    //     if (exist != newboard.mycannon.end())
-    //     {
-    //         // cerr<<b1<<b2+1<<"    "<<"b1 :"<<b1<<"b2 :"<<b2<<endl;
-    //         y = newboard.mycannon.at(pair<int,int>(b1,b2+1));
+        // struct tup x {{b1, b2, b1, b2-1}};
+        x.a[1]=b2;
+        if (exist != newboard.mycannon.end())
+        {
+            // cerr<<b1<<b2+1<<"    "<<"b1 :"<<b1<<"b2 :"<<b2<<endl;
+            y = newboard.mycannon.at(pair<int,int>(b1,b2+1));
             
-    //         y.push_back(x);
+            y.push_back(x);
 
-    //         newboard.mycannon[{b1,b2+1}] = y; //check correctness
-    //     }
-    //     else
-    //     {
-    //         vector<tup> yy{x};
-    //         newboard.mycannon[{b1,b2+1}] = yy;
-    //     }
+            newboard.mycannon[{b1,b2+1}] = y; //check correctness
+        }
+        else
+        {
+            vector<tup> yy{x};
+            newboard.mycannon[{b1,b2+1}] = yy;
+        }
 
-    //     exist=newboard.mycannon.find(pair<int,int>(b1,b2-1));
+        exist=newboard.mycannon.find(pair<int,int>(b1,b2-1));
 
-    //     // struct tup x {{b1, b2+1, b1, b2}};
-    //     x.a[1]=b2+1;
-    //     x.a[3]=b2;
-    //     if (exist != newboard.mycannon.end())
-    //     {
-    //         // cerr<<b1<<b2-1<<"    "<<"b1 :"<<b1<<"b2 :"<<b2<<endl;
-    //         y = newboard.mycannon.at(pair<int,int>(b1,b2-1));
+        // struct tup x {{b1, b2+1, b1, b2}};
+        x.a[1]=b2+1;
+        x.a[3]=b2;
+        if (exist != newboard.mycannon.end())
+        {
+            // cerr<<b1<<b2-1<<"    "<<"b1 :"<<b1<<"b2 :"<<b2<<endl;
+            y = newboard.mycannon.at(pair<int,int>(b1,b2-1));
             
-    //         y.push_back(x);
+            y.push_back(x);
 
-    //         newboard.mycannon[{b1,b2-1}] = y; //check correctness
-    //     }
-    //     else
-    //     {
-    //         vector<tup> yy{x};
-    //         newboard.mycannon[{b1,b2-1}] = yy;
-    //     }
+            newboard.mycannon[{b1,b2-1}] = y; //check correctness
+        }
+        else
+        {
+            vector<tup> yy{x};
+            newboard.mycannon[{b1,b2-1}] = yy;
+        }
 
 
-    //     //newboard.mycannon.(); //b1,b2
-    //     //insert s1,s2 - check if they already existed -> append;
-    // }
+        //newboard.mycannon.(); //b1,b2
+        //insert s1,s2 - check if they already existed -> append;
+    }
 
-    // if (b2-2>=0 && b2-1>=0 && newboard.grid[b1][b2-2]==pno && newboard.grid[b1][b2-1]==pno) //pno*****
-    // {
-    //     can a{pair<int,int>(b1,b2-1),0};
-    //     newboard.allmycan.push_back(a);
+    if (b2-2>=0 && b2-1>=0 && newboard.grid[b1][b2-2]==pno && newboard.grid[b1][b2-1]==pno) //pno*****
+    {
+        can a{pair<int,int>(b1,b2-1),0};
+        newboard.allmycan.push_back(a);
 
-    //     struct tup x(b1, b2-2, b1, b2-1);
-    //     finalpush.push_back(x);
+        struct tup x(b1, b2-2, b1, b2-1);
+        finalpush.push_back(x);
 
-    //     exist=newboard.mycannon.find(pair<int,int>(b1,b2-2));
+        exist=newboard.mycannon.find(pair<int,int>(b1,b2-2));
 
-    //     // struct tup x {{b1, b2, b1, b2-1}};
-    //     x.a[1]=b2;
-    //     if (exist != newboard.mycannon.end())
-    //     {
-    //         // cerr<<b1<<b2-2<<"    "<<"b1 :"<<b1<<"b2 :"<<b2<<endl;
-    //         y = newboard.mycannon.at(pair<int,int>(b1,b2-2));
+        // struct tup x {{b1, b2, b1, b2-1}};
+        x.a[1]=b2;
+        if (exist != newboard.mycannon.end())
+        {
+            // cerr<<b1<<b2-2<<"    "<<"b1 :"<<b1<<"b2 :"<<b2<<endl;
+            y = newboard.mycannon.at(pair<int,int>(b1,b2-2));
             
-    //         y.push_back(x);
+            y.push_back(x);
 
-    //         newboard.mycannon[{b1,b2-2}] = y; //check correctness
-    //     }
-    //     else
-    //     {
-    //         vector<tup> yy{x};
-    //         newboard.mycannon[{b1,b2-2}] = yy;
-    //     }
+            newboard.mycannon[{b1,b2-2}] = y; //check correctness
+        }
+        else
+        {
+            vector<tup> yy{x};
+            newboard.mycannon[{b1,b2-2}] = yy;
+        }
 
-    //     exist=newboard.mycannon.find(pair<int,int>(b1,b2-1));
+        exist=newboard.mycannon.find(pair<int,int>(b1,b2-1));
 
-    //     // struct tup x {{b1, b2-2, b1, b2}};
-    //     x.a[1]=b2-2;
-    //     x.a[3]=b2;
+        // struct tup x {{b1, b2-2, b1, b2}};
+        x.a[1]=b2-2;
+        x.a[3]=b2;
 
-    //     if (exist != newboard.mycannon.end())
-    //     {
-    //         // cerr<<b1<<b2-1<<"    "<<"b1 :"<<b1<<"b2 :"<<b2<<endl;
-    //         y = newboard.mycannon.at(pair<int,int>(b1,b2-1));
+        if (exist != newboard.mycannon.end())
+        {
+            // cerr<<b1<<b2-1<<"    "<<"b1 :"<<b1<<"b2 :"<<b2<<endl;
+            y = newboard.mycannon.at(pair<int,int>(b1,b2-1));
             
-    //         y.push_back(x);
+            y.push_back(x);
 
-    //         newboard.mycannon[{b1,b2-1}] = y; //check correctness
-    //     }
-    //     else
-    //     {
-    //         vector<tup> yy{x};
-    //         newboard.mycannon[{b1,b2-1}] = yy;
-    //     }
+            newboard.mycannon[{b1,b2-1}] = y; //check correctness
+        }
+        else
+        {
+            vector<tup> yy{x};
+            newboard.mycannon[{b1,b2-1}] = yy;
+        }
 
 
-    //     //newboard.mycannon.(); //b1,b2
-    //     //insert s1,s2 - check if they already existed -> append;
-    // }
+        //newboard.mycannon.(); //b1,b2
+        //insert s1,s2 - check if they already existed -> append;
+    }
 
-    // if (b1+2<=7 && newboard.grid[b1+2][b2]==pno && newboard.grid[b1+1][b2]==pno) //pno*****
-    // {
-    //     can a{pair<int,int>(b1+1,b2),2};
-    //     newboard.allmycan.push_back(a);
+    if (b1+2<=7 && newboard.grid[b1+2][b2]==pno && newboard.grid[b1+1][b2]==pno) //pno*****
+    {
+        can a{pair<int,int>(b1+1,b2),2};
+        newboard.allmycan.push_back(a);
 
-    //     struct tup x (b1+1, b2, b1+2, b2);
-    //     finalpush.push_back(x);
+        struct tup x (b1+1, b2, b1+2, b2);
+        finalpush.push_back(x);
 
-    //     exist=newboard.mycannon.find(pair<int,int>(b1+1,b2));
+        exist=newboard.mycannon.find(pair<int,int>(b1+1,b2));
 
-    //     // struct tup x {{b1, b2, b1+2, b2}};
-    //     x.a[0]=b1;
-    //     if (exist != newboard.mycannon.end())
-    //     {
-    //         // cerr<<b1+1<<b2<<"    "<<"b1 :"<<b1<<"b2 :"<<b2<<endl;
-    //         y = newboard.mycannon.at(pair<int,int>(b1+1,b2));
+        // struct tup x {{b1, b2, b1+2, b2}};
+        x.a[0]=b1;
+        if (exist != newboard.mycannon.end())
+        {
+            // cerr<<b1+1<<b2<<"    "<<"b1 :"<<b1<<"b2 :"<<b2<<endl;
+            y = newboard.mycannon.at(pair<int,int>(b1+1,b2));
             
-    //         y.push_back(x);
+            y.push_back(x);
 
-    //         newboard.mycannon[{b1+1,b2}] = y; //check correctness
-    //     }
-    //     else
-    //     {
-    //         vector<tup> yy{x};
-    //         newboard.mycannon[{b1+1,b2}] = yy;
-    //     }
+            newboard.mycannon[{b1+1,b2}] = y; //check correctness
+        }
+        else
+        {
+            vector<tup> yy{x};
+            newboard.mycannon[{b1+1,b2}] = yy;
+        }
 
-    //     exist=newboard.mycannon.find(pair<int,int>(b1+2,b2));
+        exist=newboard.mycannon.find(pair<int,int>(b1+2,b2));
 
-    //     // struct tup x {{b1, b2, b1+1, b2}};
-    //     x.a[2]=b1+1;
+        // struct tup x {{b1, b2, b1+1, b2}};
+        x.a[2]=b1+1;
 
-    //     if (exist != newboard.mycannon.end())
-    //     {
-    //         // cerr<<b1+2<<b2<<"    "<<"b1 :"<<b1<<"b2 :"<<b2<<endl;
-    //         y = newboard.mycannon.at(pair<int,int>(b1+2,b2));
+        if (exist != newboard.mycannon.end())
+        {
+            // cerr<<b1+2<<b2<<"    "<<"b1 :"<<b1<<"b2 :"<<b2<<endl;
+            y = newboard.mycannon.at(pair<int,int>(b1+2,b2));
             
-    //         y.push_back(x);
+            y.push_back(x);
 
-    //         newboard.mycannon[{b1+2,b2}] = y; //check correctness
-    //     }
-    //     else
-    //     {
-    //         vector<tup> yy{x};
-    //         newboard.mycannon[{b1+2,b2}] = yy;
-    //     }
+            newboard.mycannon[{b1+2,b2}] = y; //check correctness
+        }
+        else
+        {
+            vector<tup> yy{x};
+            newboard.mycannon[{b1+2,b2}] = yy;
+        }
 
 
-    //     //newboard.mycannon.(); //b1,b2
-    //     //insert s1,s2 - check if they already existed -> append;
-    // }
+        //newboard.mycannon.(); //b1,b2
+        //insert s1,s2 - check if they already existed -> append;
+    }
 
-    // if (b1+1<=7 && b1-1>=0 && newboard.grid[b1-1][b2]==pno && newboard.grid[b1+1][b2]==pno) //pno*****
-    // {
-    //     can a{pair<int,int>(b1,b2),2};
-    //     newboard.allmycan.push_back(a);
+    if (b1+1<=7 && b1-1>=0 && newboard.grid[b1-1][b2]==pno && newboard.grid[b1+1][b2]==pno) //pno*****
+    {
+        can a{pair<int,int>(b1,b2),2};
+        newboard.allmycan.push_back(a);
 
-    //     struct tup x (b1+1, b2, b1-1, b2);
-    //     finalpush.push_back(x);
+        struct tup x (b1+1, b2, b1-1, b2);
+        finalpush.push_back(x);
 
-    //     exist=newboard.mycannon.find(pair<int,int>(b1+1,b2));
+        exist=newboard.mycannon.find(pair<int,int>(b1+1,b2));
 
-    //     // struct tup x {{b1, b2, b1-1, b2}};
-    //     x.a[0]=b1;
-    //     if (exist != newboard.mycannon.end())
-    //     {
-    //         // cerr<<b1+1<<b2<<"    "<<"b1 :"<<b1<<"b2 :"<<b2<<endl;
-    //         y = newboard.mycannon.at(pair<int,int>(b1+1,b2));
+        // struct tup x {{b1, b2, b1-1, b2}};
+        x.a[0]=b1;
+        if (exist != newboard.mycannon.end())
+        {
+            // cerr<<b1+1<<b2<<"    "<<"b1 :"<<b1<<"b2 :"<<b2<<endl;
+            y = newboard.mycannon.at(pair<int,int>(b1+1,b2));
             
-    //         y.push_back(x);
+            y.push_back(x);
 
-    //         newboard.mycannon[{b1+1,b2}] = y; //check correctness
-    //     }
-    //     else
-    //     {
-    //         vector<tup> yy{x};
-    //         newboard.mycannon[{b1+1,b2}] = yy;
-    //     }
+            newboard.mycannon[{b1+1,b2}] = y; //check correctness
+        }
+        else
+        {
+            vector<tup> yy{x};
+            newboard.mycannon[{b1+1,b2}] = yy;
+        }
 
-    //     exist=newboard.mycannon.find(pair<int,int>(b1-1,b2));
+        exist=newboard.mycannon.find(pair<int,int>(b1-1,b2));
 
-    //     // struct tup x {{b1, b2, b1+1, b2}};
-    //     x.a[2]=b1+1;
+        // struct tup x {{b1, b2, b1+1, b2}};
+        x.a[2]=b1+1;
 
-    //     if (exist != newboard.mycannon.end())
-    //     {
-    //         // cerr<<b1+1<<b2<<"    "<<"b1 :"<<b1<<"b2 :"<<b2<<endl;
-    //         y = newboard.mycannon.at(pair<int,int>(b1-1,b2));
+        if (exist != newboard.mycannon.end())
+        {
+            // cerr<<b1+1<<b2<<"    "<<"b1 :"<<b1<<"b2 :"<<b2<<endl;
+            y = newboard.mycannon.at(pair<int,int>(b1-1,b2));
             
-    //         y.push_back(x);
+            y.push_back(x);
 
-    //         newboard.mycannon[{b1-1,b2}] = y; //check correctness
-    //     }
-    //     else
-    //     {
-    //         vector<tup> yy{x};
-    //         newboard.mycannon[{b1-1,b2}] = yy;
-    //     }
+            newboard.mycannon[{b1-1,b2}] = y; //check correctness
+        }
+        else
+        {
+            vector<tup> yy{x};
+            newboard.mycannon[{b1-1,b2}] = yy;
+        }
 
 
-    //     //newboard.mycannon.(); //b1,b2
-    //     //insert s1,s2 - check if they already existed -> append;
-    // }
+        //newboard.mycannon.(); //b1,b2
+        //insert s1,s2 - check if they already existed -> append;
+    }
 
-    // if (b1-2>=0 && b1-1>=0 && newboard.grid[b1-1][b2]==pno && newboard.grid[b1-2][b2]==pno) //pno*****
-    // {
-    //     can a{pair<int,int>(b1-1,b2),2};
-    //     newboard.allmycan.push_back(a);
+    if (b1-2>=0 && b1-1>=0 && newboard.grid[b1-1][b2]==pno && newboard.grid[b1-2][b2]==pno) //pno*****
+    {
+        can a{pair<int,int>(b1-1,b2),2};
+        newboard.allmycan.push_back(a);
 
-    //     struct tup x (b1-2, b2, b1-1, b2);
-    //     finalpush.push_back(x);
+        struct tup x (b1-2, b2, b1-1, b2);
+        finalpush.push_back(x);
 
-    //     exist=newboard.mycannon.find(pair<int,int>(b1-2,b2));
+        exist=newboard.mycannon.find(pair<int,int>(b1-2,b2));
 
-    //     // struct tup x {{b1, b2, b1-1, b2}};
-    //     x.a[0]=b1;
+        // struct tup x {{b1, b2, b1-1, b2}};
+        x.a[0]=b1;
 
-    //     if (exist != newboard.mycannon.end())
-    //     {
-    //         // cerr<<b1-2<<b2<<"    "<<"b1 :"<<b1<<"b2 :"<<b2<<endl;
-    //         y = newboard.mycannon.at(pair<int,int>(b1-2,b2));
+        if (exist != newboard.mycannon.end())
+        {
+            // cerr<<b1-2<<b2<<"    "<<"b1 :"<<b1<<"b2 :"<<b2<<endl;
+            y = newboard.mycannon.at(pair<int,int>(b1-2,b2));
             
-    //         y.push_back(x);
+            y.push_back(x);
 
-    //         newboard.mycannon[{b1-2,b2}] = y; //check correctness
-    //     }
-    //     else
-    //     {
-    //         vector<tup> yy{x};
-    //         newboard.mycannon[{b1-2,b2}] = yy;
-    //     }
+            newboard.mycannon[{b1-2,b2}] = y; //check correctness
+        }
+        else
+        {
+            vector<tup> yy{x};
+            newboard.mycannon[{b1-2,b2}] = yy;
+        }
 
-    //     exist=newboard.mycannon.find(pair<int,int>(b1-1,b2));
+        exist=newboard.mycannon.find(pair<int,int>(b1-1,b2));
 
-    //     // struct tup x {{b1, b2, b1-2, b2}};
-    //     x.a[2]=b1-2;
+        // struct tup x {{b1, b2, b1-2, b2}};
+        x.a[2]=b1-2;
 
-    //     if (exist != newboard.mycannon.end())
-    //     {
-    //         // cerr<<b1-1<<b2<<"    "<<"b1 :"<<b1<<"b2 :"<<b2<<endl;
-    //         y = newboard.mycannon.at(pair<int,int>(b1-1,b2));
+        if (exist != newboard.mycannon.end())
+        {
+            // cerr<<b1-1<<b2<<"    "<<"b1 :"<<b1<<"b2 :"<<b2<<endl;
+            y = newboard.mycannon.at(pair<int,int>(b1-1,b2));
             
-    //         y.push_back(x);
+            y.push_back(x);
 
-    //         newboard.mycannon[{b1-1,b2}] = y; //check correctness
-    //     }
-    //     else
-    //     {
-    //         vector<tup> yy{x};
-    //         newboard.mycannon[{b1-1,b2}] = yy;
-    //     }
+            newboard.mycannon[{b1-1,b2}] = y; //check correctness
+        }
+        else
+        {
+            vector<tup> yy{x};
+            newboard.mycannon[{b1-1,b2}] = yy;
+        }
 
 
-    //     //newboard.mycannon.(); //b1,b2
-    //     //insert s1,s2 - check if they already existed -> append;
-    // }
+        //newboard.mycannon.(); //b1,b2
+        //insert s1,s2 - check if they already existed -> append;
+    }
 
-    // if (b1+2<=7 && b2+2<=7 && newboard.grid[b1+2][b2+2]==pno && newboard.grid[b1+1][b2+1]==pno) //pno*****
-    // {
-    //     can a{pair<int,int>(b1+1,b2+1),3};  //need to check for direction****************
-    //     newboard.allmycan.push_back(a);
+    if (b1+2<=7 && b2+2<=7 && newboard.grid[b1+2][b2+2]==pno && newboard.grid[b1+1][b2+1]==pno) //pno*****
+    {
+        can a{pair<int,int>(b1+1,b2+1),3};  //need to check for direction****************
+        newboard.allmycan.push_back(a);
 
-    //     struct tup x (b1+1, b2+1, b1+2, b2+2);
-    //     finalpush.push_back(x);
+        struct tup x (b1+1, b2+1, b1+2, b2+2);
+        finalpush.push_back(x);
 
-    //     exist=newboard.mycannon.find(pair<int,int>(b1+1,b2+1));
+        exist=newboard.mycannon.find(pair<int,int>(b1+1,b2+1));
 
-    //     // struct tup x {{b1, b2, b1+2, b2+2}};
-    //     x.a[0]=b1;
-    //     x.a[1]=b2;
-    //     if (exist != newboard.mycannon.end())
-    //     {
-    //         // cerr<<b1+1<<b2+1<<"    "<<"b1 :"<<b1<<"b2 :"<<b2<<endl;
-    //         y = newboard.mycannon.at(pair<int,int>(b1+1,b2+1));
+        // struct tup x {{b1, b2, b1+2, b2+2}};
+        x.a[0]=b1;
+        x.a[1]=b2;
+        if (exist != newboard.mycannon.end())
+        {
+            // cerr<<b1+1<<b2+1<<"    "<<"b1 :"<<b1<<"b2 :"<<b2<<endl;
+            y = newboard.mycannon.at(pair<int,int>(b1+1,b2+1));
             
-    //         y.push_back(x);
+            y.push_back(x);
 
-    //         newboard.mycannon[{b1+1,b2+1}] = y; //check correctness
-    //     }
-    //     else
-    //     {
-    //         vector<tup> yy{x};
-    //         newboard.mycannon[{b1+1,b2+1}] = yy;
-    //     }
+            newboard.mycannon[{b1+1,b2+1}] = y; //check correctness
+        }
+        else
+        {
+            vector<tup> yy{x};
+            newboard.mycannon[{b1+1,b2+1}] = yy;
+        }
 
-    //     exist=newboard.mycannon.find(pair<int,int>(b1+2,b2+2));
+        exist=newboard.mycannon.find(pair<int,int>(b1+2,b2+2));
 
-    //     // struct tup x {{b1, b2, b1+1, b2+1}};
-    //     x.a[2]=b1+1;
-    //     x.a[3]=b2+1;
+        // struct tup x {{b1, b2, b1+1, b2+1}};
+        x.a[2]=b1+1;
+        x.a[3]=b2+1;
 
-    //     if (exist != newboard.mycannon.end())
-    //     {
-    //         // cerr<<b1+2<<b2+2<<"    "<<"b1 :"<<b1<<"b2 :"<<b2<<endl;
-    //         y = newboard.mycannon.at(pair<int,int>(b1+2,b2+2));
+        if (exist != newboard.mycannon.end())
+        {
+            // cerr<<b1+2<<b2+2<<"    "<<"b1 :"<<b1<<"b2 :"<<b2<<endl;
+            y = newboard.mycannon.at(pair<int,int>(b1+2,b2+2));
             
-    //         y.push_back(x);
+            y.push_back(x);
 
-    //         newboard.mycannon[{b1+2,b2+2}] = y; //check correctness
-    //     }
-    //     else
-    //     {
-    //         vector<tup> yy{x};
-    //         newboard.mycannon[{b1+2,b2+2}] = yy;
-    //     }
+            newboard.mycannon[{b1+2,b2+2}] = y; //check correctness
+        }
+        else
+        {
+            vector<tup> yy{x};
+            newboard.mycannon[{b1+2,b2+2}] = yy;
+        }
 
 
-    //     //newboard.mycannon.(); //b1,b2
-    //     //insert s1,s2 - check if they already existed -> append;
-    // }
+        //newboard.mycannon.(); //b1,b2
+        //insert s1,s2 - check if they already existed -> append;
+    }
 
-    // if (b1+1<=7 && b2+1<=7 && b1-1>=0 && b2-1>=0 && newboard.grid[b1-1][b2-1]==pno && newboard.grid[b1+1][b2+1]==pno) //pno*****
-    // {
-    //     can a{pair<int,int>(b1,b2),3};  //need to check for direction****************
-    //     newboard.allmycan.push_back(a);
+    if (b1+1<=7 && b2+1<=7 && b1-1>=0 && b2-1>=0 && newboard.grid[b1-1][b2-1]==pno && newboard.grid[b1+1][b2+1]==pno) //pno*****
+    {
+        can a{pair<int,int>(b1,b2),3};  //need to check for direction****************
+        newboard.allmycan.push_back(a);
 
-    //     struct tup x (b1+1, b2+1, b1-1, b2-1);
-    //     finalpush.push_back(x);
+        struct tup x (b1+1, b2+1, b1-1, b2-1);
+        finalpush.push_back(x);
 
-    //     exist=newboard.mycannon.find(pair<int,int>(b1+1,b2+1));
+        exist=newboard.mycannon.find(pair<int,int>(b1+1,b2+1));
 
-    //     // struct tup x {{b1, b2, b1-1, b2-1}};
-    //     x.a[0]=b1;
-    //     x.a[1]=b2;
+        // struct tup x {{b1, b2, b1-1, b2-1}};
+        x.a[0]=b1;
+        x.a[1]=b2;
 
-    //     if (exist != newboard.mycannon.end())
-    //     {
-    //         // cerr<<b1+1<<b2+1<<"    "<<"b1 :"<<b1<<"b2 :"<<b2<<endl;
-    //         y = newboard.mycannon.at(pair<int,int>(b1+1,b2+1));
+        if (exist != newboard.mycannon.end())
+        {
+            // cerr<<b1+1<<b2+1<<"    "<<"b1 :"<<b1<<"b2 :"<<b2<<endl;
+            y = newboard.mycannon.at(pair<int,int>(b1+1,b2+1));
             
-    //         y.push_back(x);
+            y.push_back(x);
 
-    //         newboard.mycannon[{b1+1,b2+1}] = y; //check correctness
-    //     }
-    //     else
-    //     {
-    //         vector<tup> yy{x};
-    //         newboard.mycannon[{b1+1,b2+1}] = yy;
-    //     }
+            newboard.mycannon[{b1+1,b2+1}] = y; //check correctness
+        }
+        else
+        {
+            vector<tup> yy{x};
+            newboard.mycannon[{b1+1,b2+1}] = yy;
+        }
 
-    //     exist=newboard.mycannon.find(pair<int,int>(b1-1,b2-1));
+        exist=newboard.mycannon.find(pair<int,int>(b1-1,b2-1));
 
-    //     // struct tup x {{b1, b2, b1+1, b2+1}};
-    //     x.a[2]=b1+1;
-    //     x.a[3]=b2+1;
+        // struct tup x {{b1, b2, b1+1, b2+1}};
+        x.a[2]=b1+1;
+        x.a[3]=b2+1;
 
-    //     if (exist != newboard.mycannon.end())
-    //     {
-    //         // cerr<<b1-1<<b2-1<<"    "<<"b1 :"<<b1<<"b2 :"<<b2<<endl;
-    //         y = newboard.mycannon.at(pair<int,int>(b1-1,b2-1));
+        if (exist != newboard.mycannon.end())
+        {
+            // cerr<<b1-1<<b2-1<<"    "<<"b1 :"<<b1<<"b2 :"<<b2<<endl;
+            y = newboard.mycannon.at(pair<int,int>(b1-1,b2-1));
             
-    //         y.push_back(x);
+            y.push_back(x);
 
-    //         newboard.mycannon[{b1-1,b2-1}] = y; //check correctness
-    //     }
-    //     else
-    //     {
-    //         vector<tup> yy{x};
-    //         newboard.mycannon[{b1-1,b2-1}] = yy;
-    //     }
+            newboard.mycannon[{b1-1,b2-1}] = y; //check correctness
+        }
+        else
+        {
+            vector<tup> yy{x};
+            newboard.mycannon[{b1-1,b2-1}] = yy;
+        }
 
 
-    //     //newboard.mycannon.(); //b1,b2
-    //     //insert s1,s2 - check if they already existed -> append;
-    // }
+        //newboard.mycannon.(); //b1,b2
+        //insert s1,s2 - check if they already existed -> append;
+    }
 
-    // if ( b1-2>=0 && b2-2>=0 && newboard.grid[b1-1][b2-1]==pno && newboard.grid[b1-2][b2-2]==pno) //pno*****
-    // {
-    //     can a{pair<int,int>(b1-1,b2-1),3};  //need to check for direction****************
-    //     newboard.allmycan.push_back(a);
+    if ( b1-2>=0 && b2-2>=0 && newboard.grid[b1-1][b2-1]==pno && newboard.grid[b1-2][b2-2]==pno) //pno*****
+    {
+        can a{pair<int,int>(b1-1,b2-1),3};  //need to check for direction****************
+        newboard.allmycan.push_back(a);
 
-    //     struct tup x (b1-2, b2-2, b1-1, b2-1);
-    //     finalpush.push_back(x);
+        struct tup x (b1-2, b2-2, b1-1, b2-1);
+        finalpush.push_back(x);
 
-    //     exist=newboard.mycannon.find(pair<int,int>(b1-2,b2-2));
+        exist=newboard.mycannon.find(pair<int,int>(b1-2,b2-2));
 
-    //     // struct tup x {{b1, b2, b1-1, b2-1}};
-    //     x.a[0]=b1;
-    //     x.a[1]=b2;
+        // struct tup x {{b1, b2, b1-1, b2-1}};
+        x.a[0]=b1;
+        x.a[1]=b2;
 
-    //     if (exist != newboard.mycannon.end())
-    //     {
-    //         // cerr<<b1-2<<b2-2<<"    "<<"b1 :"<<b1<<"b2 :"<<b2<<endl;
-    //         y = newboard.mycannon.at(pair<int,int>(b1-2,b2-2));
+        if (exist != newboard.mycannon.end())
+        {
+            // cerr<<b1-2<<b2-2<<"    "<<"b1 :"<<b1<<"b2 :"<<b2<<endl;
+            y = newboard.mycannon.at(pair<int,int>(b1-2,b2-2));
             
-    //         y.push_back(x);
+            y.push_back(x);
 
-    //         newboard.mycannon[{b1-2,b2-2}] = y; //check correctness
-    //     }
-    //     else
-    //     {
-    //         vector<tup> yy{x};
-    //         newboard.mycannon[{b1-2,b2-2}] = yy;
-    //     }
+            newboard.mycannon[{b1-2,b2-2}] = y; //check correctness
+        }
+        else
+        {
+            vector<tup> yy{x};
+            newboard.mycannon[{b1-2,b2-2}] = yy;
+        }
 
-    //     exist=newboard.mycannon.find(pair<int,int>(b1-1,b2-1));
+        exist=newboard.mycannon.find(pair<int,int>(b1-1,b2-1));
 
-    //     // struct tup x {{b1, b2, b1-2, b2-2}};
-    //     x.a[2]=b1-2;
-    //     x.a[3]=b2-2;
+        // struct tup x {{b1, b2, b1-2, b2-2}};
+        x.a[2]=b1-2;
+        x.a[3]=b2-2;
 
-    //     if (exist != newboard.mycannon.end())
-    //     {
-    //         // cerr<<b1-1<<b2-1<<"    "<<"b1 :"<<b1<<"b2 :"<<b2<<endl;
-    //         y = newboard.mycannon.at(pair<int,int>(b1-1,b2-1));
+        if (exist != newboard.mycannon.end())
+        {
+            // cerr<<b1-1<<b2-1<<"    "<<"b1 :"<<b1<<"b2 :"<<b2<<endl;
+            y = newboard.mycannon.at(pair<int,int>(b1-1,b2-1));
             
-    //         y.push_back(x);
+            y.push_back(x);
 
-    //         newboard.mycannon[{b1-1,b2-1}] = y; //check correctness
-    //     }
-    //     else
-    //     {
-    //         vector<tup> yy{x};
-    //         newboard.mycannon[{b1-1,b2-1}] = yy;
-    //     }
-
-
-    //     //newboard.mycannon.(); //b1,b2
-    //     //insert s1,s2 - check if they already existed -> append;
-    // }
-
-    // if (b1+2<=7 && b2-2>=0 && newboard.grid[b1+2][b2-2]==pno && newboard.grid[b1+1][b2-1]==pno) //pno*****
-    // {
-    //     can a{pair<int,int>(b1+1,b2-1),1};  //need to check for direction****************
-    //     newboard.allmycan.push_back(a);
-
-    //     struct tup x (b1+1, b2-1, b1+2, b2-2);
-    //     finalpush.push_back(x);
-
-    //     exist=newboard.mycannon.find(pair<int,int>(b1+1,b2-1));
-
-    //     // struct tup x {{b1, b2, b1+2, b2-2}};
-    //     x.a[0]=b1;
-    //     x.a[1]=b2;
+            newboard.mycannon[{b1-1,b2-1}] = y; //check correctness
+        }
+        else
+        {
+            vector<tup> yy{x};
+            newboard.mycannon[{b1-1,b2-1}] = yy;
+        }
 
 
-    //     if (exist != newboard.mycannon.end())
-    //     {
-    //         // cerr<<b1+1<<b2-1<<"    "<<"b1 :"<<b1<<"b2 :"<<b2<<endl;
-    //         y = newboard.mycannon.at(pair<int,int>(b1+1,b2-1));
+        //newboard.mycannon.(); //b1,b2
+        //insert s1,s2 - check if they already existed -> append;
+    }
+
+    if (b1+2<=7 && b2-2>=0 && newboard.grid[b1+2][b2-2]==pno && newboard.grid[b1+1][b2-1]==pno) //pno*****
+    {
+        can a{pair<int,int>(b1+1,b2-1),1};  //need to check for direction****************
+        newboard.allmycan.push_back(a);
+
+        struct tup x (b1+1, b2-1, b1+2, b2-2);
+        finalpush.push_back(x);
+
+        exist=newboard.mycannon.find(pair<int,int>(b1+1,b2-1));
+
+        // struct tup x {{b1, b2, b1+2, b2-2}};
+        x.a[0]=b1;
+        x.a[1]=b2;
+
+
+        if (exist != newboard.mycannon.end())
+        {
+            // cerr<<b1+1<<b2-1<<"    "<<"b1 :"<<b1<<"b2 :"<<b2<<endl;
+            y = newboard.mycannon.at(pair<int,int>(b1+1,b2-1));
             
-    //         y.push_back(x);
+            y.push_back(x);
 
-    //         newboard.mycannon[{b1+1,b2-1}] = y; //check correctness
-    //     }
-    //     else
-    //     {
-    //         vector<tup> yy{x};
-    //         newboard.mycannon[{b1+1,b2-1}] = yy;
-    //     }
+            newboard.mycannon[{b1+1,b2-1}] = y; //check correctness
+        }
+        else
+        {
+            vector<tup> yy{x};
+            newboard.mycannon[{b1+1,b2-1}] = yy;
+        }
 
-    //     exist=newboard.mycannon.find(pair<int,int>(b1+2,b2-2));
+        exist=newboard.mycannon.find(pair<int,int>(b1+2,b2-2));
 
-    //     // struct tup x {{b1, b2, b1+1, b2-1}};
-    //     x.a[2]=b1+1;
-    //     x.a[3]=b2-1;
+        // struct tup x {{b1, b2, b1+1, b2-1}};
+        x.a[2]=b1+1;
+        x.a[3]=b2-1;
 
-    //     if (exist != newboard.mycannon.end())
-    //     {
-    //         // cerr<<b1+2<<b2-2<<"    "<<"b1 :"<<b1<<"b2 :"<<b2<<endl;
-    //         y = newboard.mycannon.at(pair<int,int>(b1+2,b2-2));
+        if (exist != newboard.mycannon.end())
+        {
+            // cerr<<b1+2<<b2-2<<"    "<<"b1 :"<<b1<<"b2 :"<<b2<<endl;
+            y = newboard.mycannon.at(pair<int,int>(b1+2,b2-2));
             
-    //         y.push_back(x);
+            y.push_back(x);
 
-    //         newboard.mycannon[{b1+2,b2-2}] = y; //check correctness
-    //     }
-    //     else
-    //     {
-    //         vector<tup> yy{x};
-    //         newboard.mycannon[{b1+2,b2-2}] = yy;
-    //     }
+            newboard.mycannon[{b1+2,b2-2}] = y; //check correctness
+        }
+        else
+        {
+            vector<tup> yy{x};
+            newboard.mycannon[{b1+2,b2-2}] = yy;
+        }
 
 
-    //     //newboard.mycannon.(); //b1,b2
-    //     //insert s1,s2 - check if they already existed -> append;
-    // }
+        //newboard.mycannon.(); //b1,b2
+        //insert s1,s2 - check if they already existed -> append;
+    }
 
-    // if (b1+1<=7 && b2-1>=0 && b1-1>=0 && b2+1<=7 && newboard.grid[b1+1][b2-1]==pno && newboard.grid[b1-1][b2+1]==pno) //pno*****
-    // {
-    //     can a{pair<int,int>(b1,b2),1};  //need to check for direction****************
-    //     newboard.allmycan.push_back(a);
+    if (b1+1<=7 && b2-1>=0 && b1-1>=0 && b2+1<=7 && newboard.grid[b1+1][b2-1]==pno && newboard.grid[b1-1][b2+1]==pno) //pno*****
+    {
+        can a{pair<int,int>(b1,b2),1};  //need to check for direction****************
+        newboard.allmycan.push_back(a);
 
-    //     struct tup x (b1+1, b2-1, b1-1, b2+1);
-    //     finalpush.push_back(x);
+        struct tup x (b1+1, b2-1, b1-1, b2+1);
+        finalpush.push_back(x);
 
-    //     exist=newboard.mycannon.find(pair<int,int>(b1+1,b2-1));
+        exist=newboard.mycannon.find(pair<int,int>(b1+1,b2-1));
 
-    //     // struct tup x {{b1, b2, b1-1, b2+1}};
-    //     x.a[0]=b1;
-    //     x.a[1]=b2;
+        // struct tup x {{b1, b2, b1-1, b2+1}};
+        x.a[0]=b1;
+        x.a[1]=b2;
 
-    //     if (exist != newboard.mycannon.end())
-    //     {
-    //         // cerr<<b1+1<<b2-1<<"    "<<"b1 :"<<b1<<"b2 :"<<b2<<endl;
-    //         y = newboard.mycannon.at(pair<int,int>(b1+1,b2-1));
+        if (exist != newboard.mycannon.end())
+        {
+            // cerr<<b1+1<<b2-1<<"    "<<"b1 :"<<b1<<"b2 :"<<b2<<endl;
+            y = newboard.mycannon.at(pair<int,int>(b1+1,b2-1));
             
-    //         y.push_back(x);
+            y.push_back(x);
 
-    //         newboard.mycannon[{b1+1,b2-1}] = y; //check correctness
-    //     }
-    //     else
-    //     {
-    //         vector<tup> yy{x};
-    //         newboard.mycannon[{b1+1,b2-1}] = yy;
-    //     }
+            newboard.mycannon[{b1+1,b2-1}] = y; //check correctness
+        }
+        else
+        {
+            vector<tup> yy{x};
+            newboard.mycannon[{b1+1,b2-1}] = yy;
+        }
 
-    //     exist=newboard.mycannon.find(pair<int,int>(b1-1,b2+1));
+        exist=newboard.mycannon.find(pair<int,int>(b1-1,b2+1));
 
-    //     // struct tup x {{b1, b2, b1+1, b2-1}};
-    //     x.a[2]=b1+1;
-    //     x.a[3]=b2-1;
+        // struct tup x {{b1, b2, b1+1, b2-1}};
+        x.a[2]=b1+1;
+        x.a[3]=b2-1;
 
-    //     if (exist != newboard.mycannon.end())
-    //     {
-    //         // cerr<<b1-1<<b2+1<<"    "<<"b1 :"<<b1<<"b2 :"<<b2<<endl;
-    //         y = newboard.mycannon.at(pair<int,int>(b1-1,b2+1));
+        if (exist != newboard.mycannon.end())
+        {
+            // cerr<<b1-1<<b2+1<<"    "<<"b1 :"<<b1<<"b2 :"<<b2<<endl;
+            y = newboard.mycannon.at(pair<int,int>(b1-1,b2+1));
             
-    //         y.push_back(x);
+            y.push_back(x);
 
-    //         newboard.mycannon[{b1-1,b2+1}] = y; //check correctness
-    //     }
-    //     else
-    //     {
-    //         vector<tup> yy{x};
-    //         newboard.mycannon[{b1-1,b2+1}] = yy;
-    //     }
+            newboard.mycannon[{b1-1,b2+1}] = y; //check correctness
+        }
+        else
+        {
+            vector<tup> yy{x};
+            newboard.mycannon[{b1-1,b2+1}] = yy;
+        }
 
 
-    //     //newboard.mycannon.(); //b1,b2
-    //     //insert s1,s2 - check if they already existed -> append;
-    // }
+        //newboard.mycannon.(); //b1,b2
+        //insert s1,s2 - check if they already existed -> append;
+    }
 
-    // if ( b1-2>=0 && b2+2<=7 && newboard.grid[b1-1][b2+1]==pno && newboard.grid[b1-2][b2+2]==pno) //pno*****
-    // {
-    //     can a{pair<int,int>(b1-1,b2+1),1};  //need to check for direction****************
-    //     newboard.allmycan.push_back(a);
+    if ( b1-2>=0 && b2+2<=7 && newboard.grid[b1-1][b2+1]==pno && newboard.grid[b1-2][b2+2]==pno) //pno*****
+    {
+        can a{pair<int,int>(b1-1,b2+1),1};  //need to check for direction****************
+        newboard.allmycan.push_back(a);
 
-    //     struct tup x (b1-2, b2+2, b1-1, b2+1);
-    //     finalpush.push_back(x);
+        struct tup x (b1-2, b2+2, b1-1, b2+1);
+        finalpush.push_back(x);
 
-    //     exist=newboard.mycannon.find(pair<int,int>(b1-2,b2+2));
+        exist=newboard.mycannon.find(pair<int,int>(b1-2,b2+2));
 
-    //     // struct tup x {{b1, b2, b1-1, b2+1}};
-    //     x.a[0]=b1;
-    //     x.a[1]=b2;
+        // struct tup x {{b1, b2, b1-1, b2+1}};
+        x.a[0]=b1;
+        x.a[1]=b2;
 
-    //     if (exist != newboard.mycannon.end())
-    //     {
-    //         // cerr<<b1-2<<b2+2<<"    "<<"b1 :"<<b1<<"b2 :"<<b2<<endl;
-    //         y = newboard.mycannon.at(pair<int,int>(b1-2,b2+2));
+        if (exist != newboard.mycannon.end())
+        {
+            // cerr<<b1-2<<b2+2<<"    "<<"b1 :"<<b1<<"b2 :"<<b2<<endl;
+            y = newboard.mycannon.at(pair<int,int>(b1-2,b2+2));
             
-    //         y.push_back(x);
+            y.push_back(x);
 
-    //         newboard.mycannon[{b1-2,b2+2}] = y; //check correctness
-    //     }
-    //     else
-    //     {
-    //         vector<tup> yy{x};
-    //         newboard.mycannon[{b1-2,b2+2}] = yy;
-    //     }
+            newboard.mycannon[{b1-2,b2+2}] = y; //check correctness
+        }
+        else
+        {
+            vector<tup> yy{x};
+            newboard.mycannon[{b1-2,b2+2}] = yy;
+        }
 
-    //     exist=newboard.mycannon.find(pair<int,int>(b1-1,b2+1));
+        exist=newboard.mycannon.find(pair<int,int>(b1-1,b2+1));
 
-    //     // struct tup x {{b1, b2, b1-2, b2+2}};
-    //     x.a[2]=b1-2;
-    //     x.a[3]=b2+2;
+        // struct tup x {{b1, b2, b1-2, b2+2}};
+        x.a[2]=b1-2;
+        x.a[3]=b2+2;
 
-    //     if (exist != newboard.mycannon.end())
-    //     {
-    //         // cerr<<b1-1<<b2+1<<"    "<<"b1 :"<<b1<<"b2 :"<<b2<<endl;
-    //         y = newboard.mycannon.at(pair<int,int>(b1-1,b2+1));
+        if (exist != newboard.mycannon.end())
+        {
+            // cerr<<b1-1<<b2+1<<"    "<<"b1 :"<<b1<<"b2 :"<<b2<<endl;
+            y = newboard.mycannon.at(pair<int,int>(b1-1,b2+1));
             
-    //         y.push_back(x);
+            y.push_back(x);
 
-    //         newboard.mycannon[{b1-1,b2+1}] = y; //check correctness
-    //     }
-    //     else
-    //     {
-    //         vector<tup> yy{x};
-    //         newboard.mycannon[{b1-1,b2+1}] = yy;
-    //     }
+            newboard.mycannon[{b1-1,b2+1}] = y; //check correctness
+        }
+        else
+        {
+            vector<tup> yy{x};
+            newboard.mycannon[{b1-1,b2+1}] = yy;
+        }
 
 
-    //     //newboard.mycannon.(); //b1,b2
-    //     //insert s1,s2 - check if they already existed -> append;
-    // }
+        //newboard.mycannon.(); //b1,b2
+        //insert s1,s2 - check if they already existed -> append;
+    }
 
-    // if (finalpush.size()>0)
-    // {
-    //     newboard.mycannon[{b1,b2}] = finalpush;
-    // }
+    if (finalpush.size()>0)
+    {
+        newboard.mycannon[{b1,b2}] = finalpush;
+    }
 
 }
 
@@ -1164,9 +1163,9 @@ board delete_soldier(board newboard, int b1, int b2, bool me) {
     }
 
     newboard.mySoldier.erase(find(newboard.mySoldier.begin(), newboard.mySoldier.end(), pair<int,int>(b1,b2)));
-    nummysol-=1;
+    newboard.nummysol-=1;
     delete_change_cannon(newboard, b1, b2);
-    grid[b1][b2] == 0;
+    newboard.grid[b1][b2] = 0;
 
     if (!me) {
         temp1 = newboard.mySoldier;
@@ -1193,25 +1192,27 @@ board delete_soldier(board newboard, int b1, int b2, bool me) {
     return newboard;
 }
 
-board apply_moves(board, bool solmove, int a1, int a2, int a3, int a4)
+board apply_moves(board current, bool solmove, int a1, int a2, int a3, int a4)
 {
     //delete my soldier as it has moved
     if (solmove) {
-        delete_soldier(board, a1, a2, true);
+        delete_soldier(current, a1, a2, true);
     }
 
     //delete other soldier
-    if (grid[a3][a4] == -1) {
-        delete_soldier(board, a3, a4, false);
+    if (current.grid[a3][a4] == -1) {
+        delete_soldier(current, a3, a4, false);
     }
-    else if (grid[a3][a4] == -2) {
-        numothth -=1;
+    else if (current.grid[a3][a4] == -2) {
+        current.numothth -=1;
     }
 
     //add my soldier
     if (solmove) {
-        add_soldier(board, a3, a4, 1); //??????????????????Considering 1 is for myself
+        add_soldier(current, a3, a4, 1); //??????????????????Considering 1 is for myself
     }
+
+    return current;
 
 }
 
