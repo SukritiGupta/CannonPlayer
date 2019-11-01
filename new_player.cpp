@@ -67,6 +67,11 @@ public:
     //initialiser
     board() {
     }
+
+    float eval() {
+        int ans = nummysol - numothsol + nummyth - numothth;
+        return ans;
+    }
 };
 
 //written assuming that we will be having the above attributes to a board
@@ -315,8 +320,9 @@ tup add_change_cannon_single(board *newboard, int b1, int b2, int x1, int y1, in
         y = (*newboard).mycannon.at(pair<int,int>(x2,y2));
         y.push_back(x);
     }
-    (*newboard).mycannon[{x2,y2}] = y;
 
+    (*newboard).mycannon[{x2,y2}] = y;
+    
     x.a[0]=x2;
     x.a[1]=y2;
     x.a[2]=x1;
@@ -554,6 +560,12 @@ board delete_change_cannon(board newboard, int b1, int b2) {
 }
 
 board delete_soldier(board newboard, int b1, int b2, bool me) {
+
+    vector<pair<int, int> > temp1;
+    map<pair<int, int>, vector< tup >> temp2;
+    vector<can> temp3;
+    int temp4, temp5; 
+
     if (!me) {
         temp1 = newboard.mySoldier;
         newboard.mySoldier = newboard.otherSoldier;
@@ -577,8 +589,9 @@ board delete_soldier(board newboard, int b1, int b2, bool me) {
     }
 
     newboard.mySoldier.erase(find(newboard.mySoldier.begin(), newboard.mySoldier.end(), pair<int,int>(b1,b2)));
-    nummysol-=1;
+    newboard.nummysol-=1;
     delete_change_cannon(newboard, b1, b2);
+    newboard.grid[b1][b2] = 0;
 
     if (!me) {
         temp1 = newboard.mySoldier;
@@ -605,8 +618,27 @@ board delete_soldier(board newboard, int b1, int b2, bool me) {
     return newboard;
 }
 
-board apply_moves(board, bool solmove, int a1, int a2, int a3, int a4)
+board apply_moves(board current, bool solmove, int a1, int a2, int a3, int a4)
 {
+    //delete my soldier as it has moved
+    if (solmove) {
+        delete_soldier(current, a1, a2, true);
+    }
+
+    //delete other soldier
+    if (current.grid[a3][a4] == -1) {
+        delete_soldier(current, a3, a4, false);
+    }
+    else if (current.grid[a3][a4] == -2) {
+        current.numothth -=1;
+    }
+
+    //add my soldier
+    if (solmove) {
+        add_soldier(current, a3, a4, 1); //??????????????????Considering 1 is for myself
+    }
+
+    return current;
 
 }
 
