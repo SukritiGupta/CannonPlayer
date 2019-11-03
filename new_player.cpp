@@ -17,8 +17,6 @@ struct can {
     }
 };
 
-//tuple for 
-//**************************************No idea of this
 struct tup {
     int a[4]; 
     bool operator () (const tup & m) const
@@ -156,16 +154,17 @@ public:
     }
 
     float eval() {
-        int ans = nummysol - numothsol + nummyth - numothth;
+        int ans = nummyth - numothth;
+        // cerr<<"eval called "<<nummysol<<" "<<numothsol<<"  "<<nummyth<<"  "<<numothth<<endl;
         return ans;
     }
 };
 
 //written assuming that we will be having the above attributes to a board
 //returns a vector of int where 1 - original x, 2 - original y, 3 - new x, 4 - new y 
-vector<vector<int> > find_soldier_moves(board current) {
+vector<vector<int> > find_soldier_moves(board current, int pno) {
 
-    cerr<<"find_soldier_moves called"<<endl;
+    // cerr<<"find_soldier_moves called"<<endl;
 
 	//ans vector to be returned
 	vector<vector<int> > ans;
@@ -182,53 +181,54 @@ vector<vector<int> > find_soldier_moves(board current) {
 		y = (*ptr).second;
 
 		//forward move: <=0 because empty or other's soldier
-		if ((current.grid[x][y-1] <= 0) && (y-1 >= 0)) {
-			temp = vector<int> {x, y, x, y-1};
+        // cerr<<"1" << endl;
+		if ((y-pno >= 0) && (y-pno <= 7) && (current.grid[x][y-pno]*pno <= 0)) {
+			temp = vector<int> {x, y, x, y-pno};
 			ans.push_back(temp);
 		}
 
 		//right diagonal move
-		if ((current.grid[x+1][y-1] <= 0) && (x+1 <= 7) && (y-1 >= 0)) {
-			temp = vector<int> {x, y, x+1, y-1};
+		if ((x+pno <= 7) && (x+pno >= 0) && (y-pno >= 0) && (y-pno <= 7) && (current.grid[x+pno][y-pno]*pno <= 0)) {
+			temp = vector<int> {x, y, x+pno, y-pno};
 			ans.push_back(temp);
 		} 
 
 		//left diagonal move
-		if ((current.grid[x-1][y-1] <= 0) && (x-1 >= 0) && (y-1 >= 0)) {
-			temp = vector<int> {x, y, x-1, y-1};
+		if ((x-pno >= 0) && (x-pno <= 7) && (y-pno >= 0) && (y-pno <= 7) && (current.grid[x-pno][y-pno]*pno <= 0)) {
+			temp = vector<int> {x, y, x-pno, y-pno};
 			ans.push_back(temp);
 		}
 
 		//right adjacent move
-		if ((current.grid[x+1][y] < 0) && (x+1 <= 7)) {
-			temp = vector<int> {x, y, x+1, y};
+		if ((x+pno <= 7) && (x+pno >= 0) && (current.grid[x+pno][y]*pno < 0)) {
+			temp = vector<int> {x, y, x+pno, y};
 			ans.push_back(temp);
 		}
 
 		//left adjacent move
-		if ((current.grid[x-1][y] < 0) && (x-1 >= 0)) {
-			temp = vector<int> {x, y, x-1, y};
+		if ((x-pno >= 0) && (x-pno <= 7) && (current.grid[x-pno][y]*pno < 0)) {
+			temp = vector<int> {x, y, x-pno, y};
 			ans.push_back(temp);
 		}
 
 		//retreat moves, considering that it can kill soldiers while retreating
         // ??????????????????? can a soldier kill other soldiers while retreating
-        if (((current.grid[x][y-1] < 0) && (y-1 >= 0)) || ((current.grid[x+1][y-1] < 0) && (x+1 <= 7) && (y-1 >=0)) || 
-            ((current.grid[x-1][y-1] < 0) && (x-1 >= 0) && (y-1 >= 0)) || ((current.grid[x+1][y] < 0) && (x+1 <=7)) || 
-            ((current.grid[x-1][y] < 0) && (x-1 >= 0))) {
+        if (((y-pno >= 0) && (y-pno <= 7) && (current.grid[x][y-pno]*pno < 0)) || ((x+pno <= 7) && (x+pno >= 0) && (y-pno >= 0) && (y-pno <= 7) && (current.grid[x+pno][y-pno]*pno < 0)) || 
+            ((x-pno >= 0) && (x-pno <= 7) && (y-pno >= 0) && (y-pno <= 7) && (current.grid[x-pno][y-pno]*pno < 0)) || 
+            ((x+pno <= 7) && (x+pno >= 0) && (current.grid[x+pno][y]*pno < 0)) || ((x-pno >= 0) && (x-pno <= 7) && (current.grid[x-pno][y]*pno < 0))) {
 
-            if ((current.grid[x][y+2] <= 0) && (y+2 <=7)) {
-                temp = vector<int> {x, y, x, y+2};
+            if ((y+2*pno <= 7) && (y+2*pno >= 0) && (current.grid[x][y+2*pno]*pno <= 0)) {
+                temp = vector<int> {x, y, x, y+2*pno};
                 ans.push_back(temp);
             }
 
-            if ((current.grid[x+2][y+2] <= 0) && (y+2 <=7) && (x+2 <=7)) {
-                temp = vector<int> {x, y, x+2, y+2};
+            if ((y+2*pno <=7) && (y+2*pno >= 0) && (x+2*pno <=7) && (x+2*pno >= 0) && (current.grid[x+2*pno][y+2*pno]*pno <= 0)) {
+                temp = vector<int> {x, y, x+2*pno, y+2*pno};
                 ans.push_back(temp);
             }
 
-            if ((current.grid[x-2][y+2] <= 0) && (y+2 <=7) && (x-2 >= 0)) {
-                temp = vector<int> {x, y, x-2, y+2};
+            if ((y+2*pno <=7) && (y+2*pno >= 0) && (x-2*pno >= 0) && (x-2*pno <= 7) && (current.grid[x-2*pno][y+2*pno]*pno <= 0)) {
+                temp = vector<int> {x, y, x-2*pno, y+2*pno};
                 ans.push_back(temp);
             }
         }
@@ -243,52 +243,53 @@ vector<vector<int> > find_soldier_moves(board current) {
         dir = (*ptr2).dir;
 
         if (dir == 0) {
-            if ((current.grid[x][y-2] == 0) && (y-2 >= 0)) {
+            if ((y-2 >= 0) && (current.grid[x][y-2] == 0)) {
                 temp = vector<int> {x, y+1, x, y-2};
                 ans.push_back(temp);
             }
-            if ((current.grid[x][y+2] == 0) && (y+2 <= 7)) {
+            if ((y+2 <= 7) && (current.grid[x][y+2] == 0)) {
                 temp = vector<int> {x, y-1, x, y+2};
                 ans.push_back(temp);
             }
         }
         else if (dir == 1) {
-            if ((current.grid[x+2][y-2] == 0) && (y-2 >= 0) && (x+2 <= 7)) {
+            if ((y-2 >= 0) && (x+2 <= 7) && (current.grid[x+2][y-2] == 0)) {
                 temp = vector<int> {x-1, y+1, x+2, y-2};
                 ans.push_back(temp);
             }
-            if ((current.grid[x-2][y+2] == 0) && (y+2 <= 7) && (x-2 >= 0)) {
+            if ((y+2 <= 7) && (x-2 >= 0) && (current.grid[x-2][y+2] == 0)) {
                 temp = vector<int> {x+1, y-1, x-2, y+2};
                 ans.push_back(temp);
             }
         }
         else if (dir == 2) {
-            if ((current.grid[x-2][y] == 0) && (x-2 >= 0)) {
+            if ((x-2 >= 0) && (current.grid[x-2][y] == 0)) {
                 temp = vector<int> {x+1, y, x-2, y};
                 ans.push_back(temp);
             }
-            if ((current.grid[x+2][y] == 0) && (x+2 <= 7)) {
+            if ((x+2 <= 7) && (current.grid[x+2][y] == 0)) {
                 temp = vector<int> {x-1, y, x+2, y};
                 ans.push_back(temp);
             }
         }
         else { //if dir == 3
-            if ((current.grid[x+2][y+2] == 0) && (y+2 <= 7) && (x+2 <= 7)) {
+            if ((y+2 <= 7) && (x+2 <= 7) && (current.grid[x+2][y+2] == 0)) {
                 temp = vector<int> {x-1, y-1, x+2, y+2};
                 ans.push_back(temp);
             }
-            if ((current.grid[x-2][y-2] == 0) && (y-2 >= 0) && (x-2 >= 0)) {
+            if ((y-2 >= 0) && (x-2 >= 0) && (current.grid[x-2][y-2] == 0)) {
                 temp = vector<int> {x+1, y+1, x-2, y-2};
                 ans.push_back(temp);
             }
         }
     }
-    cerr<<"find_soldier_moves ended"<<endl;
+    // cerr<<"find_soldier_moves ended"<<endl;
 
 	return ans;
 }
 
-vector<vector<int> > find_cannon_moves(board current) {
+//??????????????????khudko mat udana
+vector<vector<int> > find_cannon_moves(board current, int pno) {
     //ans vector to be returned
     vector<vector<int> > ans;
     vector<int> temp;
@@ -302,78 +303,79 @@ vector<vector<int> > find_cannon_moves(board current) {
         dir = (*ptr).dir;
 
         if (dir == 0) {
-            if ((current.grid[x][y-3] <= 0) && (y-3 >= 0)) {
+            if ((y-3 >= 0) && (current.grid[x][y-3]*pno <= 0)) {
                 temp = vector<int> {x, y, x, y-3};
                 ans.push_back(temp);
             }
-            if ((current.grid[x][y-4] <= 0) && (y-4 >= 0)) {
+            if ((y-4 >= 0) && (current.grid[x][y-4]*pno <= 0)) {
                 temp = vector<int> {x, y, x, y-4};
                 ans.push_back(temp);
             }
-            if ((current.grid[x][y+3] <= 0) && (y+3 <= 7)) {
+            if ((y+3 <= 7) && (current.grid[x][y+3]*pno <= 0)) {
                 temp = vector<int> {x, y, x, y+3};
                 ans.push_back(temp);
             }
-            if ((current.grid[x][y+4] <= 0) && (y+4 <= 7)) {
+            if ((y+4 <= 7) && (current.grid[x][y+4]*pno <= 0)) {
                 temp = vector<int> {x, y, x, y+4};
                 ans.push_back(temp);
             }
         }
         else if (dir == 1) {
-            if ((current.grid[x+3][y-3] <= 0) && (y-3 >= 0) && (x+3 <= 7)) {
+            if ((y-3 >= 0) && (x+3 <= 7) && (current.grid[x+3][y-3]*pno <= 0)) {
                 temp = vector<int> {x, y, x+3, y-3};
                 ans.push_back(temp);
             }
-            if ((current.grid[x+4][y-4] <= 0) && (y-4 >= 0) && (x+4 <= 7)) {
+            if ((y-4 >= 0) && (x+4 <= 7) && (current.grid[x+4][y-4]*pno <= 0)) {
                 temp = vector<int> {x, y, x+4, y-4};
                 ans.push_back(temp);
             }
-            if ((current.grid[x-3][y+3] <= 0) && (y+3 <= 7) && (x-3 >= 0)) {
+            if ((y+3 <= 7) && (x-3 >= 0) && (current.grid[x-3][y+3]*pno <= 0)) {
                 temp = vector<int> {x, y, x-3, y+3};
                 ans.push_back(temp);
             }
-            if ((current.grid[x-4][y+4] <= 0) && (y+4 <= 7) && (x-4 >= 0)) {
+            if ((y+4 <= 7) && (x-4 >= 0) && (current.grid[x-4][y+4]*pno <= 0)) {
                 temp = vector<int> {x, y, x-4, y+4};
                 ans.push_back(temp);
             }
         }
         else if (dir == 2) {
-            if ((current.grid[x-3][y] <= 0) && (x-3 >= 0)) {
+            if ((x-3 >= 0) && (current.grid[x-3][y]*pno <= 0)) {
                 temp = vector<int> {x, y, x-3, y};
                 ans.push_back(temp);
             }
-            if ((current.grid[x-4][y] <= 0) && (x-4 >= 0)) {
+            if ((x-4 >= 0) && (current.grid[x-4][y]*pno <= 0)) {
                 temp = vector<int> {x, y, x-4, y};
                 ans.push_back(temp);
             }
-            if ((current.grid[x+3][y] <= 0) && (x+3 <= 7)) {
+            if ((x+3 <= 7) && (current.grid[x+3][y]*pno <= 0)) {
                 temp = vector<int> {x, y, x+3, y};
                 ans.push_back(temp);
             }
-            if ((current.grid[x+4][y] <= 0) && (x+4 <= 7)) {
+            if ((x+4 <= 7) && (current.grid[x+4][y]*pno <= 0)) {
                 temp = vector<int> {x, y, x+4, y};
                 ans.push_back(temp);
             }
         }
         else { //if dir == 3
-            if ((current.grid[x+3][y+3] <= 0) && (y+3 <= 7) && (x+3 <= 7)) {
+            if ((y+3 <= 7) && (x+3 <= 7) && (current.grid[x+3][y+3]*pno <= 0)) {
                 temp = vector<int> {x, y, x+3, y+3};
                 ans.push_back(temp);
             }
-            if ((current.grid[x+4][y+4] <= 0) && (y+4 <= 7) && (x+4 <= 7)) {
+            if ((y+4 <= 7) && (x+4 <= 7) && (current.grid[x+4][y+4]*pno <= 0)) {
                 temp = vector<int> {x, y, x+4, y+4};
                 ans.push_back(temp);
             }
-            if ((current.grid[x-3][y-3] <= 0) && (y-3 >= 0) && (x-3 >= 0)) {
+            if ((y-3 >= 0) && (x-3 >= 0) && (current.grid[x-3][y-3]*pno <= 0)) {
                 temp = vector<int> {x, y, x-3, y-3};
                 ans.push_back(temp);
             }
-            if ((current.grid[x-4][y-4] == 0) && (y-4 >= 0) && (x-4 >= 0)) {
+            if ((y-4 >= 0) && (x-4 >= 0) && (current.grid[x-4][y-4]*pno <= 0)) {
                 temp = vector<int> {x, y, x-4, y-4};
                 ans.push_back(temp);
             }
         }
     }
+
     return ans;
 }
 
@@ -421,6 +423,7 @@ board add_soldier(board newboard, int b1, int b2, int pno)
 {
     newboard.grid[b1][b2]=pno;
     newboard.mySoldier.push_back(pair<int,int>(b1,b2));
+    newboard.nummysol+=1;
 
     //Updating cannons
     vector<tup> finalpush,y;
@@ -678,7 +681,7 @@ board delete_soldier(board newboard, int b1, int b2, bool me) {
 
     newboard.mySoldier.erase(find(newboard.mySoldier.begin(), newboard.mySoldier.end(), pair<int,int>(b1,b2)));
     newboard.nummysol-=1;
-    delete_change_cannon(newboard, b1, b2);
+    newboard = delete_change_cannon(newboard, b1, b2);
     newboard.grid[b1][b2] = 0;
 
     if (!me) {
@@ -708,23 +711,24 @@ board delete_soldier(board newboard, int b1, int b2, bool me) {
 
 board apply_moves(board current, bool solmove, int a1, int a2, int a3, int a4, int pno)
 {
-    cerr<<"Apply move called"<<endl;
+    // cerr<<"Apply move called"<<endl;
     //delete my soldier as it has moved
     if (solmove) {
-        delete_soldier(current, a1, a2, true);
+        current = delete_soldier(current, a1, a2, true);
     }
 
     //delete other soldier
     if (current.grid[a3][a4] == (-1)*pno) { //????????pno
-        delete_soldier(current, a3, a4, false);
+        current = delete_soldier(current, a3, a4, false);
     }
     else if (current.grid[a3][a4] == (-2)*pno) {
         current.numothth -=1;
+        current.grid[a3][a4]=0;
     }
 
     //add my soldier
     if (solmove) {
-        add_soldier(current, a3, a4, pno); //??????????????????Considering 1 is for myself
+        current = add_soldier(current, a3, a4, pno); //??????????????????Considering 1 is for myself
     }
 
     return current;
@@ -747,6 +751,7 @@ board execute_move(board currboard,string move, int pno)
 
 double minimax(board b, int pno, int isthisme, int ply, string *movefinal)
 {
+    cerr << "ye minimax with ply_MAX " << ply_MAX <<  endl;
     if (ply!=ply_MAX)
     {
         pno = pno*(-1);
@@ -772,40 +777,41 @@ double minimax(board b, int pno, int isthisme, int ply, string *movefinal)
     }
 
     vector<vector<int>> posmove;
-    posmove=find_soldier_moves(b);
+    posmove=find_soldier_moves(b, pno);
+
     int temp=posmove.size();
-    double bestchild=isthisme*10000.0*(-1);
+    double bestchild=10000.0*(-1);
+    //aloha beta pruning ke liye 2 baar likhe???????????????????????
     board tcmove;
     double val;
     string s;
-
+    cerr<<bestchild<<endl;
     for (int  mno= 0; mno < temp; ++mno)
     {
         tcmove=apply_moves(b,true,posmove[mno][0],posmove[mno][1],posmove[mno][2],posmove[mno][3],pno);
         if (ply==0)
         {
             // val=tcmove.eval(isthisme,pno);
+            // cerr<<"This is move sol"<<("S " + to_string(posmove[mno][0]) + " " + to_string(posmove[mno][1]) + " M " + to_string(posmove[mno][2])+ " " +to_string(posmove[mno][3]));
             val=tcmove.eval();
-            if (val>bestchild)
-            {
-                bestchild=val;
-            }
+            // cerr << "ply is 0 so val is " << val << endl;
         }
         else
         {
             val=minimax(tcmove,pno*(-1),isthisme*(-1),ply-1,&s);
-            if (val>bestchild)
+            // cerr << "Val " << val << endl;
+        } 
+        if (val>bestchild)
+        {
+            bestchild=val;
+            if (ply==ply_MAX)
             {
-                bestchild=val;
-                if (ply==ply_MAX)
-                {
-                    *movefinal="S " + to_string(posmove[mno][0]) + " " + to_string(posmove[mno][1]) + " M " + to_string(posmove[mno][2])+ " " +to_string(posmove[mno][3]);
-                }
+                *movefinal="S " + to_string(posmove[mno][0]) + " " + to_string(posmove[mno][1]) + " M " + to_string(posmove[mno][2])+ " " +to_string(posmove[mno][3]);
             }
-        }        
+        }       
     }
 
-    posmove=find_cannon_moves(b);
+    posmove=find_cannon_moves(b, pno);
     temp=posmove.size();
 
     for (int  mno= 0; mno < temp; ++mno)
@@ -814,27 +820,25 @@ double minimax(board b, int pno, int isthisme, int ply, string *movefinal)
         if (ply==0)
         {
             // val=tcmove.eval(isthisme,pno);
+            // cerr<<"This is move cannon"<<("S " + to_string(posmove[mno][0]) + " " + to_string(posmove[mno][1]) + " B " + to_string(posmove[mno][2])+ " " +to_string(posmove[mno][3]));
             val=tcmove.eval();
-            if (val>bestchild)
-            {
-                bestchild=val;
-            }
         }
         else
         {
             val=minimax(tcmove,pno*(-1),isthisme*(-1),ply-1,&s);
-            if (val>bestchild)
+        }
+        if (val>bestchild)
+        {
+            bestchild=val;
+            if (ply==ply_MAX)
             {
-                bestchild=val;
-                if (ply==ply_MAX)
-                {
-                    *movefinal="S " + to_string(posmove[mno][0]) + " " + to_string(posmove[mno][1]) + " B " + to_string(posmove[mno][2])+ " " +to_string(posmove[mno][3]);
-                }
+                *movefinal="S " + to_string(posmove[mno][0]) + " " + to_string(posmove[mno][1]) + " B " + to_string(posmove[mno][2])+ " " +to_string(posmove[mno][3]);
             }
-        }        
+        }
     }
 
-    return bestchild;
+    // cerr << "Returned Value " << (-1)*bestchild << endl;
+    return (-1)*bestchild;
     //???? no valid moves at depth handle
 }
 
@@ -919,6 +923,58 @@ void print(board currboard)
     }
 
 }
+
+// int main() {
+//     board newboard;
+
+//     // vector<pair<int, int> > temp1;
+//     // map<pair<int, int>, vector< tup >> temp2;
+//     // vector<can> temp3;
+//     // int temp4, temp5; 
+//     // temp1 = newboard.mySoldier;
+//     // newboard.mySoldier = newboard.otherSoldier;
+//     // newboard.otherSoldier = temp1;
+
+//     // temp2 = newboard.mycannon;
+//     // newboard.mycannon = newboard.otherCannon;
+//     // newboard.otherCannon = temp2;
+
+//     // temp3 = newboard.allmycan;
+//     // newboard.allmycan = newboard.allothercan;
+//     // newboard.allothercan = temp3;
+
+//     // temp4 = newboard.nummysol;
+//     // newboard.nummysol = newboard.numothsol;
+//     // newboard.numothsol = temp4;
+
+//     // temp5 = newboard.nummyth;
+//     // newboard.nummyth=newboard.numothth;
+//     // newboard.numothth=temp5;
+
+//     vector<vector<int>> posmove;
+//     posmove=find_soldier_moves(newboard, 1);
+
+//     cerr << "Possible moves" << endl;
+//     for (int i = 0; i < posmove.size(); i++) {
+//         for (int j = 0; j < 4; j++) {
+//             cerr << posmove[i][j] << " ";
+//         }
+//         cerr << endl;
+//     }
+
+//     posmove=find_cannon_moves(newboard, 1);
+
+//     cerr << "Possible moves" << endl;
+//     for (int i = 0; i < posmove.size(); i++) {
+//         for (int j = 0; j < 4; j++) {
+//             cerr << posmove[i][j] << " ";
+//         }
+//         cerr << endl;
+//     }
+//     print(newboard);
+
+// }
+
 int main() 
 {
     string line;
@@ -926,7 +982,7 @@ int main()
     cin>>pno>>N>>M>>timeq;
     getline(cin,line);
 
-    ply_MAX=0;
+    ply_MAX=2;
 
     // if(pno==2)
     //     ply_MAX=2;
@@ -971,12 +1027,14 @@ int main()
     int temp4, temp5, ttemp4, ttemp5,ttt;
     double maxval=(double)-10000 ,minval=(double)10000;
 
-    while(true)
+    while((true))
     {
+        // count++;
+        cerr << "Next Iteration" << endl;
         print(curr);
-        // cerr<<"move "<<move<<endl;
+        cerr<<"move "<<move<<endl;
         // usleep(30);
-        ttt=minimax(curr,pno, true,ply_MAX,&move);
+        ttt=minimax(curr,pno, 1,ply_MAX,&move);
         cout<<move<<endl;
         curr=execute_move(curr,move,pno);
         // print(curr);
@@ -1032,6 +1090,8 @@ int main()
     }
 
 }
+
+
 
 //AlphaBetaPruning *******************************
 //transpose output!!??, @execute move???
