@@ -400,6 +400,8 @@ board add_soldier(board newboard, int b1, int b2, int pno)
         newboard.mycannon[{b1,b2}] = finalpush;
     }
 
+    return newboard;
+
 }
 
 board delete_change_cannon(board newboard, int b1, int b2) {
