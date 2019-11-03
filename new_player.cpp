@@ -66,7 +66,93 @@ public:
     int numothth;
 
     //initialiser
-    board() {
+    board() 
+    {
+        nummyth = 4;
+        numothth = 4;
+        vector<vector<int>> temp1{{-2,0,0,0,0,1,1,1},{-1,-1,-1,0,0,0,0,2},{-2,0,0,0,0,1,1,1},{-1,-1,-1,0,0,0,0,2},{-2,0,0,0,0,1,1,1},{-1,-1,-1,0,0,0,0,2},{-2,0,0,0,0,1,1,1},{-1,-1,-1,0,0,0,0,2}};
+        grid=temp1;
+
+        vector<pair<int, int>> temp2 = { {0,5},{0,6},{0,7}, {2,5},{2,6},{2,7}, {4,5},{4,6},{4,7}, {6,5},{6,6},{6,7} };
+        mySoldier = temp2;
+
+        vector<pair<int, int>> temp3 = { {1,0},{1,1},{1,2}, {3,0},{3,1},{3,2}, {5,0},{5,1},{5,2}, {7,0},{7,1},{7,2} };
+        otherSoldier = temp3;
+
+        tup a(0,6,0,7);        vector<tup> v={a};        mycannon[{0,5}]=v;        v[0].a[1]=5;        mycannon[{0,6}]=v;
+
+        v[0].a[3]=6;        mycannon[{0,7}]=v;        tup a1(2,6,2,7);        vector<tup> v1={a1};        mycannon[{2,5}]=v1;        v1[0].a[1]=5;        mycannon[{2,6}]=v1;
+        v1[0].a[3]=6;        mycannon[{2,7}]=v1;
+
+        tup a2(4,6,4,7);        vector<tup> v2={a2};        mycannon[{4,5}]=v2;
+        v2[0].a[1]=5;        mycannon[{4,6}]=v2;
+        v2[0].a[3]=6;        mycannon[{4,7}]=v2;
+
+        tup a3(6,6,6,7);        vector<tup> v3={a3};        mycannon[{6,5}]=v3;
+        v3[0].a[1]=5;        mycannon[{6,6}]=v3;
+        v3[0].a[3]=6;        mycannon[{6,7}]=v3;
+
+        tup b(1,1,1,2);
+        vector<tup> t={b};
+        otherCannon[{1,0}]=t;
+
+        t[0].a[1]=0;
+        otherCannon[{1,1}]=t;
+
+        t[0].a[3]=1;
+        otherCannon[{1,2}]=t;
+
+        tup b1(3,1,3,2);
+        vector<tup> t1={b1};
+        otherCannon[{3,0}]=t1;
+
+        t1[0].a[1]=0;
+        otherCannon[{3,1}]=t1;
+
+        t1[0].a[3]=1;
+        otherCannon[{3,2}]=t1;
+
+        tup b2(5,1,5,2);
+        vector<tup> t2={b2};
+        otherCannon[{5,0}]=t2;
+
+        t2[0].a[1]=0;
+        otherCannon[{5,1}]=t2;
+
+        t2[0].a[3]=1;
+        otherCannon[{5,2}]=t2;
+
+        tup b3(7,1,7,2);
+        vector<tup> t3={b3};
+        otherCannon[{7,0}]=t3;
+
+        t3[0].a[1]=0;
+        otherCannon[{7,1}]=t3;
+
+        t3[0].a[3]=1;
+        otherCannon[{7,2}]=t3;
+
+
+        can c{{0,6},0};
+        allmycan.push_back(c);
+        c.centre.first=2;
+        allmycan.push_back(c);
+        c.centre.first=4;
+        allmycan.push_back(c);
+        c.centre.first=6;
+        allmycan.push_back(c);
+
+        can c1{{1,1},0};
+        allothercan.push_back(c1);
+        c1.centre.first=3;
+        allothercan.push_back(c1);
+        c1.centre.first=5;
+        allothercan.push_back(c1);
+        c1.centre.first=7;
+        allothercan.push_back(c1);
+
+        nummysol=12;
+        numothsol=12;
     }
 
     float eval() {
@@ -78,6 +164,8 @@ public:
 //written assuming that we will be having the above attributes to a board
 //returns a vector of int where 1 - original x, 2 - original y, 3 - new x, 4 - new y 
 vector<vector<int> > find_soldier_moves(board current) {
+
+    cerr<<"find_soldier_moves called"<<endl;
 
 	//ans vector to be returned
 	vector<vector<int> > ans;
@@ -195,6 +283,8 @@ vector<vector<int> > find_soldier_moves(board current) {
             }
         }
     }
+    cerr<<"find_soldier_moves ended"<<endl;
+
 	return ans;
 }
 
@@ -618,6 +708,7 @@ board delete_soldier(board newboard, int b1, int b2, bool me) {
 
 board apply_moves(board current, bool solmove, int a1, int a2, int a3, int a4, int pno)
 {
+    cerr<<"Apply move called"<<endl;
     //delete my soldier as it has moved
     if (solmove) {
         delete_soldier(current, a1, a2, true);
