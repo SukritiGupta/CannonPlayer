@@ -213,9 +213,9 @@ vector<vector<int> > find_soldier_moves(board current, int pno) {
 
 		//retreat moves, considering that it can kill soldiers while retreating
         // ??????????????????? can a soldier kill other soldiers while retreating
-        if (((y-pno >= 0) && (y-pno <= 7) && (current.grid[x][y-pno]*pno < 0)) || ((x+pno <= 7) && (x+pno >= 0) && (y-pno >= 0) && (y-pno <= 7) && (current.grid[x+pno][y-pno]*pno < 0)) || 
-            ((x-pno >= 0) && (x-pno <= 7) && (y-pno >= 0) && (y-pno <= 7) && (current.grid[x-pno][y-pno]*pno < 0)) || 
-            ((x+pno <= 7) && (x+pno >= 0) && (current.grid[x+pno][y]*pno < 0)) || ((x-pno >= 0) && (x-pno <= 7) && (current.grid[x-pno][y]*pno < 0))) {
+        if (((y-pno >= 0) && (y-pno <= 7) && (current.grid[x][y-pno]*pno == -1)) || ((x+pno <= 7) && (x+pno >= 0) && (y-pno >= 0) && (y-pno <= 7) && (current.grid[x+pno][y-pno]*pno == -1)) || 
+            ((x-pno >= 0) && (x-pno <= 7) && (y-pno >= 0) && (y-pno <= 7) && (current.grid[x-pno][y-pno]*pno == -1)) || 
+            ((x+pno <= 7) && (x+pno >= 0) && (current.grid[x+pno][y]*pno == -1)) || ((x-pno >= 0) && (x-pno <= 7) && (current.grid[x-pno][y]*pno == -1))) {
 
             if ((y+2*pno <= 7) && (y+2*pno >= 0) && (current.grid[x][y+2*pno]*pno <= 0)) {
                 temp = vector<int> {x, y, x, y+2*pno};
@@ -982,7 +982,7 @@ int main()
     cin>>pno>>N>>M>>timeq;
     getline(cin,line);
 
-    ply_MAX=3;
+    ply_MAX=2;
 
     // if(pno==2)
     //     ply_MAX=2;
