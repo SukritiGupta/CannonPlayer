@@ -154,7 +154,7 @@ public:
     }
 
     float eval() {
-        int ans = nummyth - numothth;
+        int ans = nummysol - numothsol + nummyth - numothth;
         // cerr<<"eval called "<<nummysol<<" "<<numothsol<<"  "<<nummyth<<"  "<<numothth<<endl;
         return ans;
     }
@@ -751,10 +751,10 @@ board execute_move(board currboard,string move, int pno)
 
 double minimax(board b, int pno, int isthisme, int ply, string *movefinal)
 {
-    cerr << "ye minimax with ply_MAX " << ply_MAX <<  endl;
+    // cerr << "ye minimax with ply_MAX " << ply_MAX <<  endl;
     if (ply!=ply_MAX)
     {
-        pno = pno*(-1);
+        // pno = pno*(-1);
         vector<pair<int,int> > temp1 = b.mySoldier;
         b.mySoldier = b.otherSoldier;
         b.otherSoldier = temp1;
@@ -785,7 +785,7 @@ double minimax(board b, int pno, int isthisme, int ply, string *movefinal)
     board tcmove;
     double val;
     string s;
-    cerr<<bestchild<<endl;
+    // cerr<<bestchild<<endl;
     for (int  mno= 0; mno < temp; ++mno)
     {
         tcmove=apply_moves(b,true,posmove[mno][0],posmove[mno][1],posmove[mno][2],posmove[mno][3],pno);
@@ -982,7 +982,7 @@ int main()
     cin>>pno>>N>>M>>timeq;
     getline(cin,line);
 
-    ply_MAX=2;
+    ply_MAX=3;
 
     // if(pno==2)
     //     ply_MAX=2;
@@ -1030,9 +1030,9 @@ int main()
     while((true))
     {
         // count++;
-        cerr << "Next Iteration" << endl;
-        print(curr);
-        cerr<<"move "<<move<<endl;
+        // cerr << "Next Iteration" << endl;
+        // print(curr);
+        // cerr<<"move "<<move<<endl;
         // usleep(30);
         ttt=minimax(curr,pno, 1,ply_MAX,&move);
         cout<<move<<endl;
