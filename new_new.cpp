@@ -88,8 +88,11 @@ public:
         numth[1]=4;
     }
 
-    float eval() {
-        int ans = nummysol - numothsol + nummyth - numothth;
+    float eval(int pno, int isthisme) {
+        pno*=isthisme;
+        int index=(1+pno)/2;
+        int index2=(1-pno)/2;
+        int ans = numsol[index] - numsol[index2] + numth[index] - numth[index2];
         // cerr<<"eval called "<<nummysol<<" "<<numothsol<<"  "<<nummyth<<"  "<<numothth<<endl;
         return ans;
     }
@@ -105,8 +108,8 @@ public:
 
         for (int i = 0; i < numsol[index]; ++i)
         {
-            x=soldier[index].first;
-            y=soldier[index].second;
+            x=soldier[index][i].first;
+            y=soldier[index][i].second;
 
             //forward move: <=0 because empty or other's soldier
             // cerr<<"1" << endl;
@@ -482,39 +485,38 @@ board apply_moves(board current, bool solmove, int a1, int a2, int a3, int a4, i
     // cerr<<"Apply move called"<<endl;
     //delete my soldier as it has moved
     if (solmove) {
-        current = delete_soldier(current, a1, a2, true);
+        current.delete_soldier(a1, a2, pno);
     }
 
     //delete other soldier
     if (current.grid[a3][a4] == (-1)*pno) { //????????pno
-        current = delete_soldier(current, a3, a4, false);
+        current.delete_soldier(a3, a4, (-1)*pno);
     }
     else if (current.grid[a3][a4] == (-2)*pno) {
-        current.numothth -=1;
+        current.numth[(1-pno)/2] -=1;
         current.grid[a3][a4]=0;
     }
 
     //add my soldier
     if (solmove) {
-        current = add_soldier(current, a3, a4, pno); //??????????????????Considering 1 is for myself
+        current.add_soldier(a3, a4, pno); //??????????????????Considering 1 is for myself
     }
 
     return current;
 
 }
 
-board execute_move(board currboard,string move, int pno)
+void execute_move(board* currboard,string move, int pno)
 {
     // cerr<<"move executing *********************************************************************************************************************************************** "<<move<<endl;
     if (move[6]=='M')
     {
-        currboard=apply_moves(currboard,true,(move[2]-'0'),(move[4]-'0'),(move[8]-'0'),(move[10]-'0'),pno);
+        *currboard=apply_moves(*currboard,true,(move[2]-'0'),(move[4]-'0'),(move[8]-'0'),(move[10]-'0'),pno);
     }
     else //cannon blast
     {
-        currboard=apply_moves(currboard,false,(move[2]-'0'),(move[4]-'0'),(move[8]-'0'),(move[10]-'0'),pno);
+        *currboard=apply_moves(*currboard,false,(move[2]-'0'),(move[4]-'0'),(move[8]-'0'),(move[10]-'0'),pno);
     }
-    return currboard;
 }
 
 double minimax(board b, int pno, int isthisme, int ply, string *movefinal)
@@ -534,7 +536,7 @@ double minimax(board b, int pno, int isthisme, int ply, string *movefinal)
         tcmove=apply_moves(b,true,posmove[mno][0],posmove[mno][1],posmove[mno][2],posmove[mno][3],pno);
         if (ply==0)
         {
-            val=tcmove.eval();
+            val=tcmove.eval(pno,isthisme);
         }
         else
         {
@@ -550,7 +552,7 @@ double minimax(board b, int pno, int isthisme, int ply, string *movefinal)
         }       
     }
 
-    posmove=find_cannon_moves(b, pno);
+    posmove=b.find_cannon_moves(pno);
     temp=posmove.size();
 
     for (int  mno= 0; mno < temp; ++mno)
@@ -558,7 +560,7 @@ double minimax(board b, int pno, int isthisme, int ply, string *movefinal)
         tcmove=apply_moves(b,false,posmove[mno][0],posmove[mno][1],posmove[mno][2],posmove[mno][3],pno);
         if (ply==0)
         {
-            val=tcmove.eval();
+            val=tcmove.eval(pno,isthisme);
         }
         else
         {
@@ -580,15 +582,6 @@ double minimax(board b, int pno, int isthisme, int ply, string *movefinal)
 
 void print(board currboard)
 {
-    // vector<pair<int,int>> mySoldier;
-    // // vector< pair<int,int>> myTown;
-    // vector<pair<int,int>> otherSoldier;
-    // map<pair<int, int>, vector< tup >> mycannon;  //sol to all other sols in any cannon it is in
-    // map<pair<int, int>, vector< tup >> otherCannon;
-
-    // vector<can> allmycan;
-    // vector<can> allothercan;
-
     for (int i = 0; i < 8; ++i)
     {
         for (int j = 0; j < 8; ++j)
@@ -598,65 +591,39 @@ void print(board currboard)
         cerr<<endl;
     }
 
-    cerr<<currboard.nummysol<<endl;
-    cerr<<currboard.numothsol<<endl;
-    cerr<<currboard.nummyth<<endl;
-    cerr<<currboard.numothth<<endl;
+    // cerr<<currboard.nummysol<<endl;
+    // cerr<<currboard.numothsol<<endl;
+    // cerr<<currboard.nummyth<<endl;
+    // cerr<<currboard.numothth<<endl;
 
-    map<pair<int, int>, vector<tup>>::iterator aa;
+    // map<pair<int, int>, vector<tup>>::iterator aa;
 
-    cerr<<"My Cannons"<<endl;
+    // vector<pair<int, int>>::iterator xx;
+    // cerr<<"mySoldier"<<endl;
+    // for (xx=currboard.mySoldier.begin(); xx!=currboard.mySoldier.end(); ++xx)
+    // {
+    //     cerr<<(*xx).first<<"  "<<(*xx).second<<endl;
+    // }
 
-    for ( aa= currboard.mycannon.begin(); aa != currboard.mycannon.end(); ++aa)
-    {
-        vector<tup> x =aa->second;
-        vector<tup>::iterator temp;
-
-        for (temp=x.begin(); temp<x.end(); ++temp)
-        {
-            cerr<<aa->first.first<<aa->first.second<<"  :  "<<(*temp).a[0]<<","<<(*temp).a[1]<<" "<<(*temp).a[2]<<" "<<(*temp).a[3]<<" "<<endl;
-        }
-    }
-
-    vector<pair<int, int>>::iterator xx;
-    cerr<<"mySoldier"<<endl;
-    for (xx=currboard.mySoldier.begin(); xx!=currboard.mySoldier.end(); ++xx)
-    {
-        cerr<<(*xx).first<<"  "<<(*xx).second<<endl;
-    }
-
-    cerr<<"My can"<<endl;
-    vector<can>::iterator poorva;
-    for (poorva = currboard.allmycan.begin(); poorva != currboard.allmycan.end(); ++poorva)
-    {
-        cerr<<(*poorva).centre.first<<" "<<(*poorva).centre.second<<"    "<<(*poorva).dir<<endl;
-    }
-
-    cerr<<"Other Cannons"<<endl;
-
-    for ( aa= currboard.otherCannon.begin(); aa != currboard.otherCannon.end(); ++aa)
-    {
-        vector<tup> x =aa->second;
-        vector<tup>::iterator temp;
-
-        for (temp=x.begin(); temp<x.end(); ++temp)
-        {
-            cerr<<aa->first.first<<aa->first.second<<"  :  "<<(*temp).a[0]<<","<<(*temp).a[1]<<" "<<(*temp).a[2]<<" "<<(*temp).a[3]<<" "<<endl;
-        }
-    }
-
-    cerr<<"otherSoldier"<<endl;
-    for (xx=currboard.otherSoldier.begin(); xx!=currboard.otherSoldier.end(); ++xx)
-    {
-        cerr<<(*xx).first<<"  "<<(*xx).second<<endl;
-    }
-
-    cerr<<"Oth can"<<endl;
+    // cerr<<"My can"<<endl;
     // vector<can>::iterator poorva;
-    for (poorva = currboard.allothercan.begin(); poorva != currboard.allothercan.end(); ++poorva)
-    {
-        cerr<<(*poorva).centre.first<<" "<<(*poorva).centre.second<<"    "<<(*poorva).dir<<endl;
-    }
+    // for (poorva = currboard.allmycan.begin(); poorva != currboard.allmycan.end(); ++poorva)
+    // {
+    //     cerr<<(*poorva).centre.first<<" "<<(*poorva).centre.second<<"    "<<(*poorva).dir<<endl;
+    // }
+
+    // cerr<<"otherSoldier"<<endl;
+    // for (xx=currboard.otherSoldier.begin(); xx!=currboard.otherSoldier.end(); ++xx)
+    // {
+    //     cerr<<(*xx).first<<"  "<<(*xx).second<<endl;
+    // }
+
+    // cerr<<"Oth can"<<endl;
+    // // vector<can>::iterator poorva;
+    // for (poorva = currboard.allothercan.begin(); poorva != currboard.allothercan.end(); ++poorva)
+    // {
+    //     cerr<<(*poorva).centre.first<<" "<<(*poorva).centre.second<<"    "<<(*poorva).dir<<endl;
+    // }
 
 }
 
@@ -689,7 +656,7 @@ int main()
     cin>>pno>>N>>M>>timeq;
     getline(cin,line);
 
-    ply_MAX=3;
+    ply_MAX=0;
 
     // if(pno==2)
     //     ply_MAX=2;
@@ -704,95 +671,24 @@ int main()
         getline(cin,line);
         while(line=="")
             getline(cin,line);
-        curr=execute_move(curr,line,1);
-
-        vector<pair<int,int> > ttemp1 = curr.mySoldier;
-        curr.mySoldier = curr.otherSoldier;
-        curr.otherSoldier = ttemp1;
-
-        map<pair<int, int>, vector< tup >> ttemp2 = curr.mycannon;
-        curr.mycannon = curr.otherCannon;
-        curr.otherCannon = ttemp2;
-
-        vector<can> ttemp3 = curr.allmycan;
-        curr.allmycan = curr.allothercan;
-        curr.allothercan = ttemp3;
-
-        int ttemp4 = curr.nummysol;
-        curr.nummysol = curr.numothsol;
-        curr.numothsol = ttemp4;
-
-        int ttemp5 = curr.nummyth;
-        curr.nummyth=curr.numothth;
-        curr.numothth=ttemp5;
+        execute_move(&curr,line,1);
     }
     string move;
+    double ttt;
 
-    vector<pair<int,int> > temp1, ttemp1;
-    map<pair<int, int>, vector< tup >> temp2, ttemp2;
-    vector<can> temp3, ttemp3;
-    int temp4, temp5, ttemp4, ttemp5,ttt;
     double maxval=(double)-10000 ,minval=(double)10000;
-
+//eval exactly scoring????
     while((true))
     {
-        // count++;
-        // cerr << "Next Iteration" << endl;
-        // print(curr);
-        // cerr<<"move "<<move<<endl;
-        // usleep(30);
         ttt=minimax(curr,pno, 1,ply_MAX,&move);
         cout<<move<<endl;
-        curr=execute_move(curr,move,pno);
-        // print(curr);
+        execute_move(&curr,move,pno);
 
-        temp1 = curr.mySoldier;
-        curr.mySoldier = curr.otherSoldier;
-        curr.otherSoldier = temp1;
-
-        temp2 = curr.mycannon;
-        curr.mycannon = curr.otherCannon;
-        curr.otherCannon = temp2;
-
-        temp3 = curr.allmycan;
-        curr.allmycan = curr.allothercan;
-        curr.allothercan = temp3;
-
-        temp4 = curr.nummysol;
-        curr.nummysol = curr.numothsol;
-        curr.numothsol = temp4;
-
-        temp5 = curr.nummyth;
-        curr.nummyth=curr.numothth;
-        curr.numothth=temp5;
-
-        // getline(cin,move);
         getline(cin,move);
         while(move=="")
             getline(cin,move);
 
-        curr=execute_move(curr,move,(-1)*pno);
-        // print(curr);
-        ttemp1 = curr.mySoldier;
-        curr.mySoldier = curr.otherSoldier;
-        curr.otherSoldier = ttemp1;
-
-        ttemp2 = curr.mycannon;
-        curr.mycannon = curr.otherCannon;
-        curr.otherCannon = ttemp2;
-
-        ttemp3 = curr.allmycan;
-        curr.allmycan = curr.allothercan;
-        curr.allothercan = ttemp3;
-
-        ttemp4 = curr.nummysol;
-        curr.nummysol = curr.numothsol;
-        curr.numothsol = ttemp4;
-
-        ttemp5 = curr.nummyth;
-        curr.nummyth=curr.numothth;
-        curr.numothth=ttemp5;
-
+        execute_move(&curr,move,(-1)*pno);
         // exit(0);
     }
 
