@@ -55,51 +55,51 @@ public:
     //initialiser
     board() 
     {
-        // numsol[0]=12;
-        // numsol[1]=12;
-        // vector<vector<int>> temp1{{-2,0,0,0,0,1,1,1},{-1,-1,-1,0,0,0,0,2},{-2,0,0,0,0,1,1,1},{-1,-1,-1,0,0,0,0,2},{-2,0,0,0,0,1,1,1},{-1,-1,-1,0,0,0,0,2},{-2,0,0,0,0,1,1,1},{-1,-1,-1,0,0,0,0,2}};
-        // grid=temp1;
+        numsol[0]=12;
+        numsol[1]=12;
+        vector<vector<int>> temp1{{-2,0,0,0,0,1,1,1},{-1,-1,-1,0,0,0,0,2},{-2,0,0,0,0,1,1,1},{-1,-1,-1,0,0,0,0,2},{-2,0,0,0,0,1,1,1},{-1,-1,-1,0,0,0,0,2},{-2,0,0,0,0,1,1,1},{-1,-1,-1,0,0,0,0,2}};
+        grid=temp1;
 
-        // vector<pair<int, int>> temp2 = { {0,5},{0,6},{0,7}, {2,5},{2,6},{2,7}, {4,5},{4,6},{4,7}, {6,5},{6,6},{6,7} };
-        // soldier[1] = temp2;
+        vector<pair<int, int>> temp2 = { {0,5},{0,6},{0,7}, {2,5},{2,6},{2,7}, {4,5},{4,6},{4,7}, {6,5},{6,6},{6,7} };
+        soldier[1] = temp2;
 
-        // vector<pair<int, int>> temp3 = { {1,0},{1,1},{1,2}, {3,0},{3,1},{3,2}, {5,0},{5,1},{5,2}, {7,0},{7,1},{7,2} };
-        // soldier[0] = temp3;
+        vector<pair<int, int>> temp3 = { {1,0},{1,1},{1,2}, {3,0},{3,1},{3,2}, {5,0},{5,1},{5,2}, {7,0},{7,1},{7,2} };
+        soldier[0] = temp3;
 
-        // can c{{0,6},0};
-        // allcan[1].push_back(c);
-        // c.centre.first=2;
-        // allcan[1].push_back(c);
-        // c.centre.first=4;
-        // allcan[1].push_back(c);
-        // c.centre.first=6;
-        // allcan[1].push_back(c);
+        can c{{0,6},0};
+        allcan[1].push_back(c);
+        c.centre.first=2;
+        allcan[1].push_back(c);
+        c.centre.first=4;
+        allcan[1].push_back(c);
+        c.centre.first=6;
+        allcan[1].push_back(c);
 
-        // can c1{{1,1},0};
-        // allcan[0].push_back(c1);
-        // c1.centre.first=3;
-        // allcan[0].push_back(c1);
-        // c1.centre.first=5;
-        // allcan[0].push_back(c1);
-        // c1.centre.first=7;
-        // allcan[0].push_back(c1);
+        can c1{{1,1},0};
+        allcan[0].push_back(c1);
+        c1.centre.first=3;
+        allcan[0].push_back(c1);
+        c1.centre.first=5;
+        allcan[0].push_back(c1);
+        c1.centre.first=7;
+        allcan[0].push_back(c1);
 
         // numth[0]=4;
         // numth[1]=4;
 
-        numsol[0]=6;
-        numsol[1]=1;
-        vector<vector<int>> temp1{{-2,0,0,0,0,0,0,0},{0,0,-1,0,1,0,0,2},{-2,0,-1,0,0,0,0,0},{0,0,0,0,0,0,0,2},{-2,0,0,-1,0,0,0,0},{0,-1,0,0,0,0,0,2},{-2,0,0,-1,0,-1,0,0},{0,0,0,0,0,0,0,0}};
-        grid=temp1;
+        // numsol[0]=6;
+        // numsol[1]=1;
+        // vector<vector<int>> temp1{{-2,0,0,0,0,0,0,0},{0,0,-1,0,1,0,0,2},{-2,0,-1,0,0,0,0,0},{0,0,0,0,0,0,0,2},{-2,0,0,-1,0,0,0,0},{0,-1,0,0,0,0,0,2},{-2,0,0,-1,0,-1,0,0},{0,0,0,0,0,0,0,0}};
+        // grid=temp1;
 
-        vector<pair<int, int>> temp2 = { {1,4} };
-        soldier[1] = temp2;
+        // vector<pair<int, int>> temp2 = { {1,4} };
+        // soldier[1] = temp2;
 
-        vector<pair<int, int>> temp3 = { {5,1},{1,2},{6,3}, {6,5},{4,3},{2,2} };
-        soldier[0] = temp3;
+        // vector<pair<int, int>> temp3 = { {5,1},{1,2},{6,3}, {6,5},{4,3},{2,2} };
+        // soldier[0] = temp3;
 
-        numth[0]=4;
-        numth[1]=3;
+        // numth[0]=4;
+        // numth[1]=3;
     }
 
     float eval(int pno, int isthisme) {
@@ -564,7 +564,7 @@ double minimax(board b, int pno, int isthisme, int ply, string *movefinal)
     double val;
     string s;
     // cerr<<bestchild<<endl;
-    for (int  mno= 0; mno < temp; ++mno)
+    for (int mno = 0; mno < temp; ++mno)
     {
         tcmove=apply_moves(b,true,posmove[mno][0],posmove[mno][1],posmove[mno][2],posmove[mno][3],pno);
         if (ply==0)
@@ -575,6 +575,8 @@ double minimax(board b, int pno, int isthisme, int ply, string *movefinal)
         {
             val=minimax(tcmove,pno*(-1),isthisme*(-1),ply-1,&s);
         } 
+
+        // cerr << ply << " " << val << " " << bestchild << endl;
 
         if (isthisme == 1) {
             if (val>bestchild) {
@@ -592,6 +594,8 @@ double minimax(board b, int pno, int isthisme, int ply, string *movefinal)
                 }
             }   
         }
+
+        // cerr << ply << " " << val << " " << bestchild << endl;
                
     }
 
@@ -609,8 +613,10 @@ double minimax(board b, int pno, int isthisme, int ply, string *movefinal)
         {
             val=minimax(tcmove,pno*(-1),isthisme*(-1),ply-1,&s);
         }
+
+        // cerr << ply << " " << val << " " << bestchild << endl;
         
-        if (isthisme == 1) {
+        if ((isthisme == 1)) {
             if (val>bestchild) {
                 bestchild=val;
                 if (ply==ply_MAX) {
@@ -618,7 +624,7 @@ double minimax(board b, int pno, int isthisme, int ply, string *movefinal)
                 }
             }
         }
-        else {
+        else{
             if (val < bestchild) {
                 bestchild=val;
                 if (ply==ply_MAX) {
@@ -626,6 +632,12 @@ double minimax(board b, int pno, int isthisme, int ply, string *movefinal)
                 }
             }   
         }
+
+        // cerr << ply << " " << val << " " << bestchild << endl;
+    }
+
+    if (bestchild*isthisme == -10000) {
+        bestchild = (-1)*bestchild;
     }
 
     return bestchild;
@@ -690,6 +702,16 @@ void print(board currboard)
 //         cerr << endl;
 //     }
 //     print(newboard);
+
+// int main() {
+//     board curr;
+//     string move;
+//     double ttt;
+//     print(curr);
+//     ttt = minimax(curr, 1, 1, 2, &move);
+//     cout << move << endl;
+
+// }
 
 int main() 
 {
