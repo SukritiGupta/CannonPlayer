@@ -542,14 +542,24 @@ double minimax(board b, int pno, int isthisme, int ply, string *movefinal)
         {
             val=minimax(tcmove,pno*(-1),isthisme*(-1),ply-1,&s);
         } 
-        if (val>bestchild)
-        {
-            bestchild=val;
-            if (ply==ply_MAX)
-            {
-                *movefinal="S " + to_string(posmove[mno][0]) + " " + to_string(posmove[mno][1]) + " M " + to_string(posmove[mno][2])+ " " +to_string(posmove[mno][3]);
-            }
-        }       
+
+        if (isthisme == 1) {
+        	if (val>bestchild) {
+	            bestchild=val;
+	            if (ply==ply_MAX) {
+	                *movefinal="S " + to_string(posmove[mno][0]) + " " + to_string(posmove[mno][1]) + " M " + to_string(posmove[mno][2])+ " " +to_string(posmove[mno][3]);
+	            }
+	        }
+        }
+        else {
+        	if (val < bestchild) {
+	            bestchild=val;
+	            if (ply==ply_MAX) {
+	                *movefinal="S " + to_string(posmove[mno][0]) + " " + to_string(posmove[mno][1]) + " M " + to_string(posmove[mno][2])+ " " +to_string(posmove[mno][3]);
+	            }
+	        }	
+        }
+               
     }
 
     posmove=b.find_cannon_moves(pno);
@@ -566,20 +576,30 @@ double minimax(board b, int pno, int isthisme, int ply, string *movefinal)
         {
             val=minimax(tcmove,pno*(-1),isthisme*(-1),ply-1,&s);
         }
-        if (val>bestchild)
-        {
-            bestchild=val;
-            if (ply==ply_MAX)
-            {
-                *movefinal="S " + to_string(posmove[mno][0]) + " " + to_string(posmove[mno][1]) + " B " + to_string(posmove[mno][2])+ " " +to_string(posmove[mno][3]);
-            }
+        
+        if (isthisme == 1) {
+        	if (val>bestchild) {
+	            bestchild=val;
+	            if (ply==ply_MAX) {
+	                *movefinal="S " + to_string(posmove[mno][0]) + " " + to_string(posmove[mno][1]) + " B " + to_string(posmove[mno][2])+ " " +to_string(posmove[mno][3]);
+	            }
+	        }
+        }
+        else {
+        	if (val < bestchild) {
+	            bestchild=val;
+	            if (ply==ply_MAX) {
+	                *movefinal="S " + to_string(posmove[mno][0]) + " " + to_string(posmove[mno][1]) + " B " + to_string(posmove[mno][2])+ " " +to_string(posmove[mno][3]);
+	            }
+	        }	
         }
     }
 
-    return (-1)*bestchild;
+    return bestchild;
     //???? no valid moves at depth handle
 }
 
+//??????????????????????????? pno = 1 is me so index is 1, if pno = -1 so index is 0
 void print(board currboard)
 {
     for (int i = 0; i < 8; ++i)
@@ -591,39 +611,28 @@ void print(board currboard)
         cerr<<endl;
     }
 
-    // cerr<<currboard.nummysol<<endl;
-    // cerr<<currboard.numothsol<<endl;
-    // cerr<<currboard.nummyth<<endl;
-    // cerr<<currboard.numothth<<endl;
+    cerr<<currboard.numsol[0]<<endl;
+    cerr<<currboard.numsol[1]<<endl;
+    cerr<<currboard.numth[0]<<endl;
+    cerr<<currboard.numth[1]<<endl;
 
-    // map<pair<int, int>, vector<tup>>::iterator aa;
-
-    // vector<pair<int, int>>::iterator xx;
-    // cerr<<"mySoldier"<<endl;
-    // for (xx=currboard.mySoldier.begin(); xx!=currboard.mySoldier.end(); ++xx)
-    // {
-    //     cerr<<(*xx).first<<"  "<<(*xx).second<<endl;
-    // }
-
-    // cerr<<"My can"<<endl;
-    // vector<can>::iterator poorva;
-    // for (poorva = currboard.allmycan.begin(); poorva != currboard.allmycan.end(); ++poorva)
-    // {
-    //     cerr<<(*poorva).centre.first<<" "<<(*poorva).centre.second<<"    "<<(*poorva).dir<<endl;
-    // }
-
-    // cerr<<"otherSoldier"<<endl;
-    // for (xx=currboard.otherSoldier.begin(); xx!=currboard.otherSoldier.end(); ++xx)
-    // {
-    //     cerr<<(*xx).first<<"  "<<(*xx).second<<endl;
-    // }
-
-    // cerr<<"Oth can"<<endl;
-    // // vector<can>::iterator poorva;
-    // for (poorva = currboard.allothercan.begin(); poorva != currboard.allothercan.end(); ++poorva)
-    // {
-    //     cerr<<(*poorva).centre.first<<" "<<(*poorva).centre.second<<"    "<<(*poorva).dir<<endl;
-    // }
+    vector<pair<int, int>>::iterator xx;
+    cerr<<"Soldiers"<<endl;
+    for (int i = 0; i < 2; i++) {
+    	for (xx=currboard.soldier[i].begin(); xx!=currboard.soldier[i].end(); ++xx)
+	    {
+	        cerr<<(*xx).first<<"  "<<(*xx).second<<endl;
+	    }
+    }
+    
+    cerr<<"My can"<<endl;
+    vector<can>::iterator poorva;
+    for (int i = 0; i < 2; i++) {
+	    for (poorva = currboard.allcan[i].begin(); poorva != currboard.allcan[i].end(); ++poorva)
+	    {
+	        cerr<<(*poorva).centre.first<<" "<<(*poorva).centre.second<<"    "<<(*poorva).dir<<endl;
+	    }
+	}
 
 }
 
@@ -656,7 +665,7 @@ int main()
     cin>>pno>>N>>M>>timeq;
     getline(cin,line);
 
-    ply_MAX=0;
+    ply_MAX=1;
 
     // if(pno==2)
     //     ply_MAX=2;
