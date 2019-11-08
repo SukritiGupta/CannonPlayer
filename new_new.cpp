@@ -39,6 +39,9 @@ struct tup {
     }
 };
 
+int n; // y dimension
+int m; // x dimension 
+
 //defining class board which would consisit of all essential functions and atributes
 class board {
 
@@ -52,13 +55,10 @@ public:
     int numsol[2];
     int numth[2];
 
-    int n; // y dimension
-    int m; // x dimension 
-
     //nXm == 8X8, 10X8, 10X10     
 
     //initialiser
-    board(int m, int n)  {
+    board()  {
 
         if ((n == 8) && (m == 8)){
             numsol[0]=12;
@@ -180,7 +180,7 @@ public:
         // numth[1]=3;
     }
 
-    float eval(int pno, int isthisme) {
+    double eval(int pno, int isthisme) {
         pno*=isthisme;
         int index=(1+pno)/2;
         int index2=(1-pno)/2;
@@ -188,30 +188,6 @@ public:
         //numsol[index] - numsol[index2] + numth[index] - numth[index2];
         // cerr<<"eval called "<<nummysol<<" "<<numothsol<<"  "<<nummyth<<"  "<<numothth<<endl;
         return ans;
-    }
-    float eval_score(int pno, int isthisme) {
-        pno*=isthisme;
-        int index=(1+pno)/2;
-        int index2=(1-pno)/2;
-
-        // 4 conditions - 2 townhalls killed, all soldiers killed, stagnant game, no possible move
-
-        if (numth[index2] == 2) {//win by killing townhall
-            ans = 2 + 2*numth[index];
-        }
-        else if (numsol[index2] == 0) {//win by all soldiers killed
-            ans = 8 + 2*(numth[index] - numth[index2]) 
-        }
-        else if (find_soldier_moves(pno*(-1)).size() + find_cannon_moves(pno*(-1)).size() == 0)
-            ans = 6 + 2*(numth[index] - numth[index2]);
-        }
-        else {//I don't know how to write a stagnant game condition
-            ans = 5 + 2*(numth[index] - numth[index2]);
-        }
-
-        ans += numsol[index]/100.000;
-        return ans;
-
     }
     vector<vector<int> > find_soldier_moves(int pno) 
     {
@@ -444,6 +420,33 @@ public:
         return ans;
     }
 
+
+    double eval_score(int pno, int isthisme) {
+        pno*=isthisme;
+        int index=(1+pno)/2;
+        int index2=(1-pno)/2;
+        double ans;
+
+        // 4 conditions - 2 townhalls killed, all soldiers killed, stagnant game, no possible move
+
+        if (numth[index2] == 2) {//win by killing townhall
+            ans = 2 + 2*numth[index];
+        }
+        else if (numsol[index2] == 0) {//win by all soldiers killed
+            ans = 8 + 2*(numth[index] - numth[index2]);
+        }
+        // else if (find_soldier_moves(pno*(-1)).size() + find_cannon_moves(pno*(-1)).size() == 0)
+        //     ans = 6 + 2*(numth[index] - numth[index2]);
+        // }
+        else {//I don't know how to write a stagnant game condition
+            ans = 5 + 2*(numth[index] - numth[index2]);
+        }
+
+        ans += numsol[index]/100.000;
+        return ans;
+
+    }
+
     void add_soldier(int b1, int b2, int pno)
     {
         int index=(1+pno)/2;
@@ -606,8 +609,6 @@ public:
 
     }
 
-
-
 };
 
 //written assuming that we will be having the above attributes to a board
@@ -705,7 +706,11 @@ double minimax(board b, int pno, int isthisme, int ply, string *movefinal, doubl
                
     }
 
-    posmove=b.find_cannon_moves(pno);
+    // stagnant=(param==2 && )?1:0;
+    // {
+    //     /* code */
+    // }
+    posmove=b.find_cannon_moves(pno,0);
     temp=posmove.size();
 
     for (int  mno= 0; mno < temp; ++mno)
@@ -740,7 +745,6 @@ double minimax(board b, int pno, int isthisme, int ply, string *movefinal, doubl
         }
         if (alpha>=beta)
         {
-            // cerr<<alpha<<"pruned"<<beta<<"  "<<bestchild<<" "<<isthisme<<endl;
             return val;
         } 
     }
@@ -810,16 +814,11 @@ void print(board currboard)
 int main() 
 {
     string line;
-    int pno, N,M, timeq;
-    cin>>pno>>N>>M>>timeq;
+    int pno, timeq;
+    cin>>pno>>n>>m>>timeq;
     getline(cin,line);
 
     ply_MAX=5;
-
-    // if(pno==2)
-    //     ply_MAX=2;
-    // else
-    //     ply_MAX=3;
 
     board curr;
 
@@ -838,6 +837,7 @@ int main()
 //eval exactly scoring????
     while((true))
     {
+        print(curr);
         ttt=minimax(curr,pno, 1,ply_MAX,&move,maxval,minval);
         cout<<move<<endl;
         execute_move(&curr,move,pno);
