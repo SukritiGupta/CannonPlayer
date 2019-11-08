@@ -550,7 +550,7 @@ void execute_move(board* currboard,string move, int pno)
     }
 }
 
-double minimax(board b, int pno, int isthisme, int ply, string *movefinal)
+double minimax(board b, int pno, int isthisme, int ply, string *movefinal, double alpha, double beta)
 {
     vector<vector<int>> posmove;
     posmove=b.find_soldier_moves(pno);
@@ -560,6 +560,7 @@ double minimax(board b, int pno, int isthisme, int ply, string *movefinal)
     {
         return b.eval(pno,isthisme);
     }
+
     double bestchild=isthisme*10000.0*(-1);
     board tcmove;
     double val;
@@ -573,25 +574,32 @@ double minimax(board b, int pno, int isthisme, int ply, string *movefinal)
         }
         else
         {
-            val=minimax(tcmove,pno*(-1),isthisme*(-1),ply-1,&s);
+            val=minimax(tcmove,pno*(-1),isthisme*(-1),ply-1,&s,alpha,beta);
         } 
 
         if (isthisme == 1) {
+            alpha=alpha<val?val:alpha;
             if (val>bestchild) {
                 bestchild=val;
                 if (ply==ply_MAX) {
                     *movefinal="S " + to_string(posmove[mno][0]) + " " + to_string(posmove[mno][1]) + " M " + to_string(posmove[mno][2])+ " " +to_string(posmove[mno][3]);
                 }
-            }
+            } 
         }
         else {
+            beta=beta>val?val:beta;
             if (val < bestchild) {
                 bestchild=val;
                 if (ply==ply_MAX) {
                     *movefinal="S " + to_string(posmove[mno][0]) + " " + to_string(posmove[mno][1]) + " M " + to_string(posmove[mno][2])+ " " +to_string(posmove[mno][3]);
                 }
-            }   
+            }  
         }
+        if (alpha>=beta)
+        {
+            // cerr<<alpha<<"pruned"<<beta<<"  "<<bestchild<<" "<<isthisme<<endl;
+            return val;
+        } 
                
     }
 
@@ -607,10 +615,11 @@ double minimax(board b, int pno, int isthisme, int ply, string *movefinal)
         }
         else
         {
-            val=minimax(tcmove,pno*(-1),isthisme*(-1),ply-1,&s);
+            val=minimax(tcmove,pno*(-1),isthisme*(-1),ply-1,&s,alpha,beta);
         }
         
         if (isthisme == 1) {
+            alpha=alpha<val?val:alpha;
             if (val>bestchild) {
                 bestchild=val;
                 if (ply==ply_MAX) {
@@ -619,19 +628,25 @@ double minimax(board b, int pno, int isthisme, int ply, string *movefinal)
             }
         }
         else {
+            beta=beta>val?val:beta;
             if (val < bestchild) {
                 bestchild=val;
                 if (ply==ply_MAX) {
                     *movefinal="S " + to_string(posmove[mno][0]) + " " + to_string(posmove[mno][1]) + " B " + to_string(posmove[mno][2])+ " " +to_string(posmove[mno][3]);
                 }
-            }   
+            }  
         }
+        if (alpha>=beta)
+        {
+            // cerr<<alpha<<"pruned"<<beta<<"  "<<bestchild<<" "<<isthisme<<endl;
+            return val;
+        } 
     }
 
     return bestchild;
     //???? no valid moves at depth handle
 }
-
+//????super table try
 void print(board currboard)
 {
     for (int i = 0; i < 8; ++i)
@@ -697,7 +712,7 @@ int main()
     cin>>pno>>N>>M>>timeq;
     getline(cin,line);
 
-    ply_MAX=2;
+    ply_MAX=5;
 
     // if(pno==2)
     //     ply_MAX=2;
@@ -721,7 +736,7 @@ int main()
 //eval exactly scoring????
     while((true))
     {
-        ttt=minimax(curr,pno, 1,ply_MAX,&move);
+        ttt=minimax(curr,pno, 1,ply_MAX,&move,maxval,minval);
         cout<<move<<endl;
         execute_move(&curr,move,pno);
 
@@ -731,7 +746,7 @@ int main()
 
         execute_move(&curr,move,(-1)*pno);
 
-        print(curr);
+        // print(curr);
         // exit(0);
     }
 
