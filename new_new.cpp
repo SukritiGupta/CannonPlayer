@@ -52,40 +52,118 @@ public:
     int numsol[2];
     int numth[2];
 
+    int n; // y dimension
+    int m; // x dimension 
+
+    //nXm == 8X8, 10X8, 10X10     
+
     //initialiser
-    board() 
-    {
-        numsol[0]=12;
-        numsol[1]=12;
-        vector<vector<int>> temp1{{-2,0,0,0,0,1,1,1},{-1,-1,-1,0,0,0,0,2},{-2,0,0,0,0,1,1,1},{-1,-1,-1,0,0,0,0,2},{-2,0,0,0,0,1,1,1},{-1,-1,-1,0,0,0,0,2},{-2,0,0,0,0,1,1,1},{-1,-1,-1,0,0,0,0,2}};
-        grid=temp1;
+    board(int m, int n)  {
 
-        vector<pair<int, int>> temp2 = { {0,5},{0,6},{0,7}, {2,5},{2,6},{2,7}, {4,5},{4,6},{4,7}, {6,5},{6,6},{6,7} };
-        soldier[1] = temp2;
+        if ((n == 8) && (m == 8)){
+            numsol[0]=12;
+            numsol[1]=12;
+            vector<vector<int>> temp1{{-2,0,0,0,0,1,1,1},{-1,-1,-1,0,0,0,0,2},{-2,0,0,0,0,1,1,1},{-1,-1,-1,0,0,0,0,2},{-2,0,0,0,0,1,1,1},{-1,-1,-1,0,0,0,0,2},{-2,0,0,0,0,1,1,1},{-1,-1,-1,0,0,0,0,2}};
+            grid=temp1;
 
-        vector<pair<int, int>> temp3 = { {1,0},{1,1},{1,2}, {3,0},{3,1},{3,2}, {5,0},{5,1},{5,2}, {7,0},{7,1},{7,2} };
-        soldier[0] = temp3;
+            vector<pair<int, int>> temp2 = { {0,5},{0,6},{0,7}, {2,5},{2,6},{2,7}, {4,5},{4,6},{4,7}, {6,5},{6,6},{6,7} };
+            soldier[1] = temp2;
 
-        can c{{0,6},0};
-        allcan[1].push_back(c);
-        c.centre.first=2;
-        allcan[1].push_back(c);
-        c.centre.first=4;
-        allcan[1].push_back(c);
-        c.centre.first=6;
-        allcan[1].push_back(c);
+            vector<pair<int, int>> temp3 = { {1,0},{1,1},{1,2}, {3,0},{3,1},{3,2}, {5,0},{5,1},{5,2}, {7,0},{7,1},{7,2} };
+            soldier[0] = temp3;
 
-        can c1{{1,1},0};
-        allcan[0].push_back(c1);
-        c1.centre.first=3;
-        allcan[0].push_back(c1);
-        c1.centre.first=5;
-        allcan[0].push_back(c1);
-        c1.centre.first=7;
-        allcan[0].push_back(c1);
+            can c{{0,6},0};
+            allcan[1].push_back(c);
+            c.centre.first=2;
+            allcan[1].push_back(c);
+            c.centre.first=4;
+            allcan[1].push_back(c);
+            c.centre.first=6;
+            allcan[1].push_back(c);
 
-        numth[0]=4;
-        numth[1]=4;
+            can c1{{1,1},0};
+            allcan[0].push_back(c1);
+            c1.centre.first=3;
+            allcan[0].push_back(c1);
+            c1.centre.first=5;
+            allcan[0].push_back(c1);
+            c1.centre.first=7;
+            allcan[0].push_back(c1);
+
+            numth[0]=4;
+            numth[1]=4;
+        }
+        else if ((n == 10) && (m == 8)) {
+            numsol[0]=12;
+            numsol[1]=12;
+            vector<vector<int>> temp1{{-2,0,0,0,0,0,0,1,1,1},{-1,-1,-1,0,0,0,0,0,0,2},{-2,0,0,0,0,0,0,1,1,1},{-1,-1,-1,0,0,0,0,0,0,2},{-2,0,0,0,0,0,0,1,1,1},{-1,-1,-1,0,0,0,0,0,0,2},{-2,0,0,0,0,0,0,1,1,1},{-1,-1,-1,0,0,0,0,0,0,2}};
+            grid=temp1;
+
+            vector<pair<int, int>> temp2 = { {0,7},{0,8},{0,9}, {2,7},{2,8},{2,9}, {4,7},{4,8},{4,9}, {6,7},{6,8},{6,9} };
+            soldier[1] = temp2;
+
+            vector<pair<int, int>> temp3 = { {1,0},{1,1},{1,2}, {3,0},{3,1},{3,2}, {5,0},{5,1},{5,2}, {7,0},{7,1},{7,2} };
+            soldier[0] = temp3;
+
+            can c{{0,8},0};
+            allcan[1].push_back(c);
+            c.centre.first=2;
+            allcan[1].push_back(c);
+            c.centre.first=4;
+            allcan[1].push_back(c);
+            c.centre.first=6;
+            allcan[1].push_back(c);
+
+            can c1{{1,1},0};
+            allcan[0].push_back(c1);
+            c1.centre.first=3;
+            allcan[0].push_back(c1);
+            c1.centre.first=5;
+            allcan[0].push_back(c1);
+            c1.centre.first=7;
+            allcan[0].push_back(c1);
+
+            numth[0]=4;
+            numth[1]=4;
+        }
+        else if ((n == 10) && (m == 10)) {
+            numsol[0]=15;
+            numsol[1]=15;
+            vector<vector<int>> temp1{{-2,0,0,0,0,0,0,1,1,1},{-1,-1,-1,0,0,0,0,0,0,2},{-2,0,0,0,0,0,0,1,1,1},{-1,-1,-1,0,0,0,0,0,0,2},{-2,0,0,0,0,0,0,1,1,1},{-1,-1,-1,0,0,0,0,0,0,2},{-2,0,0,0,0,0,0,1,1,1},{-1,-1,-1,0,0,0,0,0,0,2}, 
+                                    {-2,0,0,0,0,0,0,1,1,1},{-1,-1,-1,0,0,0,0,0,0,2}};
+            grid=temp1;
+
+            vector<pair<int, int>> temp2 = { {0,7},{0,8},{0,9}, {2,7},{2,8},{2,9}, {4,7},{4,8},{4,9}, {6,7},{6,8},{6,9}, {8,7},{8,8},{8,9} };
+            soldier[1] = temp2;
+
+            vector<pair<int, int>> temp3 = { {1,0},{1,1},{1,2}, {3,0},{3,1},{3,2}, {5,0},{5,1},{5,2}, {7,0},{7,1},{7,2}, {9,0},{9,1},{9,2} };
+            soldier[0] = temp3;
+
+            can c{{0,8},0};
+            allcan[1].push_back(c);
+            c.centre.first=2;
+            allcan[1].push_back(c);
+            c.centre.first=4;
+            allcan[1].push_back(c);
+            c.centre.first=6;
+            allcan[1].push_back(c);
+            c.centre.first=8;
+            allcan[1].push_back(c);
+
+            can c1{{1,1},0};
+            allcan[0].push_back(c1);
+            c1.centre.first=3;
+            allcan[0].push_back(c1);
+            c1.centre.first=5;
+            allcan[0].push_back(c1);
+            c1.centre.first=7;
+            allcan[0].push_back(c1);
+            c1.centre.first=9;
+            allcan[0].push_back(c1);
+
+            numth[0]=5;
+            numth[1]=5;
+        }
 
         // numsol[0]=6;
         // numsol[1]=1;
@@ -111,6 +189,30 @@ public:
         // cerr<<"eval called "<<nummysol<<" "<<numothsol<<"  "<<nummyth<<"  "<<numothth<<endl;
         return ans;
     }
+    float eval_score(int pno, int isthisme) {
+        pno*=isthisme;
+        int index=(1+pno)/2;
+        int index2=(1-pno)/2;
+
+        // 4 conditions - 2 townhalls killed, all soldiers killed, stagnant game, no possible move
+
+        if (numth[index2] == 2) {//win by killing townhall
+            ans = 2 + 2*numth[index];
+        }
+        else if (numsol[index2] == 0) {//win by all soldiers killed
+            ans = 8 + 2*(numth[index] - numth[index2]) 
+        }
+        else if (find_soldier_moves(pno*(-1)).size() + find_cannon_moves(pno*(-1)).size() == 0)
+            ans = 6 + 2*(numth[index] - numth[index2]);
+        }
+        else {//I don't know how to write a stagnant game condition
+            ans = 5 + 2*(numth[index] - numth[index2]);
+        }
+
+        ans += numsol[index]/100.000;
+        return ans;
+
+    }
     vector<vector<int> > find_soldier_moves(int pno) 
     {
         vector<vector<int> > ans;
@@ -128,52 +230,52 @@ public:
 
             //forward move: <=0 because empty or other's soldier
             // cerr<<"1" << endl;
-            if ((y-pno >= 0) && (y-pno <= 7) && (grid[x][y-pno]*pno <= 0)) {
+            if ((y-pno >= 0) && (y-pno <= n) && (grid[x][y-pno]*pno <= 0)) {
                 temp = vector<int> {x, y, x, y-pno};
                 ans.push_back(temp);
             }
 
             //right diagonal move
-            if ((x+pno <= 7) && (x+pno >= 0) && (y-pno >= 0) && (y-pno <= 7) && (grid[x+pno][y-pno]*pno <= 0)) {
+            if ((x+pno <= m) && (x+pno >= 0) && (y-pno >= 0) && (y-pno <= n) && (grid[x+pno][y-pno]*pno <= 0)) {
                 temp = vector<int> {x, y, x+pno, y-pno};
                 ans.push_back(temp);
             } 
 
             //left diagonal move
-            if ((x-pno >= 0) && (x-pno <= 7) && (y-pno >= 0) && (y-pno <= 7) && (grid[x-pno][y-pno]*pno <= 0)) {
+            if ((x-pno >= 0) && (x-pno <= m) && (y-pno >= 0) && (y-pno <= n) && (grid[x-pno][y-pno]*pno <= 0)) {
                 temp = vector<int> {x, y, x-pno, y-pno};
                 ans.push_back(temp);
             }
 
             //right adjacent move
-            if ((x+pno <= 7) && (x+pno >= 0) && (grid[x+pno][y]*pno < 0)) {
+            if ((x+pno <= m) && (x+pno >= 0) && (grid[x+pno][y]*pno < 0)) {
                 temp = vector<int> {x, y, x+pno, y};
                 ans.push_back(temp);
             }
 
             //left adjacent move
-            if ((x-pno >= 0) && (x-pno <= 7) && (grid[x-pno][y]*pno < 0)) {
+            if ((x-pno >= 0) && (x-pno <= m) && (grid[x-pno][y]*pno < 0)) {
                 temp = vector<int> {x, y, x-pno, y};
                 ans.push_back(temp);
             }
 
             //retreat moves, considering that it can kill soldiers while retreating
             // ??????????????????? can a soldier kill other soldiers while retreating
-            if (((y-pno >= 0) && (y-pno <= 7) && (grid[x][y-pno]*pno == -1)) || ((x+pno <= 7) && (x+pno >= 0) && (y-pno >= 0) && (y-pno <= 7) && (grid[x+pno][y-pno]*pno == -1)) || 
-                ((x-pno >= 0) && (x-pno <= 7) && (y-pno >= 0) && (y-pno <= 7) && (grid[x-pno][y-pno]*pno == -1)) || 
-                ((x+pno <= 7) && (x+pno >= 0) && (grid[x+pno][y]*pno == -1)) || ((x-pno >= 0) && (x-pno <= 7) && (grid[x-pno][y]*pno == -1))) {
+            if (((y-pno >= 0) && (y-pno <= n) && (grid[x][y-pno]*pno == -1)) || ((x+pno <= m) && (x+pno >= 0) && (y-pno >= 0) && (y-pno <= n) && (grid[x+pno][y-pno]*pno == -1)) || 
+                ((x-pno >= 0) && (x-pno <= m) && (y-pno >= 0) && (y-pno <= n) && (grid[x-pno][y-pno]*pno == -1)) || 
+                ((x+pno <= m) && (x+pno >= 0) && (grid[x+pno][y]*pno == -1)) || ((x-pno >= 0) && (x-pno <= m) && (grid[x-pno][y]*pno == -1))) {
 
-                if ((y+2*pno <= 7) && (y+2*pno >= 0) && (grid[x][y+2*pno]*pno <= 0)) {
+                if ((y+2*pno <= n) && (y+2*pno >= 0) && (grid[x][y+2*pno]*pno <= 0)) {
                     temp = vector<int> {x, y, x, y+2*pno};
                     ans.push_back(temp);
                 }
 
-                if ((y+2*pno <=7) && (y+2*pno >= 0) && (x+2*pno <=7) && (x+2*pno >= 0) && (grid[x+2*pno][y+2*pno]*pno <= 0)) {
+                if ((y+2*pno <= n) && (y+2*pno >= 0) && (x+2*pno <= m) && (x+2*pno >= 0) && (grid[x+2*pno][y+2*pno]*pno <= 0)) {
                     temp = vector<int> {x, y, x+2*pno, y+2*pno};
                     ans.push_back(temp);
                 }
 
-                if ((y+2*pno <=7) && (y+2*pno >= 0) && (x-2*pno >= 0) && (x-2*pno <= 7) && (grid[x-2*pno][y+2*pno]*pno <= 0)) {
+                if ((y+2*pno <= n) && (y+2*pno >= 0) && (x-2*pno >= 0) && (x-2*pno <= m) && (grid[x-2*pno][y+2*pno]*pno <= 0)) {
                     temp = vector<int> {x, y, x-2*pno, y+2*pno};
                     ans.push_back(temp);
                 }
@@ -192,17 +294,17 @@ public:
                     temp = vector<int> {x, y+1, x, y-2};
                     ans.push_back(temp);
                 }
-                if ((y+2 <= 7) && (grid[x][y+2] == 0)) {
+                if ((y+2 <= n) && (grid[x][y+2] == 0)) {
                     temp = vector<int> {x, y-1, x, y+2};
                     ans.push_back(temp);
                 }
             }
             else if (dir == 1) {
-                if ((y-2 >= 0) && (x+2 <= 7) && (grid[x+2][y-2] == 0)) {
+                if ((y-2 >= 0) && (x+2 <= m) && (grid[x+2][y-2] == 0)) {
                     temp = vector<int> {x-1, y+1, x+2, y-2};
                     ans.push_back(temp);
                 }
-                if ((y+2 <= 7) && (x-2 >= 0) && (grid[x-2][y+2] == 0)) {
+                if ((y+2 <= n) && (x-2 >= 0) && (grid[x-2][y+2] == 0)) {
                     temp = vector<int> {x+1, y-1, x-2, y+2};
                     ans.push_back(temp);
                 }
@@ -212,13 +314,13 @@ public:
                     temp = vector<int> {x+1, y, x-2, y};
                     ans.push_back(temp);
                 }
-                if ((x+2 <= 7) && (grid[x+2][y] == 0)) {
+                if ((x+2 <= m) && (grid[x+2][y] == 0)) {
                     temp = vector<int> {x-1, y, x+2, y};
                     ans.push_back(temp);
                 }
             }
             else { //if dir == 3
-                if ((y+2 <= 7) && (x+2 <= 7) && (grid[x+2][y+2] == 0)) {
+                if ((y+2 <= n) && (x+2 <= m) && (grid[x+2][y+2] == 0)) {
                     temp = vector<int> {x-1, y-1, x+2, y+2};
                     ans.push_back(temp);
                 }
@@ -233,7 +335,7 @@ public:
         return ans;
     }
 
-    vector<vector<int> > find_cannon_moves(int pno) {
+    vector<vector<int> > find_cannon_moves(int pno, int stagnant) { //stagnant = 0 if empty blast is allowed, 1 if empty blast is not allowed
         //ans vector to be returned
         vector<vector<int> > ans;
         vector<int> temp;
@@ -250,44 +352,44 @@ public:
             if (dir == 0) {
                 if ((y-2 >= 0) && (grid[x][y-2] == 0))
                 {
-                    if ((y-3 >= 0) && (grid[x][y-3]*pno <= 0)) {
+                    if ((y-3 >= 0) && (grid[x][y-3]*pno + stagnant <= 0)) {
                         temp = vector<int> {x, y, x, y-3};
                         ans.push_back(temp);
                     }
-                    if ((y-4 >= 0) && (grid[x][y-4]*pno <= 0)) {
+                    if ((y-4 >= 0) && (grid[x][y-4]*pno + stagnant <= 0)) {
                         temp = vector<int> {x, y, x, y-4};
                         ans.push_back(temp);
                     }
                 }
-                if ((y+2 <= 7) && (grid[x][y+2] == 0))
+                if ((y+2 <= n) && (grid[x][y+2] == 0))
                 {
-                    if ((y+3 <= 7) && (grid[x][y+3]*pno <= 0)) {
+                    if ((y+3 <= n) && (grid[x][y+3]*pno + stagnant <= 0)) {
                         temp = vector<int> {x, y, x, y+3};
                         ans.push_back(temp);
                     }
-                    if ((y+4 <= 7) && (grid[x][y+4]*pno <= 0)) {
+                    if ((y+4 <= n) && (grid[x][y+4]*pno + stagnant <= 0)) {
                         temp = vector<int> {x, y, x, y+4};
                         ans.push_back(temp);
                     }
                 }
             }
             else if (dir == 1) {
-                if ((y-2 >= 0) && (x+2 <= 7) && (grid[x+2][y-2] == 0)) {
-                    if ((y-3 >= 0) && (x+3 <= 7) && (grid[x+3][y-3]*pno <= 0)) {
+                if ((y-2 >= 0) && (x+2 <= m) && (grid[x+2][y-2] == 0)) {
+                    if ((y-3 >= 0) && (x+3 <= m) && (grid[x+3][y-3]*pno + stagnant <= 0)) {
                         temp = vector<int> {x, y, x+3, y-3};
                         ans.push_back(temp);
                     }
-                    if ((y-4 >= 0) && (x+4 <= 7) && (grid[x+4][y-4]*pno <= 0)) {
+                    if ((y-4 >= 0) && (x+4 <= m) && (grid[x+4][y-4]*pno + stagnant <= 0)) {
                         temp = vector<int> {x, y, x+4, y-4};
                         ans.push_back(temp);
                     }
                 }
-                if ((y+2 <= 7) && (x-2 >= 0) && (grid[x-2][y+2] == 0)) {
-                    if ((y+3 <= 7) && (x-3 >= 0) && (grid[x-3][y+3]*pno <= 0)) {
+                if ((y+2 <= n) && (x-2 >= 0) && (grid[x-2][y+2] == 0)) {
+                    if ((y+3 <= n) && (x-3 >= 0) && (grid[x-3][y+3]*pno + stagnant <= 0)) {
                         temp = vector<int> {x, y, x-3, y+3};
                         ans.push_back(temp);
                     }
-                    if ((y+4 <= 7) && (x-4 >= 0) && (grid[x-4][y+4]*pno <= 0)) {
+                    if ((y+4 <= n) && (x-4 >= 0) && (grid[x-4][y+4]*pno + stagnant <= 0)) {
                         temp = vector<int> {x, y, x-4, y+4};
                         ans.push_back(temp);
                     }
@@ -295,43 +397,43 @@ public:
             }
             else if (dir == 2) {
                 if ((x-2 >= 0) && (grid[x-2][y] == 0)) {
-                    if ((x-3 >= 0) && (grid[x-3][y]*pno <= 0)) {
+                    if ((x-3 >= 0) && (grid[x-3][y]*pno + stagnant <= 0)) {
                         temp = vector<int> {x, y, x-3, y};
                         ans.push_back(temp);
                     }
-                    if ((x-4 >= 0) && (grid[x-4][y]*pno <= 0)) {
+                    if ((x-4 >= 0) && (grid[x-4][y]*pno + stagnant <= 0)) {
                         temp = vector<int> {x, y, x-4, y};
                         ans.push_back(temp);
                     }
                 }
-                if ((x+3 <= 7) && (grid[x+2][y] == 0)) {
-                    if ((x+3 <= 7) && (grid[x+3][y]*pno <= 0)) {
+                if ((x+3 <= m) && (grid[x+2][y] == 0)) {
+                    if ((x+3 <= m) && (grid[x+3][y]*pno + stagnant <= 0)) {
                         temp = vector<int> {x, y, x+3, y};
                         ans.push_back(temp);
                     }
-                    if ((x+4 <= 7) && (grid[x+4][y]*pno <= 0)) {
+                    if ((x+4 <= m) && (grid[x+4][y]*pno + stagnant <= 0)) {
                         temp = vector<int> {x, y, x+4, y};
                         ans.push_back(temp);
                     }
                 }
             }
             else { //if dir == 3
-                if ((y+2 <=7) && (x+2 <= 7) && (grid[x+2][y+2] == 0)) {
-                    if ((y+3 <= 7) && (x+3 <= 7) && (grid[x+3][y+3]*pno <= 0)) {
+                if ((y+2 <= n) && (x+2 <= m) && (grid[x+2][y+2] == 0)) {
+                    if ((y+3 <= n) && (x+3 <= m) && (grid[x+3][y+3]*pno + stagnant <= 0)) {
                         temp = vector<int> {x, y, x+3, y+3};
                         ans.push_back(temp);
                     }
-                    if ((y+4 <= 7) && (x+4 <= 7) && (grid[x+4][y+4]*pno <= 0)) {
+                    if ((y+4 <= n) && (x+4 <= m) && (grid[x+4][y+4]*pno + stagnant <= 0)) {
                         temp = vector<int> {x, y, x+4, y+4};
                         ans.push_back(temp);
                     }
                 }
                 if ((y-2 >= 0) && (x-2 >= 0) && (grid[x-2][y-2] == 0)) {
-                    if ((y-3 >= 0) && (x-3 >= 0) && (grid[x-3][y-3]*pno <= 0)) {
+                    if ((y-3 >= 0) && (x-3 >= 0) && (grid[x-3][y-3]*pno + stagnant <= 0)) {
                         temp = vector<int> {x, y, x-3, y-3};
                         ans.push_back(temp);
                     }
-                    if ((y-4 >= 0) && (x-4 >= 0) && (grid[x-4][y-4]*pno <= 0)) {
+                    if ((y-4 >= 0) && (x-4 >= 0) && (grid[x-4][y-4]*pno + stagnant <= 0)) {
                         temp = vector<int> {x, y, x-4, y-4};
                         ans.push_back(temp);
                     }
@@ -349,13 +451,13 @@ public:
         soldier[index].push_back(pair<int,int>(b1,b2));
         numsol[index]+=1;
 
-        if (b2+2<=7 && grid[b1][b2+1]==pno && grid[b1][b2+2]==pno)
+        if (b2+2<= n && grid[b1][b2+1]==pno && grid[b1][b2+2]==pno)
         {
             can a{pair<int,int>(b1,b2+1),0};
             allcan[index].push_back(a);
         }
 
-        if (b2+1<=7 && b2-1>=0 && grid[b1][b2+1]==pno && grid[b1][b2-1]==pno)
+        if (b2+1<= n && b2-1>=0 && grid[b1][b2+1]==pno && grid[b1][b2-1]==pno)
         {
             can a{pair<int,int>(b1,b2),0};
             allcan[index].push_back(a);
@@ -367,13 +469,13 @@ public:
             allcan[index].push_back(a);
         }
 
-        if (b1+2<=7 && grid[b1+2][b2]==pno && grid[b1+1][b2]==pno)
+        if (b1+2<= m && grid[b1+2][b2]==pno && grid[b1+1][b2]==pno)
         {
             can a{pair<int,int>(b1+1,b2),2};
             allcan[index].push_back(a);
         }
 
-        if (b1+1<=7 && b1-1>=0 && grid[b1-1][b2]==pno && grid[b1+1][b2]==pno)
+        if (b1+1<= m && b1-1>=0 && grid[b1-1][b2]==pno && grid[b1+1][b2]==pno)
         {
             can a{pair<int,int>(b1,b2),2};
             allcan[index].push_back(a);
@@ -385,13 +487,13 @@ public:
             allcan[index].push_back(a);
         }
 
-        if (b1+2<=7 && b2+2<=7 && grid[b1+2][b2+2]==pno && grid[b1+1][b2+1]==pno)
+        if (b1+2<= m && b2+2<= n && grid[b1+2][b2+2]==pno && grid[b1+1][b2+1]==pno)
         {
             can a{pair<int,int>(b1+1,b2+1),3};
             allcan[index].push_back(a);
         }
 
-        if (b1+1<=7 && b2+1<=7 && b1-1>=0 && b2-1>=0 && grid[b1-1][b2-1]==pno && grid[b1+1][b2+1]==pno)
+        if (b1+1<= m && b2+1<= n && b1-1>=0 && b2-1>=0 && grid[b1-1][b2-1]==pno && grid[b1+1][b2+1]==pno)
         {
             can a{pair<int,int>(b1,b2),3};
             allcan[index].push_back(a);
@@ -403,19 +505,19 @@ public:
             allcan[index].push_back(a);
         }
 
-        if (b1+2<=7 && b2-2>=0 && grid[b1+2][b2-2]==pno && grid[b1+1][b2-1]==pno)
+        if (b1+2<= m && b2-2>=0 && grid[b1+2][b2-2]==pno && grid[b1+1][b2-1]==pno)
         {
             can a{pair<int,int>(b1+1,b2-1),1};
             allcan[index].push_back(a);
         }
 
-        if (b1+1<=7 && b2-1>=0 && b1-1>=0 && b2+1<=7 && grid[b1+1][b2-1]==pno && grid[b1-1][b2+1]==pno)
+        if (b1+1<= m && b2-1>=0 && b1-1>=0 && b2+1<= n && grid[b1+1][b2-1]==pno && grid[b1-1][b2+1]==pno)
         {
             can a{pair<int,int>(b1,b2),1};
             allcan[index].push_back(a);
         }
 
-        if ( b1-2>=0 && b2+2<=7 && grid[b1-1][b2+1]==pno && grid[b1-2][b2+2]==pno)
+        if ( b1-2>=0 && b2+2<= n && grid[b1-1][b2+1]==pno && grid[b1-2][b2+2]==pno)
         {
             can a{pair<int,int>(b1-1,b2+1),1};
             allcan[index].push_back(a);
@@ -428,13 +530,13 @@ public:
         soldier[index].erase(find(soldier[index].begin(), soldier[index].end(), pair<int,int>(b1,b2)));
         numsol[index]-=1;
 
-        if (b2+2<=7 && grid[b1][b2+1]==pno && grid[b1][b2+2]==pno)
+        if (b2+2<= n && grid[b1][b2+1]==pno && grid[b1][b2+2]==pno)
         {
             can a{pair<int,int>(b1,b2+1),0};
             allcan[index].erase(    find_if(allcan[index].begin(), allcan[index].end(), a)   );
         }
 
-        if (b2+1<=7 && b2-1>=0 && grid[b1][b2+1]==pno && grid[b1][b2-1]==pno)
+        if (b2+1<= n && b2-1>=0 && grid[b1][b2+1]==pno && grid[b1][b2-1]==pno)
         {
             can a{pair<int,int>(b1,b2),0};
             allcan[index].erase(    find_if(allcan[index].begin(), allcan[index].end(), a)   );
@@ -446,13 +548,13 @@ public:
             allcan[index].erase(    find_if(allcan[index].begin(), allcan[index].end(), a)   );
         }
 
-        if (b1+2<=7 && grid[b1+2][b2]==pno && grid[b1+1][b2]==pno)
+        if (b1+2<= m && grid[b1+2][b2]==pno && grid[b1+1][b2]==pno)
         {
             can a{pair<int,int>(b1+1,b2),2};
             allcan[index].erase(    find_if(allcan[index].begin(), allcan[index].end(), a)   );
         }
 
-        if (b1+1<=7 && b1-1>=0 && grid[b1-1][b2]==pno && grid[b1+1][b2]==pno)
+        if (b1+1<= m && b1-1>=0 && grid[b1-1][b2]==pno && grid[b1+1][b2]==pno)
         {
             can a{pair<int,int>(b1,b2),2};
             allcan[index].erase(    find_if(allcan[index].begin(), allcan[index].end(), a)   );
@@ -464,13 +566,13 @@ public:
             allcan[index].erase(    find_if(allcan[index].begin(), allcan[index].end(), a)   );
         }
 
-        if (b1+2<=7 && b2+2<=7 && grid[b1+2][b2+2]==pno && grid[b1+1][b2+1]==pno)
+        if (b1+2<= m && b2+2<= n && grid[b1+2][b2+2]==pno && grid[b1+1][b2+1]==pno)
         {
             can a{pair<int,int>(b1+1,b2+1),3};
             allcan[index].erase(    find_if(allcan[index].begin(), allcan[index].end(), a)   );
         }
 
-        if (b1+1<=7 && b2+1<=7 && b1-1>=0 && b2-1>=0 && grid[b1-1][b2-1]==pno && grid[b1+1][b2+1]==pno)
+        if (b1+1<= m && b2+1<= n && b1-1>=0 && b2-1>=0 && grid[b1-1][b2-1]==pno && grid[b1+1][b2+1]==pno)
         {
             can a{pair<int,int>(b1,b2),3};
             allcan[index].erase(    find_if(allcan[index].begin(), allcan[index].end(), a)   );
@@ -482,19 +584,19 @@ public:
             allcan[index].erase(    find_if(allcan[index].begin(), allcan[index].end(), a)   );
         }
 
-        if (b1+2<=7 && b2-2>=0 && grid[b1+2][b2-2]==pno && grid[b1+1][b2-1]==pno)
+        if (b1+2<= m && b2-2>=0 && grid[b1+2][b2-2]==pno && grid[b1+1][b2-1]==pno)
         {
             can a{pair<int,int>(b1+1,b2-1),1};
             allcan[index].erase(    find_if(allcan[index].begin(), allcan[index].end(), a)   );
         }
 
-        if (b1+1<=7 && b2-1>=0 && b1-1>=0 && b2+1<=7 && grid[b1+1][b2-1]==pno && grid[b1-1][b2+1]==pno)
+        if (b1+1<= m && b2-1>=0 && b1-1>=0 && b2+1<= n && grid[b1+1][b2-1]==pno && grid[b1-1][b2+1]==pno)
         {
             can a{pair<int,int>(b1,b2),1};
             allcan[index].erase(    find_if(allcan[index].begin(), allcan[index].end(), a)   );
         }
 
-        if ( b1-2>=0 && b2+2<=7 && grid[b1-1][b2+1]==pno && grid[b1-2][b2+2]==pno)
+        if ( b1-2>=0 && b2+2<= n && grid[b1-1][b2+1]==pno && grid[b1-2][b2+2]==pno)
         {
             can a{pair<int,int>(b1-1,b2+1),1};
             allcan[index].erase(    find_if(allcan[index].begin(), allcan[index].end(), a)   );
