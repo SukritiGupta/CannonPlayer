@@ -84,8 +84,8 @@ public:
         c1.centre.first=7;
         allcan[0].push_back(c1);
 
-        // numth[0]=4;
-        // numth[1]=4;
+        numth[0]=4;
+        numth[1]=4;
 
         // numsol[0]=6;
         // numsol[1]=1;
@@ -180,7 +180,6 @@ public:
             }
         }
 
-        //??????????????????????? a cannon can't kill soldier while moving
         vector<can>::iterator ptr2;
         int dir;
         for (ptr2 = allcan[index].begin(); ptr2 != allcan[index].end(); ptr2++) {
@@ -234,7 +233,6 @@ public:
         return ans;
     }
 
-    //??????????????????khudko mat udana
     vector<vector<int> > find_cannon_moves(int pno) {
         //ans vector to be returned
         vector<vector<int> > ans;
@@ -558,13 +556,15 @@ double minimax(board b, int pno, int isthisme, int ply, string *movefinal)
     posmove=b.find_soldier_moves(pno);
 
     int temp=posmove.size();
+    if (temp==0)
+    {
+        return b.eval(pno,isthisme);
+    }
     double bestchild=isthisme*10000.0*(-1);
-    //aloha beta pruning ke liye 2 baar likhe???????????????????????
     board tcmove;
     double val;
     string s;
-    // cerr<<bestchild<<endl;
-    for (int mno = 0; mno < temp; ++mno)
+    for (int  mno= 0; mno < temp; ++mno)
     {
         tcmove=apply_moves(b,true,posmove[mno][0],posmove[mno][1],posmove[mno][2],posmove[mno][3],pno);
         if (ply==0)
@@ -575,8 +575,6 @@ double minimax(board b, int pno, int isthisme, int ply, string *movefinal)
         {
             val=minimax(tcmove,pno*(-1),isthisme*(-1),ply-1,&s);
         } 
-
-        // cerr << ply << " " << val << " " << bestchild << endl;
 
         if (isthisme == 1) {
             if (val>bestchild) {
@@ -594,8 +592,6 @@ double minimax(board b, int pno, int isthisme, int ply, string *movefinal)
                 }
             }   
         }
-
-        // cerr << ply << " " << val << " " << bestchild << endl;
                
     }
 
@@ -613,10 +609,8 @@ double minimax(board b, int pno, int isthisme, int ply, string *movefinal)
         {
             val=minimax(tcmove,pno*(-1),isthisme*(-1),ply-1,&s);
         }
-
-        // cerr << ply << " " << val << " " << bestchild << endl;
         
-        if ((isthisme == 1)) {
+        if (isthisme == 1) {
             if (val>bestchild) {
                 bestchild=val;
                 if (ply==ply_MAX) {
@@ -624,7 +618,7 @@ double minimax(board b, int pno, int isthisme, int ply, string *movefinal)
                 }
             }
         }
-        else{
+        else {
             if (val < bestchild) {
                 bestchild=val;
                 if (ply==ply_MAX) {
@@ -632,19 +626,12 @@ double minimax(board b, int pno, int isthisme, int ply, string *movefinal)
                 }
             }   
         }
-
-        // cerr << ply << " " << val << " " << bestchild << endl;
-    }
-
-    if (bestchild*isthisme == -10000) {
-        bestchild = (-1)*bestchild;
     }
 
     return bestchild;
     //???? no valid moves at depth handle
 }
 
-//??????????????????????????? pno = 1 is me so index is 1, if pno = -1 so index is 0
 void print(board currboard)
 {
     for (int i = 0; i < 8; ++i)
@@ -702,16 +689,6 @@ void print(board currboard)
 //         cerr << endl;
 //     }
 //     print(newboard);
-
-// int main() {
-//     board curr;
-//     string move;
-//     double ttt;
-//     print(curr);
-//     ttt = minimax(curr, 1, 1, 2, &move);
-//     cout << move << endl;
-
-// }
 
 int main() 
 {
