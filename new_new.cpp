@@ -435,6 +435,14 @@ public:
         else if (numsol[index2] == 0) {//win by all soldiers killed
             ans = 8 + 2*(numth[index] - numth[index2]);
         }
+        else if (numth[index]==2)
+        {
+            ans=-100;
+        }
+        else if (numth[index]>=3)
+        {
+            ans=100*(numth[index] - numth[index2]);
+        }
         // else if (find_soldier_moves(pno*(-1)).size() + find_cannon_moves(pno*(-1)).size() == 0)
         //     ans = 6 + 2*(numth[index] - numth[index2]);
         // }
@@ -442,7 +450,7 @@ public:
             ans = 5 + 2*(numth[index] - numth[index2]);
         }
 
-        ans += numsol[index]/100.000;
+        ans += (numsol[index] - numsol[index2])/100.000;
         return ans;
 
     }
@@ -661,7 +669,7 @@ double minimax(board b, int pno, int isthisme, int ply, string *movefinal, doubl
     int temp=posmove.size();
     if (temp==0)
     {
-        return b.eval(pno,isthisme);
+        return b.eval_score(pno,isthisme);
     }
 
     double bestchild=isthisme*10000.0*(-1);
@@ -673,7 +681,7 @@ double minimax(board b, int pno, int isthisme, int ply, string *movefinal, doubl
         tcmove=apply_moves(b,true,posmove[mno][0],posmove[mno][1],posmove[mno][2],posmove[mno][3],pno);
         if (ply==0)
         {
-            val=tcmove.eval(pno,isthisme);
+            val=tcmove.eval_score(pno,isthisme);
         }
         else
         {
@@ -718,7 +726,7 @@ double minimax(board b, int pno, int isthisme, int ply, string *movefinal, doubl
         tcmove=apply_moves(b,false,posmove[mno][0],posmove[mno][1],posmove[mno][2],posmove[mno][3],pno);
         if (ply==0)
         {
-            val=tcmove.eval(pno,isthisme);
+            val=tcmove.eval_score(pno,isthisme);
         }
         else
         {
@@ -750,9 +758,9 @@ double minimax(board b, int pno, int isthisme, int ply, string *movefinal, doubl
     }
 
     return bestchild;
-    //???? no valid moves at depth handle
 }
 //????super table try
+//???????????????????remove bestchild: no need now
 void print(board currboard)
 {
     for (int i = 0; i < 8; ++i)
@@ -820,7 +828,7 @@ int main()
     m--;
     getline(cin,line);
 
-    ply_MAX=5;
+    ply_MAX=4;
 
     board curr;
 
@@ -834,15 +842,36 @@ int main()
     }
     string move;
     double ttt;
-
+    bool temp=true, temp2=true;
     double maxval=(double)-10000 ,minval=(double)10000;
 //eval exactly scoring????
     while((true))
     {
-        print(curr);
+        // print(curr);
         ttt=minimax(curr,pno, 1,ply_MAX,&move,maxval,minval);
         cout<<move<<endl;
         execute_move(&curr,move,pno);
+        if (curr.numsol[0]+curr.numsol[1]<=12 && temp)
+        {
+            cerr<<"*********************";
+            ply_MAX++;
+            temp=false;
+            /* code */
+        }
+        if (curr.numsol[0]+curr.numsol[1]<=6 && temp2)
+        {
+            cerr<<"*********************";
+            ply_MAX++;
+            temp2=false;
+            /* code */
+        }
+        if (curr.numsol[0]+curr.numsol[1]<=4)
+        {
+            cerr<<"*********************";
+            ply_MAX++;
+            temp2=false;
+            /* code */
+        }
 
         getline(cin,move);
         while(move=="")
