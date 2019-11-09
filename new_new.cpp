@@ -2,7 +2,6 @@
 #include <vector>
 #include <map>
 #include<algorithm>
-#include<numeric>
 
 int ply_MAX;
 using namespace std;
@@ -208,31 +207,31 @@ public:
             //forward move: <=0 because empty or other's soldier
             // cerr<<"1" << endl;
             if ((y-pno >= 0) && (y-pno <= n) && (grid[x][y-pno]*pno <= 0)) {
-                temp = vector<int> {x, y, x, y-pno, 0};
+                temp = vector<int> {x, y, x, y-pno};
                 ans.push_back(temp);
             }
 
             //right diagonal move
             if ((x+pno <= m) && (x+pno >= 0) && (y-pno >= 0) && (y-pno <= n) && (grid[x+pno][y-pno]*pno <= 0)) {
-                temp = vector<int> {x, y, x+pno, y-pno, 0};
+                temp = vector<int> {x, y, x+pno, y-pno};
                 ans.push_back(temp);
             } 
 
             //left diagonal move
             if ((x-pno >= 0) && (x-pno <= m) && (y-pno >= 0) && (y-pno <= n) && (grid[x-pno][y-pno]*pno <= 0)) {
-                temp = vector<int> {x, y, x-pno, y-pno, 0};
+                temp = vector<int> {x, y, x-pno, y-pno};
                 ans.push_back(temp);
             }
 
             //right adjacent move
             if ((x+pno <= m) && (x+pno >= 0) && (grid[x+pno][y]*pno < 0)) {
-                temp = vector<int> {x, y, x+pno, y, 0};
+                temp = vector<int> {x, y, x+pno, y};
                 ans.push_back(temp);
             }
 
             //left adjacent move
             if ((x-pno >= 0) && (x-pno <= m) && (grid[x-pno][y]*pno < 0)) {
-                temp = vector<int> {x, y, x-pno, y, 0};
+                temp = vector<int> {x, y, x-pno, y};
                 ans.push_back(temp);
             }
 
@@ -243,17 +242,17 @@ public:
                 ((x+pno <= m) && (x+pno >= 0) && (grid[x+pno][y]*pno == -1)) || ((x-pno >= 0) && (x-pno <= m) && (grid[x-pno][y]*pno == -1))) {
 
                 if ((y+2*pno <= n) && (y+2*pno >= 0) && (grid[x][y+2*pno]*pno <= 0)) {
-                    temp = vector<int> {x, y, x, y+2*pno, 0};
+                    temp = vector<int> {x, y, x, y+2*pno};
                     ans.push_back(temp);
                 }
 
                 if ((y+2*pno <= n) && (y+2*pno >= 0) && (x+2*pno <= m) && (x+2*pno >= 0) && (grid[x+2*pno][y+2*pno]*pno <= 0)) {
-                    temp = vector<int> {x, y, x+2*pno, y+2*pno, 0};
+                    temp = vector<int> {x, y, x+2*pno, y+2*pno};
                     ans.push_back(temp);
                 }
 
                 if ((y+2*pno <= n) && (y+2*pno >= 0) && (x-2*pno >= 0) && (x-2*pno <= m) && (grid[x-2*pno][y+2*pno]*pno <= 0)) {
-                    temp = vector<int> {x, y, x-2*pno, y+2*pno, 0};
+                    temp = vector<int> {x, y, x-2*pno, y+2*pno};
                     ans.push_back(temp);
                 }
             }
@@ -268,41 +267,41 @@ public:
 
             if (dir == 0) {
                 if ((y-2 >= 0) && (grid[x][y-2] == 0)) {
-                    temp = vector<int> {x, y+1, x, y-2, 0};
+                    temp = vector<int> {x, y+1, x, y-2};
                     ans.push_back(temp);
                 }
                 if ((y+2 <= n) && (grid[x][y+2] == 0)) {
-                    temp = vector<int> {x, y-1, x, y+2, 0};
+                    temp = vector<int> {x, y-1, x, y+2};
                     ans.push_back(temp);
                 }
             }
             else if (dir == 1) {
                 if ((y-2 >= 0) && (x+2 <= m) && (grid[x+2][y-2] == 0)) {
-                    temp = vector<int> {x-1, y+1, x+2, y-2, 0};
+                    temp = vector<int> {x-1, y+1, x+2, y-2};
                     ans.push_back(temp);
                 }
                 if ((y+2 <= n) && (x-2 >= 0) && (grid[x-2][y+2] == 0)) {
-                    temp = vector<int> {x+1, y-1, x-2, y+2, 0};
+                    temp = vector<int> {x+1, y-1, x-2, y+2};
                     ans.push_back(temp);
                 }
             }
             else if (dir == 2) {
                 if ((x-2 >= 0) && (grid[x-2][y] == 0)) {
-                    temp = vector<int> {x+1, y, x-2, y, 0};
+                    temp = vector<int> {x+1, y, x-2, y};
                     ans.push_back(temp);
                 }
                 if ((x+2 <= m) && (grid[x+2][y] == 0)) {
-                    temp = vector<int> {x-1, y, x+2, y, 0};
+                    temp = vector<int> {x-1, y, x+2, y};
                     ans.push_back(temp);
                 }
             }
             else { //if dir == 3
                 if ((y+2 <= n) && (x+2 <= m) && (grid[x+2][y+2] == 0)) {
-                    temp = vector<int> {x-1, y-1, x+2, y+2, 0};
+                    temp = vector<int> {x-1, y-1, x+2, y+2};
                     ans.push_back(temp);
                 }
                 if ((y-2 >= 0) && (x-2 >= 0) && (grid[x-2][y-2] == 0)) {
-                    temp = vector<int> {x+1, y+1, x-2, y-2, 0};
+                    temp = vector<int> {x+1, y+1, x-2, y-2};
                     ans.push_back(temp);
                 }
             }
@@ -330,22 +329,22 @@ public:
                 if ((y-2 >= 0) && (grid[x][y-2] == 0))
                 {
                     if ((y-3 >= 0) && (grid[x][y-3]*pno + stagnant <= 0)) {
-                        temp = vector<int> {x, y, x, y-3, 1};
+                        temp = vector<int> {x, y, x, y-3};
                         ans.push_back(temp);
                     }
                     if ((y-4 >= 0) && (grid[x][y-4]*pno + stagnant <= 0)) {
-                        temp = vector<int> {x, y, x, y-4, 1};
+                        temp = vector<int> {x, y, x, y-4};
                         ans.push_back(temp);
                     }
                 }
                 if ((y+2 <= n) && (grid[x][y+2] == 0))
                 {
                     if ((y+3 <= n) && (grid[x][y+3]*pno + stagnant <= 0)) {
-                        temp = vector<int> {x, y, x, y+3, 1};
+                        temp = vector<int> {x, y, x, y+3};
                         ans.push_back(temp);
                     }
                     if ((y+4 <= n) && (grid[x][y+4]*pno + stagnant <= 0)) {
-                        temp = vector<int> {x, y, x, y+4, 1};
+                        temp = vector<int> {x, y, x, y+4};
                         ans.push_back(temp);
                     }
                 }
@@ -353,21 +352,21 @@ public:
             else if (dir == 1) {
                 if ((y-2 >= 0) && (x+2 <= m) && (grid[x+2][y-2] == 0)) {
                     if ((y-3 >= 0) && (x+3 <= m) && (grid[x+3][y-3]*pno + stagnant <= 0)) {
-                        temp = vector<int> {x, y, x+3, y-3, 1};
+                        temp = vector<int> {x, y, x+3, y-3};
                         ans.push_back(temp);
                     }
                     if ((y-4 >= 0) && (x+4 <= m) && (grid[x+4][y-4]*pno + stagnant <= 0)) {
-                        temp = vector<int> {x, y, x+4, y-4, 1};
+                        temp = vector<int> {x, y, x+4, y-4};
                         ans.push_back(temp);
                     }
                 }
                 if ((y+2 <= n) && (x-2 >= 0) && (grid[x-2][y+2] == 0)) {
                     if ((y+3 <= n) && (x-3 >= 0) && (grid[x-3][y+3]*pno + stagnant <= 0)) {
-                        temp = vector<int> {x, y, x-3, y+3, 1};
+                        temp = vector<int> {x, y, x-3, y+3};
                         ans.push_back(temp);
                     }
                     if ((y+4 <= n) && (x-4 >= 0) && (grid[x-4][y+4]*pno + stagnant <= 0)) {
-                        temp = vector<int> {x, y, x-4, y+4, 1};
+                        temp = vector<int> {x, y, x-4, y+4};
                         ans.push_back(temp);
                     }
                 }
@@ -375,21 +374,21 @@ public:
             else if (dir == 2) {
                 if ((x-2 >= 0) && (grid[x-2][y] == 0)) {
                     if ((x-3 >= 0) && (grid[x-3][y]*pno + stagnant <= 0)) {
-                        temp = vector<int> {x, y, x-3, y, 1};
+                        temp = vector<int> {x, y, x-3, y};
                         ans.push_back(temp);
                     }
                     if ((x-4 >= 0) && (grid[x-4][y]*pno + stagnant <= 0)) {
-                        temp = vector<int> {x, y, x-4, y, 1};
+                        temp = vector<int> {x, y, x-4, y};
                         ans.push_back(temp);
                     }
                 }
                 if ((x+3 <= m) && (grid[x+2][y] == 0)) {
                     if ((x+3 <= m) && (grid[x+3][y]*pno + stagnant <= 0)) {
-                        temp = vector<int> {x, y, x+3, y, 1};
+                        temp = vector<int> {x, y, x+3, y};
                         ans.push_back(temp);
                     }
                     if ((x+4 <= m) && (grid[x+4][y]*pno + stagnant <= 0)) {
-                        temp = vector<int> {x, y, x+4, y, 1};
+                        temp = vector<int> {x, y, x+4, y};
                         ans.push_back(temp);
                     }
                 }
@@ -397,21 +396,21 @@ public:
             else { //if dir == 3
                 if ((y+2 <= n) && (x+2 <= m) && (grid[x+2][y+2] == 0)) {
                     if ((y+3 <= n) && (x+3 <= m) && (grid[x+3][y+3]*pno + stagnant <= 0)) {
-                        temp = vector<int> {x, y, x+3, y+3, 1};
+                        temp = vector<int> {x, y, x+3, y+3};
                         ans.push_back(temp);
                     }
                     if ((y+4 <= n) && (x+4 <= m) && (grid[x+4][y+4]*pno + stagnant <= 0)) {
-                        temp = vector<int> {x, y, x+4, y+4, 1};
+                        temp = vector<int> {x, y, x+4, y+4};
                         ans.push_back(temp);
                     }
                 }
                 if ((y-2 >= 0) && (x-2 >= 0) && (grid[x-2][y-2] == 0)) {
                     if ((y-3 >= 0) && (x-3 >= 0) && (grid[x-3][y-3]*pno + stagnant <= 0)) {
-                        temp = vector<int> {x, y, x-3, y-3, 1};
+                        temp = vector<int> {x, y, x-3, y-3};
                         ans.push_back(temp);
                     }
                     if ((y-4 >= 0) && (x-4 >= 0) && (grid[x-4][y-4]*pno + stagnant <= 0)) {
-                        temp = vector<int> {x, y, x-4, y-4, 1};
+                        temp = vector<int> {x, y, x-4, y-4};
                         ans.push_back(temp);
                     }
                 }
@@ -426,32 +425,43 @@ public:
         pno*=isthisme;
         int index=(1+pno)/2;
         int index2=(1-pno)/2;
-        double ans;
+        double ans = 0;
+
+        if (numsol[index] == 0) {
+            ans += -100;
+        }
+
+        if (numsol[index2] == 0) {
+            ans += 100;
+        }
+
+        if (numth[index]<=2) {
+            ans += -150;
+        }
+
+        if (numth[index2] <= 2) {
+            ans += 150;
+        }
+
+        ans += 30*numth[index] - 10*numth[index2];
 
         // 4 conditions - 2 townhalls killed, all soldiers killed, stagnant game, no possible move
 
-        if (numth[index2] == 2) {//win by killing townhall
-            ans = 100 + 2*numth[index];
-        }
-        else if (numsol[index2] == 0) {//win by all soldiers killed
-            ans = 100 + 2*(numth[index] - numth[index2]);
-        }
-        else if (numth[index]<=2)
-        {
-            ans=-150;
-        }
-        else if (numth[index]>=3)
-        {
-            ans=100*(numth[index] - numth[index2]);
-        }
-        // else if (find_soldier_moves(pno*(-1)).size() + find_cannon_moves(pno*(-1)).size() == 0)
-        //     ans = 6 + 2*(numth[index] - numth[index2]);
+        // else if (numth[index2] <= 2) {//win by killing townhall
+        //     ans = 1000 + 50*(numth[index]-2);
         // }
-        else {//I don't know how to write a stagnant game condition
-            ans = 5 + 2*(numth[index] - numth[index2]);
-        }
+        // else if (numth[index]>=3)
+        // {
+        //     ans=1000*(numth[index] - numth[index2]);
+        // }
+        // else if (numsol[index2] == 0) {//win by all soldiers killed
+        //     ans = 100 + 2*(numth[index] - numth[index2]);
+        // }
+        // else {//I don't know how to write a stagnant game condition
+        //     ans = 5 + 2*(numth[index] - numth[index2]);
+        // }
 
-        ans += (numsol[index] - numsol[index2])/100.000;
+        ans += (numsol[index] - numsol[index2]);
         return ans;
 
     }
@@ -623,11 +633,11 @@ public:
 //written assuming that we will be having the above attributes to a board
 //returns a vector of int where 1 - original x, 2 - original y, 3 - new x, 4 - new y 
 
-board apply_moves(board current, int solmove, int a1, int a2, int a3, int a4, int pno)
+board apply_moves(board current, bool solmove, int a1, int a2, int a3, int a4, int pno)
 {
     // cerr<<"Apply move called"<<endl;
     //delete my soldier as it has moved
-    if (solmove  == 0) {
+    if (solmove) {
         current.delete_soldier(a1, a2, pno);
     }
 
@@ -641,7 +651,7 @@ board apply_moves(board current, int solmove, int a1, int a2, int a3, int a4, in
     }
 
     //add my soldier
-    if (solmove == 0) {
+    if (solmove) {
         current.add_soldier(a3, a4, pno); //??????????????????Considering 1 is for myself
     }
 
@@ -654,11 +664,11 @@ void execute_move(board* currboard,string move, int pno)
     // cerr<<"move executing *********************************************************************************************************************************************** "<<move<<endl;
     if (move[6]=='M')
     {
-        *currboard=apply_moves(*currboard,0,(move[2]-'0'),(move[4]-'0'),(move[8]-'0'),(move[10]-'0'),pno);
+        *currboard=apply_moves(*currboard,true,(move[2]-'0'),(move[4]-'0'),(move[8]-'0'),(move[10]-'0'),pno);
     }
     else //cannon blast
     {
-        *currboard=apply_moves(*currboard,1,(move[2]-'0'),(move[4]-'0'),(move[8]-'0'),(move[10]-'0'),pno);
+        *currboard=apply_moves(*currboard,false,(move[2]-'0'),(move[4]-'0'),(move[8]-'0'),(move[10]-'0'),pno);
     }
 }
 
@@ -668,7 +678,9 @@ double minimax(board b, int pno, int isthisme, int ply, string *movefinal, doubl
     posmove=b.find_soldier_moves(pno);
 
     int temp=posmove.size(), temp2;
-    if (temp==0)
+    canmove=b.find_cannon_moves(pno,0);
+    temp2=canmove.size();
+    if (temp==0|| b.numth[0]<=2|| b.numth[1]<=2)
     {
         return b.eval_score(pno,isthisme);
     }
@@ -678,21 +690,9 @@ double minimax(board b, int pno, int isthisme, int ply, string *movefinal, doubl
     double val;
     string s;
 
-
-    canmove=b.find_cannon_moves(pno,0);
-    temp2=canmove.size();
-
-    // canmove.append(posmove);
-    canmove.insert( canmove.end(), posmove.begin(), posmove.end() );
-    temp2+=temp;
-
-    random_shuffle(canmove.begin(), canmove.end());
-
-    //shuffle position instead?
-
     for (int  mno= 0; mno < temp2; ++mno)
     {
-        tcmove=apply_moves(b,canmove[mno][4],canmove[mno][0],canmove[mno][1],canmove[mno][2],canmove[mno][3],pno);
+        tcmove=apply_moves(b,false,canmove[mno][0],canmove[mno][1],canmove[mno][2],canmove[mno][3],pno);
         if (ply==0)
         {
             val=tcmove.eval_score(pno,isthisme);
@@ -703,34 +703,20 @@ double minimax(board b, int pno, int isthisme, int ply, string *movefinal, doubl
         }
         
         if (isthisme == 1) {
-            // alpha=alpha<val?val:alpha;
-            if (val>alpha) {
-                alpha=val;
+            alpha=alpha<val?val:alpha;
+            if (val>bestchild) {
+                bestchild=val;
                 if (ply==ply_MAX) {
-                    if (canmove[mno][4]==1)
-                    {
-                        *movefinal="S " + to_string(canmove[mno][0]) + " " + to_string(canmove[mno][1]) + " B " + to_string(canmove[mno][2])+ " " +to_string(canmove[mno][3]);
-                    }
-                    else
-                    {
-                        *movefinal="S " + to_string(posmove[mno][0]) + " " + to_string(posmove[mno][1]) + " M " + to_string(posmove[mno][2])+ " " +to_string(posmove[mno][3]);
-                    }
+                    *movefinal="S " + to_string(canmove[mno][0]) + " " + to_string(canmove[mno][1]) + " B " + to_string(canmove[mno][2])+ " " +to_string(canmove[mno][3]);
                 }
             }
         }
         else {
-            // beta=beta>val?val:beta;
-            if (val < beta) {
-                beta=val;
+            beta=beta>val?val:beta;
+            if (val < bestchild) {
+                bestchild=val;
                 if (ply==ply_MAX) {
-                    if (canmove[mno][4]==1)
-                    {
-                        *movefinal="S " + to_string(canmove[mno][0]) + " " + to_string(canmove[mno][1]) + " B " + to_string(canmove[mno][2])+ " " +to_string(canmove[mno][3]);
-                    }
-                    else
-                    {
-                        *movefinal="S " + to_string(posmove[mno][0]) + " " + to_string(posmove[mno][1]) + " M " + to_string(posmove[mno][2])+ " " +to_string(posmove[mno][3]);
-                    }
+                    *movefinal="S " + to_string(canmove[mno][0]) + " " + to_string(canmove[mno][1]) + " B " + to_string(canmove[mno][2])+ " " +to_string(canmove[mno][3]);
                 }
             }  
         }
@@ -741,52 +727,50 @@ double minimax(board b, int pno, int isthisme, int ply, string *movefinal, doubl
     }
 
     //shuffle posmove
-    // for (int  mno= 0; mno < temp; ++mno)
-    // {
-    //     tcmove=apply_moves(b,true,posmove[mno][0],posmove[mno][1],posmove[mno][2],posmove[mno][3],pno);
-    //     if (ply==0)
-    //     {
-    //         val=tcmove.eval_score(pno,isthisme);
-    //     }
-    //     else
-    //     {
-    //         val=minimax(tcmove,pno*(-1),isthisme*(-1),ply-1,&s,alpha,beta);
-    //     } 
+    for (int  mno= 0; mno < temp; ++mno)
+    {
+        tcmove=apply_moves(b,true,posmove[mno][0],posmove[mno][1],posmove[mno][2],posmove[mno][3],pno);
+        if (ply==0)
+        {
+            val=tcmove.eval_score(pno,isthisme);
+        }
+        else
+        {
+            val=minimax(tcmove,pno*(-1),isthisme*(-1),ply-1,&s,alpha,beta);
+        } 
 
-    //     if (isthisme == 1) {
-    //         alpha=alpha<val?val:alpha;
-    //         if (val>bestchild) {
-    //             bestchild=val;
-    //             if (ply==ply_MAX) {
-    //                 *movefinal="S " + to_string(posmove[mno][0]) + " " + to_string(posmove[mno][1]) + " M " + to_string(posmove[mno][2])+ " " +to_string(posmove[mno][3]);
-    //             }
-    //         } 
-    //     }
-    //     else {
-    //         beta=beta>val?val:beta;
-    //         if (val < bestchild) {
-    //             bestchild=val;
-    //             if (ply==ply_MAX) {
-    //                 *movefinal="S " + to_string(posmove[mno][0]) + " " + to_string(posmove[mno][1]) + " M " + to_string(posmove[mno][2])+ " " +to_string(posmove[mno][3]);
-    //             }
-    //         }  
-    //     }
-    //     if (alpha>=beta)
-    //     {
-    //         // cerr<<alpha<<"pruned"<<beta<<"  "<<bestchild<<" "<<isthisme<<endl;
-    //         return val;
-    //     } 
+        if (isthisme == 1) {
+            alpha=alpha<val?val:alpha;
+            if (val>bestchild) {
+                bestchild=val;
+                if (ply==ply_MAX) {
+                    *movefinal="S " + to_string(posmove[mno][0]) + " " + to_string(posmove[mno][1]) + " M " + to_string(posmove[mno][2])+ " " +to_string(posmove[mno][3]);
+                }
+            } 
+        }
+        else {
+            beta=beta>val?val:beta;
+            if (val < bestchild) {
+                bestchild=val;
+                if (ply==ply_MAX) {
+                    *movefinal="S " + to_string(posmove[mno][0]) + " " + to_string(posmove[mno][1]) + " M " + to_string(posmove[mno][2])+ " " +to_string(posmove[mno][3]);
+                }
+            }  
+        }
+        if (alpha>=beta)
+        {
+            // cerr<<alpha<<"pruned"<<beta<<"  "<<bestchild<<" "<<isthisme<<endl;
+            return val;
+        } 
                
-    // }
+    }
 
     // stagnant=(param==2 && )?1:0;
     // {
     //     /* code */
     // }
-    if (isthisme == 1) {
-        return alpha;
-    }
-    return beta;
+
+    return bestchild;
 }
 //????super table try
 //???????????????????remove bestchild: no need now
@@ -857,7 +841,7 @@ int main()
     m--;
     getline(cin,line);
 
-    ply_MAX=4;
+    ply_MAX=5;
 
     board curr;
 
