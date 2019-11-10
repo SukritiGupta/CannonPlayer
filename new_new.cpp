@@ -2,6 +2,7 @@
 #include <vector>
 #include <map>
 #include<algorithm>
+#include <climits>
 
 int ply_MAX;
 using namespace std;
@@ -672,13 +673,19 @@ void execute_move(board* currboard,string move, int pno)
     }
 }
 
+int stagnant=0, param=0;
+
 double minimax(board b, int pno, int isthisme, int ply, string *movefinal, double alpha, double beta)
 {
     vector<vector<int>> posmove, canmove;
     posmove=b.find_soldier_moves(pno);
 
     int temp=posmove.size(), temp2;
-    canmove=b.find_cannon_moves(pno,0);
+
+    stagnant=(param==2)?1:0;
+    param=(param==2)?0:param;
+
+    canmove=b.find_cannon_moves(pno,stagnant);
     temp2=canmove.size();
     if (temp==0|| b.numth[0]<=2|| b.numth[1]<=2)
     {
@@ -703,18 +710,18 @@ double minimax(board b, int pno, int isthisme, int ply, string *movefinal, doubl
         }
         
         if (isthisme == 1) {
-            alpha=alpha<val?val:alpha;
-            if (val>bestchild) {
-                bestchild=val;
+            // alpha=alpha<val?val:alpha;
+            if (val>alpha) {
+                alpha=val;
                 if (ply==ply_MAX) {
                     *movefinal="S " + to_string(canmove[mno][0]) + " " + to_string(canmove[mno][1]) + " B " + to_string(canmove[mno][2])+ " " +to_string(canmove[mno][3]);
                 }
             }
         }
         else {
-            beta=beta>val?val:beta;
-            if (val < bestchild) {
-                bestchild=val;
+            // beta=beta>val?val:beta;
+            if (val < beta) {
+                beta=val;
                 if (ply==ply_MAX) {
                     *movefinal="S " + to_string(canmove[mno][0]) + " " + to_string(canmove[mno][1]) + " B " + to_string(canmove[mno][2])+ " " +to_string(canmove[mno][3]);
                 }
@@ -740,18 +747,18 @@ double minimax(board b, int pno, int isthisme, int ply, string *movefinal, doubl
         } 
 
         if (isthisme == 1) {
-            alpha=alpha<val?val:alpha;
-            if (val>bestchild) {
-                bestchild=val;
+            // alpha=alpha<val?val:alpha;
+            if (val>alpha) {
+                alpha=val;
                 if (ply==ply_MAX) {
                     *movefinal="S " + to_string(posmove[mno][0]) + " " + to_string(posmove[mno][1]) + " M " + to_string(posmove[mno][2])+ " " +to_string(posmove[mno][3]);
                 }
             } 
         }
         else {
-            beta=beta>val?val:beta;
-            if (val < bestchild) {
-                bestchild=val;
+            // beta=beta>val?val:beta;
+            if (val < beta) {
+                beta=val;
                 if (ply==ply_MAX) {
                     *movefinal="S " + to_string(posmove[mno][0]) + " " + to_string(posmove[mno][1]) + " M " + to_string(posmove[mno][2])+ " " +to_string(posmove[mno][3]);
                 }
@@ -759,18 +766,18 @@ double minimax(board b, int pno, int isthisme, int ply, string *movefinal, doubl
         }
         if (alpha>=beta)
         {
-            // cerr<<alpha<<"pruned"<<beta<<"  "<<bestchild<<" "<<isthisme<<endl;
             return val;
         } 
                
     }
 
-    // stagnant=(param==2 && )?1:0;
-    // {
-    //     /* code */
-    // }
+    if (isthisme==1)
+    {
+        return alpha;
+    }
+    return beta;
 
-    return bestchild;
+    // return bestchild;
 }
 //????super table try
 //???????????????????remove bestchild: no need now
@@ -834,9 +841,12 @@ void print(board currboard)
 
 int main() 
 {
+    time_t start, now;
+
     string line;
     int pno, timeq;
     cin>>pno>>n>>m>>timeq;
+    time(&start);
     n--;
     m--;
     getline(cin,line);
@@ -855,14 +865,39 @@ int main()
     }
     string move;
     double ttt;
-    bool temp=true, temp2=true;
+    bool temp=true, temp2=true, temp3=true;
     double maxval=(double)-10000 ,minval=(double)10000;
 //eval exactly scoring????
     while((true))
     {
         // print(curr);
+        time(&now);
+        if(timeq-difftime(now,start)<=10)
+        {
+            ply_MAX=4;
+            temp=false;
+            temp2=false;
+            temp3=false;
+            if(timeq-difftime(now,start)<=6)
+            {
+                ply_MAX=2;
+                if(timeq-difftime(now,start)<=2)
+                {
+                    ply_MAX=0;
+                }
+            }
+        }
         ttt=minimax(curr,pno, 1,ply_MAX,&move,maxval,minval);
         cout<<move<<endl;
+
+        if (move[6]=='B' && curr.grid[move[8]-'0'][move[10]-'0']==0)
+        {
+            param++;
+        }
+        else
+        {
+            param=0;
+        }
         execute_move(&curr,move,pno);
         if (curr.numsol[0]+curr.numsol[1]<=12 && temp)
         {
@@ -871,18 +906,18 @@ int main()
             temp=false;
             /* code */
         }
-        if (curr.numsol[0]+curr.numsol[1]<=6 && temp2)
+        if (curr.numsol[0]+curr.numsol[1]<=8 && temp2)
         {
             cerr<<"*********************";
             ply_MAX++;
             temp2=false;
             /* code */
         }
-        if (curr.numsol[0]+curr.numsol[1]<=4)
+        if (curr.numsol[0]+curr.numsol[1]<=6 && temp3)
         {
             cerr<<"*********************";
             ply_MAX++;
-            temp2=false;
+            temp3=false;
             /* code */
         }
 
