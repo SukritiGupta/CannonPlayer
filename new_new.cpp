@@ -2,7 +2,8 @@
 #include <vector>
 #include <map>
 #include<algorithm>
-#include <climits>
+#include<ctime>
+#include <math.h>
 
 int ply_MAX;
 using namespace std;
@@ -436,33 +437,29 @@ public:
             ans += 100;
         }
 
-        if (numth[index]<=2) {
+        if (numth[index]<=((m+1)/2)-2) {
             ans += -150;
         }
 
-        if (numth[index2] <= 2) {
+        if (numth[index2] <= ((m+1)/2)-2) {
             ans += 150;
         }
 
-        ans += 30*numth[index] - 10*numth[index2];
-
-        // 4 conditions - 2 townhalls killed, all soldiers killed, stagnant game, no possible move
-
-        // else if (numth[index2] <= 2) {//win by killing townhall
-        //     ans = 1000 + 50*(numth[index]-2);
-        // }
-        // else if (numth[index]>=3)
-        // {
-        //     ans=1000*(numth[index] - numth[index2]);
-        // }
-        // else if (numsol[index2] == 0) {//win by all soldiers killed
-        //     ans = 100 + 2*(numth[index] - numth[index2]);
-        // }
-        // else {//I don't know how to write a stagnant game condition
-        //     ans = 5 + 2*(numth[index] - numth[index2]);
-        // }
+        ans += 60*numth[index] - 30*numth[index2];
 
         ans += (numsol[index] - numsol[index2]);
+        if (numsol[index]<6)
+        {
+            ans+=(6-numsol[index])*(6-numsol[index])*((numsol[index] - numsol[index2]));
+            // ans-= 50*(1-pow(2,((-1)*numsol[index])));
+            // ans-= 100*(1-pow(2,((-1)*numsol[index2])));
+        }
+        // if (numsol[index2]<8)
+        // {
+        //     // ans+=(6-numsol[index])*(6-numsol[index])*((numsol[index] - numsol[index2]));
+        //     // ans+= 100*(1-pow(2,((-1)*numsol[index])));
+        //     ans+= 50*(1-pow(2,((-1)*numsol[index2])));
+        // }
         return ans;
 
     }
@@ -687,7 +684,7 @@ double minimax(board b, int pno, int isthisme, int ply, string *movefinal, doubl
 
     canmove=b.find_cannon_moves(pno,stagnant);
     temp2=canmove.size();
-    if (temp==0|| b.numth[0]<=2|| b.numth[1]<=2)
+    if (temp==0|| b.numth[0]<=((m+1)/2)-2|| b.numth[1]<=((m+1)/2)-2)
     {
         return b.eval_score(pno,isthisme);
     }
@@ -841,17 +838,24 @@ void print(board currboard)
 
 int main() 
 {
-    time_t start, now;
+    // time_t start, now;
+    clock_t begin = clock();
+    double elapsed_time=0;
 
     string line;
     int pno, timeq;
     cin>>pno>>n>>m>>timeq;
-    time(&start);
+    // time(&start);
+
     n--;
     m--;
     getline(cin,line);
 
     ply_MAX=5;
+    if (m==9)
+    {
+        ply_MAX=4;   
+    }
 
     board curr;
 
@@ -871,17 +875,20 @@ int main()
     while((true))
     {
         // print(curr);
-        time(&now);
-        if(timeq-difftime(now,start)<=10)
+        // time(&now);
+        clock_t end=clock();
+        elapsed_time=double(end-begin)/CLOCKS_PER_SEC;
+        if(timeq-elapsed_time<=10)
         {
-            ply_MAX=4;
+            cerr<<"wrong&&&&&"<<timeq<<" "<<end<<" "<<begin<<"  "<<elapsed_time;
+            ply_MAX=m==9?3:4;
             temp=false;
             temp2=false;
             temp3=false;
-            if(timeq-difftime(now,start)<=6)
+            if(timeq-elapsed_time<=6)
             {
-                ply_MAX=2;
-                if(timeq-difftime(now,start)<=2)
+                ply_MAX=m==9?1:2;
+                if(timeq-elapsed_time<=2)
                 {
                     ply_MAX=0;
                 }
@@ -899,7 +906,7 @@ int main()
             param=0;
         }
         execute_move(&curr,move,pno);
-        if (curr.numsol[0]+curr.numsol[1]<=12 && temp)
+        if (curr.numsol[0]+curr.numsol[1]<=14 && temp)
         {
             cerr<<"*********************";
             ply_MAX++;
