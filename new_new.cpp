@@ -7,6 +7,8 @@
 
 int ply_MAX;
 using namespace std;
+clock_t begin;
+int timeq;
 
 //Struct for cannons
 struct can {
@@ -839,11 +841,11 @@ void print(board currboard)
 int main() 
 {
     // time_t start, now;
-    clock_t begin = clock();
+    begin = clock();
     double elapsed_time=0;
 
     string line;
-    int pno, timeq;
+    int pno;
     cin>>pno>>n>>m>>timeq;
     // time(&start);
 
@@ -852,7 +854,7 @@ int main()
     getline(cin,line);
 
     ply_MAX=5;
-    if (m==9)
+    if (n==9)
     {
         ply_MAX=4;   
     }
@@ -871,6 +873,9 @@ int main()
     double ttt;
     bool temp=true, temp2=true, temp3=true;
     double maxval=(double)-10000 ,minval=(double)10000;
+    int to1=(n==9)?20:10;
+    int to2=(n==9)?10:6;
+    int to3=(n==9)?5:2;
 //eval exactly scoring????
     while((true))
     {
@@ -878,17 +883,17 @@ int main()
         // time(&now);
         clock_t end=clock();
         elapsed_time=double(end-begin)/CLOCKS_PER_SEC;
-        if(timeq-elapsed_time<=10)
+        if(timeq-elapsed_time<=to1)
         {
             cerr<<"wrong&&&&&"<<timeq<<" "<<end<<" "<<begin<<"  "<<elapsed_time;
-            ply_MAX=m==9?3:4;
+            ply_MAX=n==9?2:4;
             temp=false;
             temp2=false;
             temp3=false;
-            if(timeq-elapsed_time<=6)
+            if(timeq-elapsed_time<=to2)
             {
-                ply_MAX=m==9?1:2;
-                if(timeq-elapsed_time<=2)
+                ply_MAX=n==9?0:2;
+                if(timeq-elapsed_time<=to3)
                 {
                     ply_MAX=0;
                 }
