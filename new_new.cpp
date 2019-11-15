@@ -7,8 +7,6 @@
 
 int ply_MAX;
 using namespace std;
-clock_t begin;
-int timeq;
 
 //Struct for cannons
 struct can {
@@ -447,7 +445,8 @@ public:
             ans += 150;
         }
 
-        ans += 60*numth[index] - 30*numth[index2];
+        // ans += 60*numth[index] - 30*numth[index2];
+        ans += 120*numth[index] - 110*numth[index2];
 
         ans += (numsol[index] - numsol[index2]);
         if (numsol[index]<6)
@@ -672,7 +671,7 @@ void execute_move(board* currboard,string move, int pno)
     }
 }
 
-int stagnant=0, param=0;
+int stagnant=0, param=0, townhalldiff=1;
 
 double minimax(board b, int pno, int isthisme, int ply, string *movefinal, double alpha, double beta)
 {
@@ -681,8 +680,8 @@ double minimax(board b, int pno, int isthisme, int ply, string *movefinal, doubl
 
     int temp=posmove.size(), temp2;
 
-    stagnant=(param==2)?1:0;
-    param=(param==2)?0:param;
+    stagnant=(param==townhalldiff)?1:0;
+    param=(param==townhalldiff)?0:param;
 
     canmove=b.find_cannon_moves(pno,stagnant);
     temp2=canmove.size();
@@ -841,6 +840,8 @@ void print(board currboard)
 int main() 
 {
     // time_t start, now;
+    clock_t begin;
+    int timeq;
     begin = clock();
     double elapsed_time=0;
 
@@ -873,9 +874,9 @@ int main()
     double ttt;
     bool temp=true, temp2=true, temp3=true;
     double maxval=(double)-10000 ,minval=(double)10000;
-    int to1=(n==9)?20:10;
-    int to2=(n==9)?10:6;
-    int to3=(n==9)?5:2;
+    int to1=(n==9)?50:10;
+    int to2=(n==9)?20:6;
+    int to3=(n==9)?10:2;
 //eval exactly scoring????
     while((true))
     {
@@ -886,13 +887,13 @@ int main()
         if(timeq-elapsed_time<=to1)
         {
             cerr<<"wrong&&&&&"<<timeq<<" "<<end<<" "<<begin<<"  "<<elapsed_time;
-            ply_MAX=n==9?2:4;
+            ply_MAX=n==9?3:4;
             temp=false;
             temp2=false;
             temp3=false;
             if(timeq-elapsed_time<=to2)
             {
-                ply_MAX=n==9?0:2;
+                ply_MAX=n==9?1:2;
                 if(timeq-elapsed_time<=to3)
                 {
                     ply_MAX=0;
@@ -901,6 +902,11 @@ int main()
         }
         ttt=minimax(curr,pno, 1,ply_MAX,&move,maxval,minval);
         cout<<move<<endl;
+
+        if (curr.numth[(1+pno)/2]>curr.numth[(1-pno)/2])
+        {
+            townhalldiff=10;
+        }
 
         if (move[6]=='B' && curr.grid[move[8]-'0'][move[10]-'0']==0)
         {
